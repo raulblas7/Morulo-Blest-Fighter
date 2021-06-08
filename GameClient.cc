@@ -1,6 +1,6 @@
 #include <thread>
 #include "Game.h"
-
+/*
 int main(int argc, char **argv)
 {
     GameClient ec(argv[1], argv[2], argv[3]);
@@ -17,3 +17,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+*/

@@ -8,7 +8,7 @@
 
 //#include "SRandBasedGenerator.h"
 
-//unique_ptr<SDLGame> SDLGame::instance_;
+unique_ptr<SDLGame> SDLGame::instance_;
 
 SDLGame::SDLGame(string windowTitle, int width, int height) : windowTitle_(windowTitle), width_(width), height_(height)
 {
@@ -40,6 +40,7 @@ void SDLGame::initSDL()
     assert(renderer_ != nullptr);
 
     // Clear screen (background color).
+    cout<<"hola";
     int sdlSetDrawColor_ret = SDL_SetRenderDrawColor(renderer_, 0, 100, 100,
                                                      255); // Dark grey.
     assert(sdlSetDrawColor_ret != -1);

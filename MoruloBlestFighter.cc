@@ -1,14 +1,18 @@
 #include "MoruloBlestFighter.h"
 #include <assert.h>
 #include "SDL_macros.h"
+#include <iostream>
+
+#include "SDLGame.h"
+#include "InputHandler.h"
 using namespace std;
 
-MoruloBlestFighter::MoruloBlestFighter() 
+MoruloBlestFighter::MoruloBlestFighter()
 {
 
-//game_=nullptr;
-//mngr_=(nullptr);
-exit_=false;
+    game_ = nullptr;
+    //mngr_=(nullptr);
+    exit_ = false;
     initGame();
 }
 
@@ -20,31 +24,10 @@ MoruloBlestFighter::~MoruloBlestFighter()
 void MoruloBlestFighter::initGame()
 {
 
-    //game_ = SDLGame::init("MoruloBlestFighter", _WINDOW_WIDTH_, _WINDOW_HEIGHT_);
-    //SDLGame* h= new SDLGame("MoruloBlestFighter", _WINDOW_WIDTH_, _WINDOW_HEIGHT_);
+    std::cout << "hola";
 
-    int sdlInit_ret = SDL_Init(SDL_INIT_EVERYTHING);
-    assert(sdlInit_ret == 0);
-   SDL_Window* window_= SDL_CreateWindow("MoruloBlestFighter",
-                               SDL_WINDOWPOS_UNDEFINED,
-                               SDL_WINDOWPOS_UNDEFINED, _WINDOW_WIDTH_, _WINDOW_HEIGHT_, SDL_WINDOW_SHOWN);
-   // assert(window_ != nullptr);
-    // Create window
-    
-    // Create the renderer
-   SDL_Renderer*renderer_=  SDL_CreateRenderer(window_, -1,
-                                   SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-   // assert(renderer_ != nullptr);
-    // Clear screen (background color).
-    int sdlSetDrawColor_ret = SDL_SetRenderDrawColor(renderer_, 0, 100, 100,
-                                                     255); // Dark grey.
-    assert(sdlSetDrawColor_ret != -1);
-    int sdlRenderClear_ret = SDL_RenderClear(renderer_);
-    assert(sdlRenderClear_ret != -1);
-    SDL_RenderPresent(renderer_);
+    game_ = SDLGame::init("MoruloBlestFighter", _WINDOW_WIDTH_, _WINDOW_HEIGHT_);
 
-    // hide cursor by default
-    SDL_ShowCursor(0);
     /// AsteroidPool::init();
     //BulletsPool::init();
 
@@ -67,22 +50,22 @@ void MoruloBlestFighter::closeGame()
 void MoruloBlestFighter::start()
 {
     exit_ = false;
-    // auto ih = InputHandler::instance();
+    auto ih = InputHandler::instance();
     while (!exit_)
     {
         Uint32 startTime = game_->getTime();
-        SDL_SetRenderDrawColor(game_->getRenderer(), COLOR(0x000000FF));
+        SDL_SetRenderDrawColor(game_->getRenderer(), 255, 0, 0, 0);
         SDL_RenderClear(game_->getRenderer());
 
-        // ih->update();
-        /*if (ih->keyDownEvent())
+        ih->update();
+        if (ih->keyDownEvent())
         {
             if (ih->isKeyDown(SDLK_ESCAPE))
             {
                 exit_ = true;
                 break;
             }
-        }*/
+        }
 
         // mngr_->refresh();
 

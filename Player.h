@@ -7,6 +7,6 @@ class Player : public GameObject
     Player();
     virtual ~Player();
 
-  private:
+  //private:
    // SDLGame *game_;
-}
+};
