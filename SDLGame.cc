@@ -25,6 +25,8 @@ SDLGame::~SDLGame()
 void SDLGame::initSDL()
 {
 
+    cout << "hola";
+
     int sdlInit_ret = SDL_Init(SDL_INIT_EVERYTHING);
     assert(sdlInit_ret == 0);
 
@@ -40,7 +42,7 @@ void SDLGame::initSDL()
     assert(renderer_ != nullptr);
 
     // Clear screen (background color).
-    cout<<"hola";
+    cout << "hola";
     int sdlSetDrawColor_ret = SDL_SetRenderDrawColor(renderer_, 0, 100, 100,
                                                      255); // Dark grey.
     assert(sdlSetDrawColor_ret != -1);
@@ -66,7 +68,7 @@ void SDLGame::closeSDL()
 
 void SDLGame::initResources()
 {
-/*
+    /*
     random_ = new SRandBasedGenerator();
     random_->init();
 
@@ -107,8 +109,8 @@ void SDLGame::initResources()
 
 void SDLGame::closeResources()
 {
-  //  delete fonts_;
+    //  delete fonts_;
     //delete textures_;
-   // delete random_;
-   // delete audio_;
+    // delete random_;
+    // delete audio_;
 }

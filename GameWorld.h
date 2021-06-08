@@ -15,8 +15,6 @@ public:
     virtual void to_bin();
     virtual int from_bin(char *data);
 
-    //SDL_Renderer* GetRenderer() { return renderer; };
-    //SDL_Renderer* GetRenderer() { return renderer; };
     bool isActive() { return active; }
 
 private:
