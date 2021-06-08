@@ -1,12 +1,11 @@
 #pragma once
 #include <SDL2/SDL.h>
-/*#include "Resources.h"
+#include "Resources.h"
 #include "TexturesManager.h"
-#include "AudioManager.h"
+//#include "AudioManager.h"
 #include "FontsManager.h"
-#include "RandomNumberGenerator.h"
 #include "InputHandler.h"
-*/
+
 #include <string>
 #include <memory>
 #include <assert.h>
@@ -15,9 +14,9 @@ using namespace std;
 
 class SDLGame
 {
-  public:
+public:
     virtual ~SDLGame();
- 
+
     SDLGame(SDLGame &) = delete;
     SDLGame &operator=(SDLGame &) = delete;
 
@@ -53,29 +52,23 @@ class SDLGame
         return height_;
     }
 
-    // inline FontsManager *getFontMngr() const
-    // {
-    //     return fonts_;
-    // }
+    inline FontsManager *getFontMngr() const
+    {
+        return fonts_;
+    }
 
-    // inline TexturesManager *getTextureMngr() const
-    // {
-    //     return textures_;
-    // }
-    // inline AudioManager *getAudioMngr() const
-    // {
-    //     return audio_;
-    // }
-
-    // inline RandomNumberGenerator *getRandGen() const
-    // {
-    //     return random_;
-    // }
-
-    // inline InputHandler *getInputHandler() const
-    // {
-    //     return InputHandler::instance();
-    // }
+    inline TexturesManager *getTextureMngr() const
+    {
+        return textures_;
+    }
+    /*inline AudioManager *getAudioMngr() const
+    {
+        return audio_;
+    }*/
+    inline InputHandler *getInputHandler() const
+    {
+        return InputHandler::instance();
+    }
 
     inline void toggleFullScreen()
     {
@@ -95,19 +88,18 @@ class SDLGame
     }
 
     SDLGame(string windowTitle_, int width, int height);
-  private:
 
+private:
     void initSDL();        // initialize SDL
     void closeSDL();       // close SDL
     void initResources();  // initialize the SDLResources object with the data at the top of this file
     void closeResources(); // close the SDLResources object (frees all memory)
 
-  protected:
+protected:
     static unique_ptr<SDLGame> instance_;
-    // FontsManager *fonts_;
-    // TexturesManager *textures_;
-    // AudioManager *audio_;
-    // RandomNumberGenerator *random_;
+    FontsManager *fonts_;
+    TexturesManager *textures_;
+   // AudioManager *audio_;
 
     SDL_Window *window_;     // the window
     SDL_Renderer *renderer_; // the renderer
@@ -115,5 +107,4 @@ class SDLGame
     string windowTitle_; // window title
     int width_;          // window width
     int height_;         // window height
-
 };

@@ -11,11 +11,7 @@ GameObject::~GameObject()
 }
 void GameObject::render()
 {
-    //	texture->render(SDL_Rect{ (int)pos.getX(), (int)pos.getY(), width, height }, SDL_FLIP_NONE);
-}
-
-void GameObject::update(float deltaTime)
-{
+    texture->render(SDL_Rect{(int)pos.getX(), (int)pos.getY(), width, height}, SDL_FLIP_NONE);
 }
 
 void GameObject::to_bin()
@@ -55,7 +51,6 @@ void GameObject::to_bin()
     //Copiar active a partir de direccion
     memcpy(tmp, &active, sizeof(bool));
     tmp += sizeof(bool);
-    
 }
 
 int GameObject::from_bin(char *data)
@@ -68,11 +63,11 @@ int GameObject::from_bin(char *data)
     //Reconstruir la clase usando el buffer _data
     char *tmp = _data;
     //Copiar tipo a partir de direccion
-    memcpy(&type, tmp, sizeof(uint8_t));
+    memcpy(&goType, tmp, sizeof(uint8_t));
     tmp += sizeof(uint8_t);
 
     //Copiar id a partir de direccion
-    memcpy(&id.c_str(), tmp, sizeof(char) * 20);
+    id = tmp;
     tmp += sizeof(char) * 20;
 
     //Copiar pos a partir de direccion
@@ -96,4 +91,31 @@ int GameObject::from_bin(char *data)
     tmp += sizeof(bool);
 
     return 0;
+}
+
+void GameObject::setPosition(double x, double y)
+{
+    pos.set(x, y);
+    
+}
+
+void GameObject::setRotation(float angle)
+{
+    this->angle = angle;
+}
+
+void GameObject::setScale(uint8_t width, uint8_t height)
+{
+    this->width = width;
+    this->height = height;
+}
+
+void GameObject::setId(const std::string &id)
+{
+    this->id = id;
+}
+
+void GameObject::setActive(bool active)
+{
+    this->active = active;
 }

@@ -16,17 +16,17 @@ public:
     virtual void to_bin();
     virtual int from_bin(char *data);
 
-    // void setTexture();
-    void setId();
-    void setPosition();
-    void setRotation();
-    void setScale();
-    void setActive();
+   // void setTexture(Texture* );
+    void setId(const std::string &id);
+    void setPosition(double x, double y);
+    void setRotation(float angle);
+    void setScale(uint8_t width, uint8_t height);
+    void setActive(bool active);
 
     bool isActive() { return active; }
     Vector2D &getPosition() { return pos; }
     float getRotation() { return angle; }
-    // bool getTexture() { return active; }
+    Texture* getTexture() { return texture; }
     std::string getId() { return id; };
 
 protected:
@@ -38,5 +38,5 @@ protected:
     uint8_t width, height;
 
     bool active = false;
-    Texture* texture;
+    Texture *texture;
 };

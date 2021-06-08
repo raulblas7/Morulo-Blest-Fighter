@@ -15,7 +15,6 @@ public:
     virtual void to_bin();
     virtual int from_bin(char *data);
 
-    bool isActive() { return active; }
 
 private:
     std::vector<GameObject *> gameObjects;

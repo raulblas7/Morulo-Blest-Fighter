@@ -1,39 +1,59 @@
-#ifndef TextureH
-#define TextureH
 
 #include <SDL2/SDL.h>
-//#include <SDL_image.h> //arreglar
+#include <SDL_image.h> //arreglar
 #include <string>
+
+#include "Font.h"
 
 using namespace std;
 
-typedef unsigned int uint;
-
-class Texture {
-private:
-    SDL_Texture* texture = nullptr;
-    SDL_Renderer* renderer = nullptr;
-    uint w = 0;
-    uint h = 0;
-    uint fw = 0; // Frame width
-    uint fh = 0; // Frame height
-    uint numCols = 1;
-    uint numRows = 1;
-
+class Texture
+{
 public:
-    Texture(SDL_Renderer* r) : renderer(r) {};
-    Texture(SDL_Renderer* r, string filename, uint numRows = 1, uint numCols = 1) : renderer(r) { load(filename, numRows, numCols); };
-    ~Texture() { clear(); };
-    void clear();
+    Texture();
+    Texture(SDL_Renderer *renderer, const string &fileName);
+    Texture(SDL_Renderer *renderer, const string &text, const Font *font,
+            const SDL_Color &color);
+    virtual ~Texture();
 
-    int getW() const { return w; };
-    int getH() const { return h; };
-    uint getNumCols() const { return numCols; };
-    SDL_Texture* getTexture() const { return texture; };
+    inline int getWidth()
+    {
+        return width_;
+    }
 
-    void load(string filename, uint numRows = 1, uint numCols = 1);
-    void render(const SDL_Rect& rect, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
-    void renderFrame(const SDL_Rect& destRect, int row, int col, int angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
+    inline int getHeight()
+    {
+        return height_;
+    }
+
+    inline bool isReady()
+    {
+        return texture_ != nullptr;
+    }
+
+    // load from image or text, in both cases we should provide a rendered
+    bool loadFromImg(SDL_Renderer *renderer, const string &fileName);
+    bool loadFromText(SDL_Renderer *renderer, const string &text, const Font *font,
+                      const SDL_Color &color = {0, 0, 0, 255});
+
+    // render the complete texture at position (x,y).
+    void render(int x, int y) const;
+
+    // render part of the texture (clip) to a destination rectangle, if no
+    // clip provided it renders all texture (scaled to dest).
+    void render(const SDL_Rect &dest) const;
+    void render(const SDL_Rect &dest, const SDL_Rect &clip) const;
+
+    // render part of the texture (clip) to a destination rectangle with a rotation,
+    // if no clip provided it renders all texture (scaled to dest).
+    void render(const SDL_Rect &dest, double angle, const SDL_Rect &clip) const;
+    void render(const SDL_Rect &dest, double angle) const;
+
+    void close();
+
+private:
+    SDL_Texture *texture_;
+    SDL_Renderer *renderer_;
+    int width_;
+    int height_;
 };
-
-#endif

@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = main.cc  MoruloBlestFighter.cc SDLGame.cc InputHandler.cc Vector2D.cc
+OBJS = main.cc  MoruloBlestFighter.cc SDLGame.cc InputHandler.cc Vector2D.cc Font.cc
 
 #CC specifies which compiler we're using
 CC = g++
@@ -10,7 +10,7 @@ COMPILER_FLAGS = -w
 
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2
+LINKER_FLAGS =  -lSDL2 -lSDL2_mixer -lSDL2_image -lSDL2_ttf
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = AmaroCalvo  

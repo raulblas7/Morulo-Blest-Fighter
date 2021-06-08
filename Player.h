@@ -3,10 +3,15 @@
 class Player : public GameObject
 {
 
-  public:
-    Player();
-    virtual ~Player();
+private:
+  //seriali
+  uint8_t points;
+  //no serializar
 
-  //private:
-   // SDLGame *game_;
+public:
+  Player();
+  virtual ~Player();
+
+  virtual void to_bin();
+  virtual int from_bin(char *data);
 };
