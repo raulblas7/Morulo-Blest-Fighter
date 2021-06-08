@@ -1,6 +1,5 @@
 #pragma once
 
-#include "TexturesManager.h"
 #include <map>
 #include "Texture.h"
 #include "Font.h"
@@ -14,20 +13,21 @@ public:
 	virtual ~TexturesManager();
 
 	// supposed to be called before start using the object
-	bool init() ;
+	bool init();
 
-	Texture* getTexture(std::size_t tag)  {
+	Texture *getTexture(std::size_t tag)
+	{
 		return textures_[tag];
 	}
 
 	bool loadFromImg(std::size_t, SDL_Renderer *renderer,
-			const string &fileName) ;
+					 const string &fileName);
 	bool loadFromText(std::size_t, SDL_Renderer *renderer, const string &text,
-			const Font *font, const SDL_Color &color) ;
+					  const Font *font, const SDL_Color &color);
+
 private:
 	void storeTexture(std::size_t tag, Texture *texture);
 
 	bool initialized_;
-	map<std::size_t, Texture*> textures_;
-
+	map<std::size_t, Texture *> textures_;
 };

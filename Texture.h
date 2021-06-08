@@ -1,9 +1,9 @@
+#pragma once
+#include "Font.h"
 
 #include <SDL2/SDL.h>
-#include <SDL_image.h> //arreglar
+#include <SDL_image.h>
 #include <string>
-
-#include "Font.h"
 
 using namespace std;
 

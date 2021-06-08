@@ -1,3 +1,4 @@
+#pragma once
 
 
 #include "SDLGame.h"
@@ -11,7 +12,6 @@ class MoruloBlestFighter
 
     // from SDLGame
     void start();
-    void stop();
 
   private:
     void initGame();

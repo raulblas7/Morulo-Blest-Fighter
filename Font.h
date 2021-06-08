@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL_ttf.h>
+#include "SDL_ttf.h"
 #include <string>
 
 using namespace std;

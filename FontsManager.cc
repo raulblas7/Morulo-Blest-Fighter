@@ -5,7 +5,6 @@
 FontsManager::FontsManager() : initialized_(false)
 {
 }
-
 FontsManager::~FontsManager()
 {
     if (!initialized_)

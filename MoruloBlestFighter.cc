@@ -24,7 +24,6 @@ MoruloBlestFighter::~MoruloBlestFighter()
 void MoruloBlestFighter::initGame()
 {
 
-    std::cout << "hola";
 
     game_ = SDLGame::init("MoruloBlestFighter", _WINDOW_WIDTH_, _WINDOW_HEIGHT_);
 
