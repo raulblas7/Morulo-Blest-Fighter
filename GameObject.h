@@ -1,6 +1,7 @@
 
 #include "Game.h"
 #include "Vector2D.h"
+#include "Texture.h"
 
 class GameObject : public GameMessage
 {
@@ -37,5 +38,5 @@ protected:
     uint8_t width, height;
 
     bool active = false;
-    //Texture* texture;
+    Texture* texture;
 };
