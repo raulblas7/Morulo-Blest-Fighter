@@ -13,11 +13,17 @@ class MoruloBlestFighter
     // from SDLGame
     void start();
 
+    TexturesManager* getTextureManager()const{ return textureManager;}
+    SDLGame* getGame() const { return game_;}
+
   private:
     void initGame();
     void closeGame();
 
-    SDLGame* game_;
+    SDLGame* game_ = nullptr;
+    TexturesManager* textureManager = nullptr;
+    FontsManager* fontManager = nullptr;
+
     //Manager* mngr_;
     bool exit_;
 

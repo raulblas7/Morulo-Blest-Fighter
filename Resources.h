@@ -11,7 +11,7 @@ public:
 
 	enum TextureId : std::size_t {
 		// images
-		PacManSprites,
+		TankTexture,
 
 		// text
 		PressEnterToStartANewGame,

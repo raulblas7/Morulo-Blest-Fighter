@@ -1,5 +1,10 @@
 #include "Player.h"
 
+Player::Player(uint8_t goType) : GameObject(goType){
+    texture = new Texture();
+}
+
+
 void Player::to_bin()
 {
     GameObject::to_bin();
@@ -31,4 +36,9 @@ int Player::from_bin(char *data)
     tmp += sizeof(uint8_t);
 
     return 0;
+}
+
+void Player::update(float deltaTime)
+{
+    
 }
