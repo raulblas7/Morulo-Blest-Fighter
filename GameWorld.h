@@ -19,10 +19,10 @@ public:
     virtual int from_bin(char *data);
 
 private:
-    void checkCollisions();
-
+    // Lista de entidades en el juego
     std::vector<GameObject *> gameObjects;
+    // Lista de entidades a borrar en el juego
     std::vector<GameObject *> removeObjects;
 
-    bool active = false;
+    void checkCollisions();
 };

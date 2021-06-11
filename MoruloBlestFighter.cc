@@ -29,6 +29,8 @@ void MoruloBlestFighter::initGame()
 
     /// AsteroidPool::init();
     //BulletsPool::init();
+    textureManager = new TexturesManager();
+    fontManager = new FontsManager();
 
     // mngr_ = new Manager(game_);
     // renderSystem_ = mngr_->addSystem<RenderSystem>();
@@ -38,6 +40,9 @@ void MoruloBlestFighter::initGame()
     // fighterGunSystem = mngr_->addSystem<FighterGunSystem>();
     // collisionSystem_ = mngr_->addSystem<CollisionSystem>();
     // gameCtrlSystem_ = mngr_->addSystem<GameCtrlSystem>();
+
+    textureManager->init();
+    fontManager->init();
 }
 
 void MoruloBlestFighter::closeGame()

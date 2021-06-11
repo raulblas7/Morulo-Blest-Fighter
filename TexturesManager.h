@@ -9,6 +9,8 @@
 class TexturesManager
 {
 public:
+    static TexturesManager instance;
+
 	TexturesManager();
 	virtual ~TexturesManager();
 
