@@ -2,15 +2,15 @@
 
 
 Bullet::Bullet(Vector2D pos, Vector2D vel, int width, int height, double rotation) :
-	pos_(pos), vel_(vel), width_(width), height_(height), rotation_(rotation) {}
+	GameObject(0,"",pos, rotation, width, height,false,nullptr) {}
 
 void Bullet::setBullet(Vector2D pos_, Vector2D vel_, int width_, int height_, double rotation_) {
 	pos = pos;
 	vel_ = vel;
 	width_ = width;
 	height_ = height;
-	rotation_ = rotation;
-	visible = true;
+	rotation_ = angle;
+	active = true;
 }
 
 void Bullet::render()
