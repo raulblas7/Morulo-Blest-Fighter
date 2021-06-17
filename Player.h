@@ -14,6 +14,7 @@ public:
   Player(uint8_t goType);
   virtual ~Player();
   // Se encarga de gestionar el imput del player
+  virtual void render();
   virtual void update(float deltaTime) override;
   virtual void to_bin();
   virtual int from_bin(char *data);

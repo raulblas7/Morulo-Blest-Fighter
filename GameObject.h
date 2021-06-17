@@ -5,9 +5,9 @@
 class GameObject : public GameMessage
 {
 public:
-    GameObject(uint8_t goType);
+    GameObject(uint8_t goType_, std:: string id_, Vector2D pos_, float angle_, uint8_t w, uint8_t h, bool act, Texture* texture_);
     virtual ~GameObject();
-virtual void render() = 0;
+    virtual void render() = 0;
     virtual void update(float deltaTime) = 0;
     virtual void to_bin();
     virtual int from_bin(char* data);
@@ -22,6 +22,8 @@ virtual void render() = 0;
     float getRotation() { return angle; }
     Texture* getTexture() { return texture; }
     std::string getId() { return id; };
+    uint8_t getHeight(){ return height;};
+    uint8_t getWidth(){ return width;};
 protected:
     uint8_t goType;
     std::string id; // max 20
