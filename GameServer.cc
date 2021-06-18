@@ -30,7 +30,7 @@ void GameServer::do_messages()
 
         Socket *s = nullptr;
         GameMessage message;
-
+        
         if(socket.recv(message, s) == -1){
             perror("Error al recibir el mensaje en el servidor");
         }
@@ -41,7 +41,6 @@ void GameServer::do_messages()
             //  Cuando logea un cliente
             case GameMessage::LOGIN:
             {
-                
                 //  Lo metemos a la lista de clientes
                 clients.push_back(std::move(std::make_unique<Socket>(*s)));
                 std::cout << "Jugador conectado: " << message.nick << "\n";

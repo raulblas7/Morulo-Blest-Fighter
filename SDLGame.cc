@@ -8,7 +8,7 @@ SDLGame* SDLGame::instance = nullptr;
 
 SDLGame::SDLGame(){
     initGame();
-//	initResources();
+    initResources();
 }
 
 SDLGame::~SDLGame()
@@ -30,8 +30,8 @@ void SDLGame::initGame()
 	winX = winY = SDL_WINDOWPOS_CENTERED;
 	// InicializaciOn del sistema, ventana y renderer
 	SDL_Init(SDL_INIT_EVERYTHING);
-	window_ = SDL_CreateWindow("MoruloBlestFighter", winX, winY, _WINDOW_WIDTH_,
-							   _WINDOW_HEIGHT_, SDL_WINDOW_SHOWN);
+	window_ = SDL_CreateWindow("MoruloBlestFighter", winX, winY, SCREEN_WIDTH,
+							   SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 	renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
 	if (window_ == NULL || renderer_ == NULL)

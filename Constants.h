@@ -1,0 +1,19 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#include "stdbool.h"
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#define FRAME_TIME 16666
+#define MAX_VERTICAL_SPEED 25
+#define PLAYER_SPEED 4
+#define PLAYER_WIDTH 16
+#define PLAYER_HEIGHT 16
+#define BULLET_HEIGHT 8
+#define BULLET_WIDTH 8
+#define MAX_PLAYERS 10
+#define CLIENT_FRAME_TIME 15
+#define SERVER_FRAME_TIME 15
+
+#endif

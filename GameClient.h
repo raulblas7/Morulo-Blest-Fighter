@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include "Player.h"
 #include "SDLGame.h"
@@ -18,7 +17,7 @@ private:
      */
     //Socket socket;
 
-    bool exit;
+    bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
     Player *jugadorCliente = nullptr;

@@ -1,9 +1,14 @@
 #include "Player.h"
 #include "GameMessage.h"
+#include "Constants.h"
 
 Player::Player(const char *s, const char *p, const char *n) : socket(s, p), nick(n)
 {
-    //rect = new SDL_Rect();
+    rect = SDL_Rect();
+    rect.x = 100;
+    rect.y = 100;
+    rect.w = PLAYER_WIDTH;
+    rect.h = PLAYER_HEIGHT;
 }
 
 Player::~Player()
@@ -45,6 +50,10 @@ void Player::setTexture(Texture* newTexture){
 
 Texture* Player::getPlayerTexture(){
     return texture;
+}
+
+SDL_Rect Player::getPlayerRect(){
+    return rect;
 }
 
 Vector2D Player::getPlayerPos(){

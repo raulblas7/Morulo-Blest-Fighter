@@ -20,7 +20,7 @@ private:
     std::string nick;
     Texture* texture = nullptr;
     //
-    SDL_Rect* rect = nullptr;
+    SDL_Rect rect;
     Vector2D pos;
 
 public:
@@ -41,4 +41,5 @@ public:
     Vector2D getPlayerPos();
     void setPosition(const Vector2D& newPos);
     void setTexture(Texture* newTexture);
+    SDL_Rect getPlayerRect();
 };

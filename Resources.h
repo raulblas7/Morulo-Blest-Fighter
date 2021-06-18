@@ -12,13 +12,9 @@ public:
 	enum TextureId : std::size_t {
 		// images
 		HelicopterTexture,
-		HelicopterTexture2,
+		//HelicopterTexture2,
 		Rock,
-		Bullet,
-		// text
-		PressEnterToStartANewGame,
-		PressEnterToContinue,
-		GameOver,
+		Bullet
 	};
 
 	enum AudioId : std::size_t {

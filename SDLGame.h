@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "TexturesManager.h"
+#include "Constants.h"
 
 class SDLGame
 {
@@ -28,7 +29,4 @@ private:
   TexturesManager *textureManager_ = nullptr;
 
   static SDLGame *instance;
-
-  const static int _WINDOW_WIDTH_ = 640;
-  const static int _WINDOW_HEIGHT_ = 480;
 };
