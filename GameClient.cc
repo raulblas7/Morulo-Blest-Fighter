@@ -3,7 +3,7 @@
 #include "Resources.h"
 #include <thread>
 #include <iostream>
-
+#include "InputHandler.h"
 
 GameClient::GameClient(const char *ip_, const char *puertoServer_, const char *nick_)
 {
@@ -35,23 +35,52 @@ void GameClient::logout()
 
 void GameClient::input_thread()
 {
-/*
-    while (!exit)
-    {
-        std::string msg;
-        // Leer stdin con std::getline
-        std::getline(std::cin, msg);
-        if (msg == "exit")
+    //Creamos la instancia del controlador del input
+    //y atraves del update comprobamos que evento es el que se esta dando
+    InputHandler::instance()->update();
+    
+    //booleano para saber si hemos hecho algun tipo de movimiento, si es asi mas abajo avisaremos
+    //al servidor con un send
+    bool willSend = false;
+
+    //Movimiento por teclado del jugador
+    if (InputHandler::instance()->keyDownEvent())
+	{
+		if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_UP)))
+		{
+			jugadorCliente->setDir(Vector2D(0,-1));
+		}
+		else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_DOWN)))
+		{
+			jugadorCliente->setDir(Vector2D(0,1));
+		}
+		else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_RIGHT)))
+		{
+			jugadorCliente->setDir(Vector2D(1,0));
+		}
+		else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
+		{
+			jugadorCliente->setDir(Vector2D(-1,0));
+		}
+        else if(InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_ESCAPE)))
         {
             exit = true;
-            continue;
         }
-        GameMessage em(nick, msg);
-        em.type = GameMessage::MESSAGE;
-        // Enviar al servidor usando socket
-        socket.send(em, socket);
     }
-    */
+
+    // Checkeamos si nos podemos mover dentro de los limites establecidos por la pantalla
+    //TODO: habra que checkear las colisiones con los obstaculos del mapa cuando se añadan
+    if(jugadorCliente->canMove()) willSend = true;
+
+    
+    if(willSend && !exit){
+        // Accedemos al socket del player para lanzar el mensaje al servidor de que nos hemos movido y asi
+        //que este avise al resto de clientes 
+        Socket* so = jugadorCliente->getPlayerSocket();
+        GameMessage msg(jugadorCliente->getNick(), jugadorCliente);
+        msg.type = GameMessage::PLAYER_MOVED;
+        so->send(msg, *so);
+    }
 }
 
 void GameClient::net_thread()
@@ -76,16 +105,13 @@ void GameClient::net_thread()
 
 void GameClient::render() const
 {
-    std::cout << "renderizare" << std::endl;
     //Limpiamos el renderer
     SDL_RenderClear(game->getRenderer());
     
     //Pintamos el fonfo
   //  background->render({0, 0, app->winWidth_, app->winHeight_}, SDL_FLIP_NONE);
-    std::cout << "voy a pintar jugador" << std::endl;
     //Pintamos a nuestro jugador
     jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
-    std::cout << "pinto jugador" << std::endl;
     //Pintamos a los jugadores contrarios
   //  Texture *t = game->getTextureManager()->getTexture(Resources::TextureId::Jugador2);
   /*  for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
@@ -96,5 +122,4 @@ void GameClient::render() const
 
     //Volcamos sobre la ventana
     SDL_RenderPresent(game->getRenderer());
-    std::cout << "acabe renderizado" << std::endl;
 }

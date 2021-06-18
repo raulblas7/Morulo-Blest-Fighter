@@ -21,8 +21,7 @@ private:
     Texture* texture = nullptr;
     //
     SDL_Rect rect;
-    Vector2D pos;
-
+    Vector2D dir;
 public:
     /**
      * @param s dirección del servidor
@@ -35,11 +34,12 @@ public:
     void update();
     std::string getNick(){return nick;}
     void initPlayer();
-
-    Socket* getPlayerSocket();
+    Socket *getPlayerSocket();
     Texture* getPlayerTexture();
-    Vector2D getPlayerPos();
-    void setPosition(const Vector2D& newPos);
     void setTexture(Texture* newTexture);
     SDL_Rect getPlayerRect();
+    void setPlayerRect();
+    void setDir(Vector2D d);
+    //void checkInput();
+    bool canMove();
 };

@@ -111,6 +111,9 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Socket &dt);
     friend bool operator==(const Socket &s1, const Socket &s2);
+    friend bool operator==(const Socket &s1, const int &s2);
+
+    int getSD();
 
 protected:
     /**

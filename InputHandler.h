@@ -72,6 +72,7 @@ public:
 		return mbState_[b];
 	}
 
+	
 	// Joystick
 	// see:
 	//   Chapter 4 of 'SDL Game Development' book

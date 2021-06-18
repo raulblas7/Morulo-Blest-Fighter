@@ -27,12 +27,14 @@ private:
     std::vector<std::unique_ptr<Socket>> clients;
 
     // Vector de gameObjects(jugadores y balas)
-    //std::vector<std::unique_ptr<GameObject>> gameObjects;
-
+    std::vector<std::unique_ptr<>> gameObjects;
+    
     /**
      * Socket del servidor
      */
     Socket socket;
+
+    int indexOfPlayer = 0;
 };
 
 // -----------------------------------------------------------------------------

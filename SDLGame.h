@@ -24,6 +24,7 @@ public:
 private:
   void initGame();
   void initResources();
+  void initInputHandler();
   SDL_Window *window_ = nullptr;
   SDL_Renderer *renderer_ = nullptr;
   TexturesManager *textureManager_ = nullptr;

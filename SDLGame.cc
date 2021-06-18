@@ -2,6 +2,7 @@
 #include "iostream"
 #include <SDL2/SDL.h>
 #include "Resources.h"
+
 using namespace std;
 
 SDLGame* SDLGame::instance = nullptr;
@@ -9,6 +10,7 @@ SDLGame* SDLGame::instance = nullptr;
 SDLGame::SDLGame(){
     initGame();
     initResources();
+
 }
 
 SDLGame::~SDLGame()

@@ -1,5 +1,6 @@
 #include "GameServer.h"
 #include "GameMessage.h"
+#include "Constants.h"
 
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
@@ -42,28 +43,30 @@ void GameServer::do_messages()
             case GameMessage::LOGIN:
             {
                 //  Lo metemos a la lista de clientes
-                clients.push_back(std::move(std::make_unique<Socket>(*s)));
-                std::cout << "Jugador conectado: " << message.nick << "\n";
+                if(clients.size() + 1 <= MAX_PLAYERS){
+                    clients.push_back(std::move(std::make_unique<Socket>(*s)));
+                    std::cout << "Jugador conectado: " << message.nick << "\n";
                 
-                //  TODO 
-                // inicializar jugador
-                
-                // El servidor avisa al resto de clientes de que se ha unido un nuevo jugador
-                for (auto it = clients.begin(); it != clients.end(); it++)
-                {
-                    if(**it == *s){
-                        continue;
+                    //  TODO 
+                    // inicializar jugador
+                    
+                    // El servidor avisa al resto de clientes de que se ha unido un nuevo jugador
+                    for (auto it = clients.begin(); it != clients.end(); it++)
+                    {
+                        if(**it == *s){
+                            continue;
+                        }
+                        //el mensaje no debe ser este si no un mensaje de tipo jugador
+                        // Pasar un mensaje de tipo logeo con posición
+                        socket.send(message, **it);
                     }
-                    //el mensaje no debe ser este si no un mensaje de tipo jugador
-                    // Pasar un mensaje de tipo logeo con posición
-                    socket.send(message, **it);
+                    // TODO
+                    // El nuevo cliente debe ser informado de donde se encuentra el resto de clientes
+                    //  
                 }
-                // TODO
-                // El nuevo cliente debe ser informado de donde se encuentra el resto de clientes
-                
-                //  
-
-
+                else{
+                    perror("La partida esta llena, no hay sitio");
+                }
                 break;
             }
             //  Cuando se desconecta un cliente
@@ -106,6 +109,11 @@ void GameServer::do_messages()
                     }
                     socket.send(message, **it);
                 }
+                break;
+            }
+            case GameMessage::PLAYER_MOVED:
+            {
+                
                 break;
             }
         }
