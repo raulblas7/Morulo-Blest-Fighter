@@ -7,8 +7,10 @@ vector<Resources::FontInfo> Resources::fonts_ {
 };
 
 vector<Resources::ImageInfo> Resources::images_ {
-//
-		//{ PacManSprites, "resources/images/pacman_sprites.png" } //
+
+		{ HelicopterTexture, "resources/pacman_sprites.png" },
+		{ HelicopterTexture2, "resources/pacman_sprites.png" },
+		{ Rock, "resources/pacman_sprites.png" },
 };
 
 vector<Resources::TextMsgInfo> Resources::messages_ {

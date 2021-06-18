@@ -11,8 +11,9 @@ public:
 
 	enum TextureId : std::size_t {
 		// images
-		TankTexture,
-
+		HelicopterTexture,
+		HelicopterTexture2,
+		Rock,
 		// text
 		PressEnterToStartANewGame,
 		PressEnterToContinue,

@@ -49,16 +49,15 @@ SDLGame *SDLGame::GetInstance()
 	return instance;
 }
 
-	void SDLGame::initResources()
+void SDLGame::initResources()
+{
+	//Crear e inicializar textureManager
+	textureManager_ = new TexturesManager();
+	textureManager_->init();
+
+	//Creacion de las texturas
+	for (auto &image : Resources::images_)
 	{
-
-		//Crear e inicializar textureManager
-		textureManager_ = new TexturesManager();
-		textureManager_->init();
-
-		//Creacion de las texturas
-		/*for (auto &image : Resources::imageRoutes)
-		{
-			textureManager_->loadFromImg(image.textureId, renderer_, image.filename);
-		}*/
+		textureManager_->loadFromImg(image.textureId, renderer_, image.filename);
 	}
+}

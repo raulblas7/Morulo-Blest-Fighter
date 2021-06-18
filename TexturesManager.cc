@@ -37,8 +37,7 @@ bool TexturesManager::init()
     return true;
 }
 
-bool TexturesManager::loadFromImg(std::size_t tag,
-                                  SDL_Renderer *renderer, const std::string &fileName)
+bool TexturesManager::loadFromImg(std::size_t tag, SDL_Renderer *renderer, const std::string &fileName)
 {
 
     if (!initialized_)
