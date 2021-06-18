@@ -30,7 +30,8 @@ public:
     {
         LOGIN = 0,
         MESSAGE = 1,
-        LOGOUT = 2
+        LOGOUT = 2,
+        PLAYER_MOVED = 3
     };
 
     GameMessage(){};

@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include "Player.h"
 
 /**
  *  Clase para el servidor de Game
@@ -26,8 +27,8 @@ private:
      */
     std::vector<std::unique_ptr<Socket>> clients;
 
-    // Vector de gameObjects(jugadores y balas)
-    std::vector<std::unique_ptr<>> gameObjects;
+    // Vector de jugadores
+    std::vector<std::unique_ptr<Player>> jugadoresServer;
     
     /**
      * Socket del servidor

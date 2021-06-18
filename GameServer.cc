@@ -43,14 +43,15 @@ void GameServer::do_messages()
             case GameMessage::LOGIN:
             {
                 //  Lo metemos a la lista de clientes
-                if(clients.size() + 1 <= MAX_PLAYERS){
+                //if(clients.size() + 1 <= MAX_PLAYERS){
                     clients.push_back(std::move(std::make_unique<Socket>(*s)));
                     std::cout << "Jugador conectado: " << message.nick << "\n";
                 
-                    //  TODO 
-                    // inicializar jugador
+                    //añadimos un nuevo jugador dentro del servidor
+                    jugadoresServer.push_back(std::make_unique<Player>(*message.jugador));
                     
-                    // El servidor avisa al resto de clientes de que se ha unido un nuevo jugador
+                    // El servidor avisa al resto de clientes de que se ha unido un nuevo jugador a traves del mensaje
+                    // de login
                     for (auto it = clients.begin(); it != clients.end(); it++)
                     {
                         if(**it == *s){
@@ -60,13 +61,21 @@ void GameServer::do_messages()
                         // Pasar un mensaje de tipo logeo con posición
                         socket.send(message, **it);
                     }
-                    // TODO
                     // El nuevo cliente debe ser informado de donde se encuentra el resto de clientes
-                    //  
-                }
-                else{
-                    perror("La partida esta llena, no hay sitio");
-                }
+                    GameMessage auxMsg = message;
+                    for (auto it = jugadoresServer.begin(); it != jugadoresServer.end(); ++it)
+                    {
+                        if ((**it).getNick() != message.nick)
+                        {
+                            auxMsg.nick = (**it).getNick();
+                            auxMsg.jugador = (*it).get();
+                            socket.send(auxMsg, *s);
+                        }
+                    }
+                //}
+                // else{
+                //     perror("La partida esta llena, no hay sitio");
+                // }
                 break;
             }
             //  Cuando se desconecta un cliente
@@ -113,7 +122,7 @@ void GameServer::do_messages()
             }
             case GameMessage::PLAYER_MOVED:
             {
-                
+
                 break;
             }
         }

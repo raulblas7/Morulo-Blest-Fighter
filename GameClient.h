@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "SDLGame.h"
 #include <map>
+#include <vector>
+#include <memory>
 // #include "Socket.h"
 
 
@@ -16,7 +18,8 @@ private:
      * Socket para comunicar con el servidor
      */
     //Socket socket;
-
+    // Vector de jugadores
+    std::vector<std::unique_ptr<Player>> jugadoresServer;
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
@@ -49,4 +52,5 @@ public:
     void init();
     void render() const;
 
+    bool getExit() { return exit; }
 };

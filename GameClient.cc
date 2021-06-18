@@ -88,16 +88,21 @@ void GameClient::net_thread()
     while (!exit)
     {
         //Recibir Mensajes de red
-        GameMessage em;
-        //socket.recv(em);
-        jugadorCliente->getPlayerSocket()->recv(em);
-        if (em.type == GameMessage::LOGIN)
+        GameMessage gm;
+
+        if(jugadorCliente->getPlayerSocket()->recv(gm) == -1)
         {
-            std::cout << em.nick << " se unio al Game " << "\n";
+            perror("Error al recibir el mensaje en el servidor");
         }
-        else if (em.type == GameMessage::LOGOUT)
+
+        if (gm.type == GameMessage::LOGIN)
         {
-            std::cout << em.nick << " se desconecto del Game "
+            std::cout << gm.nick << " se unio al Game " << "\n";
+            jugadoresServer.push_back(std::make_unique<Player>(*gm.jugador));
+        }
+        else if (gm.type == GameMessage::LOGOUT)
+        {
+            std::cout << gm.nick << " se desconecto del Game "
                       << "\n";
         }
     }
@@ -112,13 +117,13 @@ void GameClient::render() const
   //  background->render({0, 0, app->winWidth_, app->winHeight_}, SDL_FLIP_NONE);
     //Pintamos a nuestro jugador
     jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
+    
     //Pintamos a los jugadores contrarios
-  //  Texture *t = game->getTextureManager()->getTexture(Resources::TextureId::Jugador2);
-  /*  for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
+    Texture *t = game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
+    for (auto it = jugadoresServer.begin(); it != jugadoresServer.end(); ++it)
     {
-        PlayerInfo p = (*it).second;
-        t->render({(int)p.pos.getX(), (int)p.pos.getY(), p.tam, p.tam});
-    }*/
+        t->render((**it).getPlayerRect());
+    }
 
     //Volcamos sobre la ventana
     SDL_RenderPresent(game->getRenderer());
