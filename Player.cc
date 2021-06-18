@@ -12,11 +12,13 @@ Player::Player(const char *s, const char *p, const char *n) : socket(s, p), nick
 	rect.h = PLAYER_HEIGHT;
 
 	dir = Vector2D(0, 0);
+
+	std::cout << nick << std::endl;
 }
 
 Player::~Player()
 {
-	texture->~Texture();
+	//texture->~Texture();
 }
 
 void Player::update()

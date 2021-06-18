@@ -18,4 +18,8 @@ int main(int argc, char **argv)
 		//renderizado del jugador
 		game.render();
 	}
+
+	    net_thread.detach();
+
+		return 0;
 }

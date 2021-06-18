@@ -18,8 +18,8 @@ private:
      * Socket para comunicar con el servidor
      */
     //Socket socket;
-    // Vector de jugadores
-    std::vector<std::unique_ptr<Player>> jugadoresServer;
+    // Diccionario de jugadores
+    std::map<std::string, Player*> jugadoresServer;
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;

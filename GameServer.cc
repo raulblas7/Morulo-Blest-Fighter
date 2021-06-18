@@ -6,18 +6,21 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
     //Inicializacion para usar aleatorios
     //srand(std::time(0));
+}
 
+void GameServer::do_messages()
+{
     //bind del socket
     if (socket.bind() == -1)
     {
         perror("Fallo en el bind del socket del servidor");
     }
-}
 
-void GameServer::do_messages()
-{
     while (true)
     {
+
+        std::cout << "ENTRO " << std::endl;
+
         /*
          * NOTA: los clientes están definidos con "smart pointers", es necesario
          * crear un unique_ptr con el objeto socket recibido y usar std::move
@@ -35,12 +38,11 @@ void GameServer::do_messages()
         if(socket.recv(message, s) == -1){
             perror("Error al recibir el mensaje en el servidor");
         }
-
-    
+        std::cout << "MSG " << (int)message.type << "\n";
         switch (message.type)
         {
             //  Cuando logea un cliente
-            case GameMessage::LOGIN:
+           case GameMessage::LOGIN:
             {
                 //  Lo metemos a la lista de clientes
                 //if(clients.size() + 1 <= MAX_PLAYERS){
@@ -48,8 +50,8 @@ void GameServer::do_messages()
                     std::cout << "Jugador conectado: " << message.nick << "\n";
                 
                     //añadimos un nuevo jugador dentro del servidor
-                    jugadoresServer.push_back(std::make_unique<Player>(*message.jugador));
-                    
+                    jugadoresServer[message.nick] = message.jugador;
+
                     // El servidor avisa al resto de clientes de que se ha unido un nuevo jugador a traves del mensaje
                     // de login
                     for (auto it = clients.begin(); it != clients.end(); it++)
@@ -65,22 +67,26 @@ void GameServer::do_messages()
                     GameMessage auxMsg = message;
                     for (auto it = jugadoresServer.begin(); it != jugadoresServer.end(); ++it)
                     {
-                        if ((**it).getNick() != message.nick)
+                        //std::cout << "message nick " << message.nick << std::endl;
+                        //std::cout << "jugadores nick " << (*it).first << std::endl;
+                        if ((*it).first != message.nick)
                         {
-                            auxMsg.nick = (**it).getNick();
-                            auxMsg.jugador = (*it).get();
-                            socket.send(auxMsg, *s);
+                            std::cout << "despues " << std::endl;
+                            auxMsg.nick = (*it).first;
+                            std::cout << "antes " << std::endl;
+
+                           // auxMsg.jugador = (*it).second;
+                           // socket.send(auxMsg, *s);
                         }
                     }
-                //}
-                // else{
-                //     perror("La partida esta llena, no hay sitio");
-                // }
+                
                 break;
             }
             //  Cuando se desconecta un cliente
             case GameMessage::LOGOUT:
             {
+                std::cout << "El jugador no esta conectado \n";
+
                 bool found;
                 found = false;
                 std::vector<std::unique_ptr<Socket>>::iterator borrar;
@@ -110,6 +116,8 @@ void GameServer::do_messages()
             //  Envio de mensajes a los clientes
             case GameMessage::MESSAGE:
             {
+                                std::cout << "El jugador no esta conectado \n";
+
                 for (auto it = clients.begin(); it != clients.end(); it++)
                 {
                     if (**it == *s)
@@ -120,13 +128,30 @@ void GameServer::do_messages()
                 }
                 break;
             }
-            case GameMessage::PLAYER_MOVED:
-            {
+            // case GameMessage::PLAYER_MOVED:
+            // {
 
-                break;
-            }
+            //     break;
+            // }
+            // case GameMessage::PLAYER_DEAD:
+            // {
+
+            //     break;
+            // }
+            // case GameMessage::PLAYER_KILL:
+            // {
+
+            //     break;
+            // }
+           
         }
+
+        std::cout << "AL SALIR \n";
+        
     }
+            std::cout << "while \n";
+
 }
+
 
 

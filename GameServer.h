@@ -27,8 +27,8 @@ private:
      */
     std::vector<std::unique_ptr<Socket>> clients;
 
-    // Vector de jugadores
-    std::vector<std::unique_ptr<Player>> jugadoresServer;
+    // Diccionario de jugadores nick | player
+    std::map<std::string, Player*> jugadoresServer;
     
     /**
      * Socket del servidor

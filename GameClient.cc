@@ -98,7 +98,10 @@ void GameClient::net_thread()
         if (gm.type == GameMessage::LOGIN)
         {
             std::cout << gm.nick << " se unio al Game " << "\n";
-            jugadoresServer.push_back(std::make_unique<Player>(*gm.jugador));
+            //añadimos un nuevo jugador dentro del servidor
+            if(jugadorCliente->getNick() != gm.nick){
+                jugadoresServer[gm.nick] = gm.jugador;
+            }
         }
         else if (gm.type == GameMessage::LOGOUT)
         {
@@ -122,7 +125,7 @@ void GameClient::render() const
     Texture *t = game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
     for (auto it = jugadoresServer.begin(); it != jugadoresServer.end(); ++it)
     {
-        t->render((**it).getPlayerRect());
+        t->render((*it).second->getPlayerRect());
     }
 
     //Volcamos sobre la ventana
