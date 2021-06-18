@@ -27,10 +27,10 @@ GameClient::~GameClient()
 
 void GameClient::logout()
 {
-   /* std::string msg;
+    std::string msg;
     GameMessage em(nick, msg);
     em.type = GameMessage::LOGOUT;
-    socket.send(em, socket);*/
+    socket.send(em, socket);
 }
 
 void GameClient::input_thread()
@@ -81,6 +81,7 @@ void GameClient::input_thread()
         msg.type = GameMessage::PLAYER_MOVED;
         so->send(msg, *so);
     }
+    
 }
 
 void GameClient::net_thread()

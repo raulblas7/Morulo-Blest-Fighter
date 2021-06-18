@@ -113,7 +113,6 @@ public:
     friend bool operator==(const Socket &s1, const Socket &s2);
     friend bool operator==(const Socket &s1, const int &s2);
 
-    int getSD();
 
 protected:
     /**
