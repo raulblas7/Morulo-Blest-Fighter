@@ -1,5 +1,4 @@
 #include "Resources.h"
-#include "SDL_macros.h"
 
 vector<Resources::FontInfo> Resources::fonts_ {
 //

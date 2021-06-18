@@ -2,7 +2,7 @@
 
 #include <map>
 #include "Texture.h"
-#include "Font.h"
+//#include "Font.h"
 /*
  *
  */
@@ -24,8 +24,8 @@ public:
 
 	bool loadFromImg(std::size_t, SDL_Renderer *renderer,
 					 const string &fileName);
-	bool loadFromText(std::size_t, SDL_Renderer *renderer, const string &text,
-					  const Font *font, const SDL_Color &color);
+	//bool loadFromText(std::size_t, SDL_Renderer *renderer, const string &text,
+	//				  const Font *font, const SDL_Color &color);
 
 private:
 	void storeTexture(std::size_t tag, Texture *texture);

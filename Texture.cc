@@ -1,5 +1,4 @@
 #include "Texture.h"
-#include <SDL_image.h>
 #include <iostream>
 
 using namespace std;
@@ -13,11 +12,11 @@ Texture::Texture(SDL_Renderer *renderer, const string& fileName) :
 	loadFromImg(renderer, fileName);
 }
 
-Texture::Texture(SDL_Renderer *renderer, const string& text, const Font *font,
+/*Texture::Texture(SDL_Renderer *renderer, const string& text, const Font *font,
 		const SDL_Color& color) :
 		texture_(nullptr), width_(0), height_(0) {
 	loadFromText(renderer, text, font, color);
-}
+}*/
 
 Texture::~Texture() {
 	close();
@@ -49,7 +48,7 @@ bool Texture::loadFromImg(SDL_Renderer *renderer, const string& fileName) {
 	return texture_ != nullptr;
 }
 
-bool Texture::loadFromText(SDL_Renderer *renderer, const string& text, const Font *font,
+/*bool Texture::loadFromText(SDL_Renderer *renderer, const string& text, const Font *font,
 		const SDL_Color& color) {
 	SDL_Surface *textSurface = font->renderText(text, color);
 	if (textSurface != nullptr) {
@@ -66,6 +65,7 @@ bool Texture::loadFromText(SDL_Renderer *renderer, const string& text, const Fon
 	renderer_ = renderer;
 	return texture_ != nullptr;
 }
+*/
 
 void Texture::render(int x, int y) const {
 	SDL_Rect dest;

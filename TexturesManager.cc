@@ -1,5 +1,5 @@
 #include "TexturesManager.h"
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include <assert.h>
 
 TexturesManager::TexturesManager() : initialized_(false)
@@ -55,7 +55,7 @@ bool TexturesManager::loadFromImg(std::size_t tag,
     return false;
 }
 
-bool TexturesManager::loadFromText(std::size_t tag,
+/*bool TexturesManager::loadFromText(std::size_t tag,
                                    SDL_Renderer *renderer, const string &text, const Font *font,
                                    const SDL_Color &color)
 {
@@ -72,7 +72,7 @@ bool TexturesManager::loadFromText(std::size_t tag,
 
     // if we get here something went wrong
     return false;
-}
+}*/
 
 void TexturesManager::storeTexture(std::size_t tag, Texture *texture)
 {
