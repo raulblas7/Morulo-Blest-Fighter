@@ -1,14 +1,6 @@
-#include <string>
-#include <unistd.h>
-#include <string.h>
-#include <vector>
-#include <memory>
-
-#include "Serializable.h"
-#include "Socket.h"
-
 #include "SDLGame.h"
-// -----------------------------------------------------------------------------
+#include <map>
+#include "Socket.h"
 // -----------------------------------------------------------------------------
 
 /**
@@ -22,14 +14,13 @@ public:
      * @param p puerto del servidor
      * @param n nick del usuario
      */
-    GameClient(const char *s, const char *p, const char *n) : socket(s, p),
-                                                              nick(n){};
+    GameClient(const char *s, const char *p, const char *n);
     ~GameClient();
 
-        /**
+    /**
      *  Envía el mensaje de login al servidor
      */
-        void login();
+    void login();
 
     /**
      *  Envía el mensaje de logout al servidor

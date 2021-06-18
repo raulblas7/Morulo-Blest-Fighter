@@ -1,8 +1,42 @@
-#include "GameMessage.h"
+
 #include "GameClient.h"
+#include "GameMessage.h"
+#include "Resources.h"
 #include <thread>
+#include <iostream>
+
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
+void GameClient::init()
+{
+    //Mandamos el mensaje de login, creamos la ventana de SDL etc
+    //mainPlayer->initPlayer();
+     std::string msg;
+    exit = false;
+    GameMessage em(nick, msg);
+    em.type = GameMessage::LOGIN;
+
+    socket.send(em, socket);
+}
+
+
+GameClient::GameClient(const char *s, const char *p, const char *n)
+{
+
+    game = SDLGame::GetInstance();
+    //Creacion de las texturas
+    /*for (auto &image : Resources::imageRoutes)
+    {
+        game->getTextureManager()->loadFromImg(image.textureId, game->getRenderer(), image.filename);
+    }*/
+
+    //mainPlayer = new Jugador(s, p, n);
+    //mainPlayer->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::Jugador1));
+
+    //background = game->getTextureManager()->getTexture(Resources::TextureId::Escenario);
+}
+
+
 
 GameClient::~GameClient()
 {
@@ -22,17 +56,17 @@ void GameClient::login()
 
 void GameClient::logout()
 {
-    std::string msg;
+   /* std::string msg;
 
     GameMessage em(nick, msg);
     em.type = GameMessage::LOGOUT;
 
-    socket.send(em, socket);
+    socket.send(em, socket);*/
 }
 
 void GameClient::input_thread()
 {
-
+/*
     while (!exit)
     {
         std::string msg;
@@ -50,11 +84,12 @@ void GameClient::input_thread()
         // Enviar al servidor usando socket
         socket.send(em, socket);
     }
+    */
 }
 
 void GameClient::net_thread()
 {
-    while (!exit)
+   /*  while (!exit)
     {
         //Recibir Mensajes de red
         GameMessage em;
@@ -75,6 +110,7 @@ void GameClient::net_thread()
             std::cout << em.nick << ": " << em.message << "\n";
         }
     }
+    */
 }
 
 void GameClient::render() const

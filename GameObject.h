@@ -1,5 +1,5 @@
 #pragma once
-#include "Game.h"
+#include "GameClient.h
 #include "Vector2D.h"
 #include "Texture.h"
 class GameObject : public GameMessage
