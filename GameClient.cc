@@ -5,51 +5,30 @@
 #include <thread>
 #include <iostream>
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-void GameClient::init()
-{
-    //Mandamos el mensaje de login, creamos la ventana de SDL etc
-    //mainPlayer->initPlayer();
-    std::string msg;
-    exit = false;
-    GameMessage em(nick, msg);
-    em.type = GameMessage::LOGIN;
 
-    socket.send(em, socket);
-}
-
-
-GameClient::GameClient(const char *s, const char *p, const char *n)
+GameClient::GameClient(const char *ip_, const char *puertoServer_, const char *nick_)
 {
     game = SDLGame::GetInstance();
-    //Creacion de las texturas
-    /*for (auto &image : Resources::imageRoutes)
+	jugadorCliente = new Player(ip_, puertoServer_, nick_);
+	//Creacion de las texturas
+	/*for (auto &image : Resources::imageRoutes)
     {
         game->getTextureManager()->loadFromImg(image.textureId, game->getRenderer(), image.filename);
     }*/
 
-    //mainPlayer = new Jugador(s, p, n);
-    //mainPlayer->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::Jugador1));
+	//mainPlayer->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::Jugador1));
 
     //background = game->getTextureManager()->getTexture(Resources::TextureId::Escenario);
 }
 
-
+void GameClient::init(){
+	//Mandamos el mensaje de login, creamos la ventana de SDL etc
+	jugadorCliente->initPlayer();
+}
 
 GameClient::~GameClient()
 {
     delete game;
-}
-
-void GameClient::login()
-{
-    std::string msg;
-    exit = false;
-    GameMessage em(nick, msg);
-    em.type = GameMessage::LOGIN;
-
-    socket.send(em, socket);
 }
 
 void GameClient::logout()

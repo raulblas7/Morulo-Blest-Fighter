@@ -1,26 +1,35 @@
+#pragma once
+#pragma once
+
+#include "Player.h"
 #include "SDLGame.h"
 #include <map>
-#include "Socket.h"
-// -----------------------------------------------------------------------------
+// #include "Socket.h"
 
-/**
+
+	/**
  *  Clase para el cliente de Game
  */
 class GameClient
 {
+private:
+    /**
+     * Socket para comunicar con el servidor
+     */
+    //Socket socket;
+
+    bool exit;
+    SDLGame *game = nullptr;
+    Texture *back = nullptr;
+    Player *jugadorCliente = nullptr;
 public:
     /**
-     * @param s dirección del servidor
-     * @param p puerto del servidor
-     * @param n nick del usuario
+     * @param ip dirección del cliente
+     * @param puertoServer puerto del servidor
+     * @param nick nick del usuario
      */
-    GameClient(const char *s, const char *p, const char *n);
+    GameClient(const char *ip, const char *puertoServer, const char *nick);
     ~GameClient();
-
-    /**
-     *  Envía el mensaje de login al servidor
-     */
-    void login();
 
     /**
      *  Envía el mensaje de logout al servidor
@@ -41,18 +50,4 @@ public:
     void init();
     void render() const;
 
-private:
-    /**
-     * Socket para comunicar con el servidor
-     */
-    Socket socket;
-
-    /**
-     * Nick del usuario
-     */
-    std::string nick;
-
-    bool exit;
-    SDLGame *game = nullptr;
-    Texture *back = nullptr;
 };

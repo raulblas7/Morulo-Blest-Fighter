@@ -46,12 +46,12 @@ public:
 		string fileName;
 	};
 
-	struct TextMsgInfo {
-		TextureId id;
-		string msg;
-		SDL_Color color;
-		FontId fontId;
-	};
+	 struct TextMsgInfo {
+	 	TextureId id;
+	 	string msg;
+	 	//SDL_Color color;
+	 	FontId fontId;
+	 };
 
 	struct MusicInfo {
 		AudioId id;

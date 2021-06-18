@@ -1,6 +1,7 @@
 #pragma once
 #include "Serializable.h"
 #include  <string>
+#include "Player.h"
 #include <SDL2/SDL.h>
 
 //------------------------------------------------------------------------------
@@ -34,7 +35,9 @@ public:
 
     GameMessage(){};
 
-    GameMessage(const std::string &n, const std::string &m) : nick(n), message(m){};
+    GameMessage(const std::string &n, Player* jugador_) : nick(n), jugador(jugador_) {};
+
+
 
     void to_bin();
 
@@ -43,5 +46,5 @@ public:
     uint8_t type;
 
     std::string nick;
-    std::string message;
+	Player *jugador;
 };

@@ -1,44 +1,52 @@
 #include "Player.h"
+#include "GameMessage.h"
 
-Player::Player(uint8_t goType) : GameObject(goType){
-    texture = new Texture();
+Player::Player(const char *s, const char *p, const char *n) : socket(s, p), nick(n)
+{
+    //rect = new SDL_Rect();
 }
 
-
-void Player::to_bin()
+Player::~Player()
 {
-    GameObject::to_bin();
-
-    alloc_data(MESSAGE_SIZE);
-
-    memset(_data, 0, MESSAGE_SIZE);
-
-    //Serializar los campos type, nick y message en el buffer _data
-    char *tmp = _data;
-
-    //Copiar tipo a partir de direccion
-    memcpy(tmp, &goType, sizeof(uint8_t));
-    tmp += sizeof(uint8_t);
+    texture->~Texture();
 }
 
-int Player::from_bin(char *data)
+void Player::update()
 {
-    GameObject::from_bin(data);
-
-    alloc_data(MESSAGE_SIZE);
-
-    memcpy(static_cast<void *>(_data), data, MESSAGE_SIZE);
-
-    //Reconstruir la clase usando el buffer _data
-    char *tmp = _data;
-    //Copiar tipo a partir de direccion
-    memcpy(&points, tmp, sizeof(uint8_t));
-    tmp += sizeof(uint8_t);
-
-    return 0;
+    //  Movimiento 
+    //  CheckColls
+    //  Disparar
 }
 
-void Player::update(float deltaTime)
+void Player::initPlayer()
 {
+    //conexion al server
+    std::string msg;
+    GameMessage em(nick, this);
+    em.type = GameMessage::LOGIN;
     
+    if (socket.send(em, socket) == -1)
+    {
+        perror("Fallo enviando el mensaje de login del jugador");
+    }
+}
+
+Socket* Player::getPlayerSocket(){
+    return &socket;
+}
+
+void Player::setPosition(const Vector2D& newPos){
+    pos = newPos;
+}
+
+void Player::setTexture(Texture* newTexture){
+    texture =newTexture;
+}
+
+Texture* Player::getPlayerTexture(){
+    return texture;
+}
+
+Vector2D Player::getPlayerPos(){
+    return pos;
 }

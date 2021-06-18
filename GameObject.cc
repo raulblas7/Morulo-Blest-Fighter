@@ -2,7 +2,7 @@
 
 
 GameObject::GameObject(uint8_t goType_, std:: string id_, Vector2D pos_, float angle_, uint8_t w, uint8_t h, bool act, Texture* texture_)
-    : GameMessage(), goType(goType_), id(id_), pos(pos_), angle(angle_), width(w), height(h), active(act), texture(texture_)
+    : goType(goType_), id(id_), pos(pos_), angle(angle_), width(w), height(h), active(act), texture(texture_)
 {
 }
 

@@ -4,7 +4,7 @@
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
     //Inicializacion para usar aleatorios
-    srand(std::time(0));
+    //srand(std::time(0));
 
     //bind del socket
     if (socket.bind() == -1)

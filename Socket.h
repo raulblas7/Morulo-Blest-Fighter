@@ -1,5 +1,5 @@
-#ifndef SOCKET_H_
-#define SOCKET_H_
+#pragma once
+
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -125,4 +125,3 @@ protected:
     socklen_t sa_len;
 };
 
-#endif /* SOCKET_H_ */
