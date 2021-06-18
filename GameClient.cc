@@ -11,7 +11,7 @@ void GameClient::init()
 {
     //Mandamos el mensaje de login, creamos la ventana de SDL etc
     //mainPlayer->initPlayer();
-     std::string msg;
+    std::string msg;
     exit = false;
     GameMessage em(nick, msg);
     em.type = GameMessage::LOGIN;
@@ -22,7 +22,6 @@ void GameClient::init()
 
 GameClient::GameClient(const char *s, const char *p, const char *n)
 {
-
     game = SDLGame::GetInstance();
     //Creacion de las texturas
     /*for (auto &image : Resources::imageRoutes)
@@ -40,7 +39,6 @@ GameClient::GameClient(const char *s, const char *p, const char *n)
 
 GameClient::~GameClient()
 {
-   
     delete game;
 }
 

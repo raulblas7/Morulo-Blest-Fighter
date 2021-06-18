@@ -58,6 +58,6 @@ void SDLGame::initResources()
 	//Creacion de las texturas
 	for (auto &image : Resources::images_)
 	{
-		textureManager_->loadFromImg(image.textureId, renderer_, image.filename);
+		textureManager_->loadFromImg(image.id, renderer_, image.fileName);
 	}
 }

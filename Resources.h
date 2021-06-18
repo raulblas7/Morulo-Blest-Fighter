@@ -14,6 +14,7 @@ public:
 		HelicopterTexture,
 		HelicopterTexture2,
 		Rock,
+		Bullet,
 		// text
 		PressEnterToStartANewGame,
 		PressEnterToContinue,

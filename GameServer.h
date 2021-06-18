@@ -9,10 +9,7 @@
 class GameServer
 {
 public:
-    GameServer(const char *s, const char *p) : socket(s, p)
-    {
-        socket.bind();
-    };
+    GameServer(const char *s, const char *p);
 
     /**
      *  Thread principal del servidor recive mensajes en el socket y
@@ -26,6 +23,9 @@ private:
      *  su socket
      */
     std::vector<std::unique_ptr<Socket>> clients;
+
+    // Vector de gameObjects(jugadores y balas)
+    //std::vector<std::unique_ptr<GameObject>> gameObjects;
 
     /**
      * Socket del servidor

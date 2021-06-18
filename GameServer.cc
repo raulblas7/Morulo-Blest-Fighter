@@ -1,6 +1,18 @@
 #include "GameServer.h"
 #include "GameMessage.h"
 
+GameServer::GameServer(const char *s, const char *p) : socket(s, p)
+{
+    //Inicializacion para usar aleatorios
+    srand(std::time(0));
+
+    //bind del socket
+    if (socket.bind() == -1)
+    {
+        perror("Fallo en el bind del socket del servidor");
+    }
+}
+
 void GameServer::do_messages()
 {
     while (true)
@@ -16,67 +28,87 @@ void GameServer::do_messages()
         // - LOGOUT: Eliminar del vector clients
         // - MESSAGE: Reenviar el mensaje a todos los clientes (menos el emisor)
 
-        GameMessage em;
-        Socket *s;
-        socket.recv(em, s);
-        switch (em.type)
-        {
-        case GameMessage::LOGIN:
-        {
-            for (auto it = clients.begin(); it != clients.end(); it++)
-            {
-                if (**it == *s)
-                {
-                    continue;
-                }
-                socket.send(em, **it);
-            }
-            clients.push_back(std::move(std::make_unique<Socket>(*s)));
-            std::cout << "Jugador conectado: " << em.nick << "\n";
-            break;
-        }
-        case GameMessage::LOGOUT:
-        {
+        Socket *s = nullptr;
+        GameMessage message;
 
-            bool found;
-            found = false;
-            std::vector<std::unique_ptr<Socket>>::iterator borrar;
-            for (auto it = clients.begin(); it != clients.end(); it++)
-            {
-                if (**it == *s)
-                {
-                    found = true;
-                    borrar = it;
-                    continue;
-                }
-                socket.send(em, **it);
-            }
-
-            if (found)
-            {
-                std::cout << "Jugador desconectado: " << em.nick << "\n";
-                (*borrar).release();
-                clients.erase(borrar);
-            }
-            else
-            {
-                std::cout << "El jugador no esta conectado \n";
-            }
-
-            break;
+        if(socket.recv(message, s) == -1){
+            perror("Error al recibir el mensaje en el servidor");
         }
-        case GameMessage::MESSAGE:
+
+    
+        switch (message.type)
         {
-            for (auto it = clients.begin(); it != clients.end(); it++)
+            //  Cuando logea un cliente
+            case GameMessage::LOGIN:
             {
-                if (**it == *s)
+                
+                //  Lo metemos a la lista de clientes
+                clients.push_back(std::move(std::make_unique<Socket>(*s)));
+                std::cout << "Jugador conectado: " << message.nick << "\n";
+                
+                //  TODO 
+                // inicializar jugador
+                
+                // El servidor avisa al resto de clientes de que se ha unido un nuevo jugador
+                for (auto it = clients.begin(); it != clients.end(); it++)
                 {
-                    continue;
+                    if(**it == *s){
+                        continue;
+                    }
+                    //el mensaje no debe ser este si no un mensaje de tipo jugador
+                    // Pasar un mensaje de tipo logeo con posición
+                    socket.send(message, **it);
                 }
-                socket.send(em, **it);
+                // TODO
+                // El nuevo cliente debe ser informado de donde se encuentra el resto de clientes
+                
+                //  
+
+
+                break;
             }
-            break;
-        }
+            //  Cuando se desconecta un cliente
+            case GameMessage::LOGOUT:
+            {
+                bool found;
+                found = false;
+                std::vector<std::unique_ptr<Socket>>::iterator borrar;
+                for (auto it = clients.begin(); it != clients.end(); it++)
+                {
+                    if (**it == *s)
+                    {
+                        found = true;
+                        borrar = it;
+                        continue;
+                    }
+                    socket.send(message, **it);
+                }
+
+                if (found)
+                {
+                    std::cout << "Jugador desconectado: " << message.nick << "\n";
+                    (*borrar).release();
+                    clients.erase(borrar);
+                }
+                else
+                {
+                    std::cout << "El jugador no esta conectado \n";
+                }
+                break;
+            }
+            //  Envio de mensajes a los clientes
+            case GameMessage::MESSAGE:
+            {
+                for (auto it = clients.begin(); it != clients.end(); it++)
+                {
+                    if (**it == *s)
+                    {
+                        continue;
+                    }
+                    socket.send(message, **it);
+                }
+                break;
+            }
         }
     }
 }
