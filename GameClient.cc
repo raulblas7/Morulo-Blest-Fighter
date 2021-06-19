@@ -6,23 +6,10 @@
 #include "InputHandler.h"
 #include <SDL2/SDL.h>
 
-/*GameClient::GameClient(const char *ip_, const char *puertoServer_, const char *nick_)
+
+GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick) : socket(ip, puertoServer), nick(nick)
 {
-    socket(s, p);
-    game = SDLGame::GetInstance();
-	//jugadorCliente = new Player(ip_, puertoServer_, nick_);
-	// Seteo de textura del jugador
-//	jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
-
-    //background = game->getTextureManager()->getTexture(Resources::TextureId::Escenario);
-}*/
-
-GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick) : 
-socket(ip, puertoServer), nick(nick) {
-    game = SDLGame::GetInstance();
-    //añadido ahora por raul y amaro
-    jugadorCliente = new Player();
-    jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
+    me = SDLGame::GetInstance();
 }
 
 void GameClient::login()
@@ -30,15 +17,16 @@ void GameClient::login()
     std::string msg;
     exit = false;
     GameMessage em(nick, jugadorCliente, GameMessage::MessageType::LOGIN);
-    if(socket.send(em, socket) == -1){
+    if (socket.send(em, socket) == -1)
+    {
         perror("Ha fallado el envio de login del cliente");
     }
 }
 
-
 GameClient::~GameClient()
 {
     delete game;
+    delete world;
 }
 
 void GameClient::logout()
@@ -63,19 +51,19 @@ void GameClient::input_thread()
     {
         if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_UP)))
         {
-            jugadorCliente->setDir(Vector2D(0,-1));
+            jugadorCliente->setDir(Vector2D(0, -1));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_DOWN)))
         {
-            jugadorCliente->setDir(Vector2D(0,1));
+            jugadorCliente->setDir(Vector2D(0, 1));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_RIGHT)))
         {
-            jugadorCliente->setDir(Vector2D(1,0));
+            jugadorCliente->setDir(Vector2D(1, 0));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
         {
-            jugadorCliente->setDir(Vector2D(-1,0));
+            jugadorCliente->setDir(Vector2D(-1, 0));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_ESCAPE)))
         {
@@ -85,7 +73,8 @@ void GameClient::input_thread()
 
     // Checkeamos si nos podemos mover dentro de los limites establecidos por la pantalla
     //TODO: habra que checkear las colisiones con los obstaculos del mapa cuando se añadan
-    if(jugadorCliente->canMove()) willSend = true;
+    if (jugadorCliente->canMove())
+        willSend = true;
 
     if (willSend && !exit)
     {
@@ -97,30 +86,59 @@ void GameClient::input_thread()
     }
 }
 
+//  Cuando me llega un world
+void GameClient::creaLocal(GameWorld* gW){
+    wolrd = 
+    jugadorCliente = new Player();
+    jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
+    gW.addNewObject(jugadorCliente);
+}
+
+
+
 void GameClient::net_thread()
 {
     while (!exit)
     {
         //Recibir Mensajes de red
-        GameMessage gm;
+        Serializable gm;
 
-        if(socket.recv(gm) == -1)
+        if (socket.recv(gm) == -1)
         {
-            perror("Error al recibir el mensaje en el servidor");
+            perror("Error al recibir el mensaje en el cliente");
         }
 
-        if (gm.getTipo() == GameMessage::LOGIN)
-        {
-            std::cout << gm.getNick() << " se unio al Game " << "\n";
-            //añadimos un nuevo jugador dentro del servidor
-            /*  if(jugadorCliente->getNick() != gm.nick){
-                jugadoresServer[gm.nick] = gm.jugador;
-            }*/
+        auto world = dynamic_cast<GameWorld>(gm);
+        if(world){
+            creaLocal(world);
         }
-        else if (gm.getTipo() == GameMessage::LOGOUT)
-        {
-            std::cout << gm.getNick() << " se desconecto del Game " << "\n";
+        //  Bala, jugadores , ....
+        else if(dynamic_cast<GameObject>(gm)){
+            
         }
+        
+
+
+        //    if (gm.getTipo() == GameMessage::LOGIN)
+        //{
+        //    std::cout << gm.getNick() << " se unio al Game "
+        //              << "\n";
+        //    //añadimos un nuevo jugador dentro del servidor
+        //    /*  if(jugadorCliente->getNick() != gm.nick){
+        //        jugadoresServer[gm.nick] = gm.jugador;
+        //    }*/
+        //}
+        //else if (gm.getTipo() == GameMessage::LOGOUT)
+        //{
+        //    std::cout << gm.getNick() << " se desconecto del Game "
+        //              << "\n";
+        //}
+        //else if(gm.getTipo()==GameMessage::UPDATE_WORLD)
+        //{
+
+        //world->copy(message.world);
+
+        //}
     }
 }
 
@@ -133,8 +151,8 @@ void GameClient::render() const
     //Pintamos el fonfo
     //  background->render({0, 0, app->winWidth_, app->winHeight_}, SDL_FLIP_NONE);
     //Pintamos a nuestro jugador
-    jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
-
+   // jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
+   world->render();
     //Pintamos a los jugadores contrarios
     //Texture *t = game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
     /* for (auto it = jugadoresServer.begin(); it != jugadoresServer.end(); ++it)

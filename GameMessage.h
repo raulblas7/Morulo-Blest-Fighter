@@ -1,7 +1,7 @@
 #pragma once
 #include "Serializable.h"
 #include <string>
-class Player;
+class GameWorld;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ private:
     //
     std::string message;
     // Jugador que envía el mensaje
-    Player* jugador;
+    GameWorld* world;
 
     //  Serializaciones
 
@@ -40,26 +40,20 @@ private:
     void serializePlayer();
 
 public:
-    static const size_t MESSAGE_SIZE = sizeof(char) * 10 + sizeof(uint8_t) + /*12 * sizeof(char) +*/ sizeof(Player);
+    static const size_t MESSAGE_SIZE = sizeof(char) * 10 + sizeof(uint8_t) + /*12 * sizeof(char) +*/ sizeof(GameWorld);
 
     enum MessageType
     {
         // Al logear
         LOGIN = 0,
-        MESSAGE = 1,
-        LOGOUT = 2,
-        PLAYER_MOVED = 3,
-        // PLAYER_DEAD = 4,
-        // PLAYER_KILL = 5
+        LOGOUT = 1,
         SIZE
     };
 
     GameMessage(){};
 
-    GameMessage(const std::string &n, const std::string &m) : nick(n), message(m){};
-
-    // Mensaje con un jugador
-    GameMessage(const std::string &n, Player* jugador_,const uint8_t type_);
+	// Mensaje con un jugador
+    GameMessage(const std::string &n, const uint8_t type_);
 
     ~GameMessage(){};
 

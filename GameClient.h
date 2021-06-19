@@ -1,36 +1,34 @@
 #pragma once
 
-#include "Player.h"
 #include "SDLGame.h"
-#include <map>
-#include <vector>
 #include <memory>
+
 #include "Socket.h"
-#include "GameObject.h"
 #include "GameWorld.h"
 /**
  *  Clase para el cliente de Game
  */
+
+class GameWorld;
+
 class GameClient
 {
 private:
     /**
      * Socket para comunicar con el servidor
      */
-    //Socket socket;
-    // Diccionario de jugadores
-    std::map<std::string, GameClient*> clients;
-   // GameWorld*mundo;
+  
+    GameWorld* world;
 
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
-    Player *jugadorCliente = nullptr;
+    //Player *jugadorCliente = nullptr;
     Socket socket;
     std::string nick;
 
 public:
-    /**
+	/**
      * @param ip dirección del cliente
      * @param puertoServer puerto del servidor
      * @param nick nick del usuario

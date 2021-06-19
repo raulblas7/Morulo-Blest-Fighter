@@ -6,6 +6,7 @@
 #include <memory>
 #include "Player.h"
 #include "GameObject.h"
+#include "GameWorld.h"
 /**
  *  Clase para el servidor de Game
  */
@@ -29,13 +30,13 @@ private:
 
     // Diccionario de jugadores nick | player
     std::map<std::string, Player*> jugadoresServer;
-    std::map<std::string,std::vector<GameMessage>> clientsInfo;
+    // std::map<std::string,std::vector<GameMessage>> clientsInfo;
 
-
-    /**
+	GameWorld *world;
+	/**
      * Socket del servidor
      */
-    Socket socket;
+	Socket socket;
 
     int indexOfPlayer = 0;
 };

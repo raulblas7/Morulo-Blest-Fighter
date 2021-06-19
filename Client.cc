@@ -1,6 +1,5 @@
 #include <thread>
 #include "GameClient.h"
-#include <iostream>
 
 int main(int argc, char **argv)
 {
@@ -8,7 +7,7 @@ int main(int argc, char **argv)
 	GameClient game(argv[1], argv[2], argv[3]);
 	//servidor
 	std::thread net_thread([&game]() { game.net_thread(); });
-	//Mandamos mensaje de login y creamos la ventana de SDL
+	////Mandamos mensaje de login y creamos la ventana de SDL
 	game.login();
 
 	while (!game.getExit())

@@ -1,12 +1,13 @@
 #pragma once
 
+#include "GameObject.h"
 #include "GameClient.h"
 #include "Vector2D.h"
 #include "Texture.h"
 // #include "GameMessage.h"
 class SDLGame;
 
-class Player 
+class Player : public GameObject
 {
 private:
     // seriali
@@ -15,26 +16,25 @@ private:
     uint8_t kills;
     //muertes del jugador
     uint8_t deaths;
-    //no serializar
-    Texture *texture = nullptr;
-    //
-    SDL_Rect rect;
+    //indice del jugador
+    uint8_t index;
+    //direccion en la que se mueve el jugador
     Vector2D dir;
+    size_t SIZE_PLAYER = sizeof(uint8_t) * 4 + sizeof(Vector2D);
 
 public:
-    Player();
-    ~Player();
 
-     void update(float deltaTime);
-    Texture *getPlayerTexture();
-    void setTexture(Texture *newTexture);
-    SDL_Rect getPlayerRect();
-    void setPlayerRect();
+    //constructora y destructora
+    Player();
+    virtual ~Player();
+
+    //metodos heredados de gameObject
+	virtual void update(float deltaTime);
+	virtual void render();
+	virtual void to_bin();
+    virtual int from_bin(char *data);
+   void onCollisionEnter(GameObject *other);
     void setDir(Vector2D d);
     //void checkInput();
     bool canMove();
-
-     void render();
-     void to_bin();
-     int from_bin(char *data);
 };

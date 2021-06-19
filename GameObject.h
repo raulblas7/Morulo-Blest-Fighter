@@ -4,33 +4,53 @@
 #include "Texture.h"
 #include "Serializable.h"
 
-class GameObject: public Serializable{
+enum ObjectType
+{
+    NONE,
+    PLAYER,
+    BULLET,
+    OBSTACLEN
+};
+
+class GameObject : public Serializable
+{
 protected:
-    uint8_t goType;
-    std::string id; // max 20
-    Vector2D pos;
-    float angle;
+    uint8_t type;
     uint8_t width, height;
+    std::string id; // max 20
+    float angle;
     bool active = false;
     Texture *texture;
+    SDL_Rect rect;
+
+    size_t SIZE_SERIALIZABLE;
+
 public:
-    GameObject(uint8_t goType_, std:: string id_, Vector2D pos_, float angle_, uint8_t w, uint8_t h, bool act, Texture* texture_);
+    GameObject(uint8_t goType_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
     virtual ~GameObject();
+
     virtual void render() = 0;
     virtual void update(float deltaTime) = 0;
     virtual void to_bin();
-    virtual int from_bin(char* data);
-   // void setTexture(Texture );
+    virtual int from_bin(char *data);
+
+    //setters
     void setId(const std::string &id);
     void setPosition(double x, double y);
     void setRotation(float angle);
     void setScale(uint8_t width, uint8_t height);
-    void setActive(bool active);
-	bool isActive() { return active; };
-	Vector2D &getPosition() { return pos; };
-	float getRotation() { return angle; };
-	Texture *getTexture() { return texture; };
-	std::string getId() { return id; };
-	uint8_t getHeight(){ return height;};
-    uint8_t getWidth(){ return width;};
+    void setActive(){active = !active);
+    void setTexture(Texture *newTexture);
+
+    //esta activo?
+    bool isActive() { return active; };
+
+    //getters
+    Vector2D &getPosition() { return pos; };
+    float getRotation() { return angle; };
+    Texture *getTexture() { return texture; };
+    std::string getId() { return id; };
+    uint8_t getHeight() { return height; };
+    uint8_t getWidth() { return width; };
+    Texture *getPlayerTexture();
 };
