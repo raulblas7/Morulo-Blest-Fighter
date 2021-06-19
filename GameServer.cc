@@ -31,7 +31,6 @@ void GameServer::do_messages()
 		}
 
 		GameMessage msg * = static_cast<GameMessage>(em);
-
 		//Existen dos posibilidades
 		//1.- envio de un mensaje para loging y logout
 		//2.- envio de un gO para actualizarlo en el server
@@ -43,42 +42,29 @@ void GameServer::do_messages()
 			{
 				case GameMessage::MessageType::LOGIN:
 				{
-					// Si somos el primer cliente construimos el wordl
+					// Si somos el primer cliente construimos el world
 					if(clients.empty()){
 
 						//	Creamos el mundo // TODO Crear mapa
 						world = new GameWorld();
 						clients.push_back(std::move(std::make_unique<Socket>(*s)));
-						
-
 						// enviar mundo al usuario que se conecta
 						socket.send(world, clients.back());
 
 					}
 					else {
-
+					//Si somos los siguientes clientes solo mandamos el mundo 
+						clients.push_back(std::move(std::make_unique<Socket>(*s)));
+						// enviar mundo al usuario que se conecta
+						socket.send(world, clients.back());
 					}
 					// Aviso a los clientes de que se ha unido un nuevo jugador
 					for (auto it = clients.begin(); it != clients.end(); it++)
 					{
 						socket.send(em, **it);
 					}
-					clients.push_back(std::move(std::make_unique<Socket>(*s)));
 					std::cout << "Jugador conectado: " << em.getNick() << "\n";
 
-					//jugadoresServer[em.getNick()] = em.getPlayer();
-
-					/*  GameMessage auxMsg ;
-							for (auto it = clientsInfo.begin(); it != clientsInfo.end(); it++)
-							{
-								if ((*it).first != em.nick)
-								{
-									auxMsg.nick = (*it).;
-									auxMsg.type = GameMessage::PLAYER_MOVED;
-									auxMsg.message = (*it).second.
-									socket.send(em, **it);
-								}
-							}*/
 					break;
 				}
 				case GameMessage::MessageType::LOGOUT:
@@ -115,12 +101,20 @@ void GameServer::do_messages()
 		// ¿actualizando el gameworld? y avisando al resto de clientes
 		else if (static_cast<GameObject>(em))
 		{
-			
+			for (auto it = clients.begin(); it != clients.end(); it++)
+					{
+						if (**it == *s)
+						{
+						
+							continue;
+						}
+						socket.send(em, **it);
+					}
 		}
 	}
 
-	if (em.getTipo() != GameMessage::LOGIN)
+	/*if (em.getTipo() != GameMessage::LOGIN)
 	{
 		delete s;
-	}
+	}*/
 }

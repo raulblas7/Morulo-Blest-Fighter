@@ -4,15 +4,14 @@
 #include "Resources.h"
 #include "SDLGame.h"
 
-Player::Player()
+Player::Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_) : 
+	GameObject(type_, id_, angle_, w, h, act, texture_, rect_)
 {
-	rect = SDL_Rect();
-	rect.x = PLAYER1_POSX;
-	rect.y = PLAYER1_POSY;
-	rect.w = PLAYER_WIDTH;
-	rect.h = PLAYER_HEIGHT;
-
 	dir = Vector2D(0, 0);
+	points
+	kills = 0;
+	deaths = 0;
+	// texture
 	// texture = SDLGame::GetInstance()->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
 }
 

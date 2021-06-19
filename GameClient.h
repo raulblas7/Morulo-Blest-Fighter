@@ -9,8 +9,6 @@
  *  Clase para el cliente de Game
  */
 
-class GameWorld;
-
 class GameClient
 {
 private:
@@ -26,6 +24,9 @@ private:
     //Player *jugadorCliente = nullptr;
     Socket socket;
     std::string nick;
+
+
+    void creaMundoLocal(GameWorld* gW);
 
 public:
 	/**

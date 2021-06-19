@@ -5,7 +5,7 @@
 #include "Vector2D.h"
 #include "Texture.h"
 // #include "GameMessage.h"
-class SDLGame;
+class SDLGame;ge
 
 class Player : public GameObject
 {
@@ -25,7 +25,7 @@ private:
 public:
 
     //constructora y destructora
-    Player();
+    Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
     virtual ~Player();
 
     //metodos heredados de gameObject

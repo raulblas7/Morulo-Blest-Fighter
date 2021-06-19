@@ -26,7 +26,7 @@ protected:
     size_t SIZE_SERIALIZABLE;
 
 public:
-    GameObject(uint8_t goType_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
+    GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
     virtual ~GameObject();
 
     virtual void render() = 0;

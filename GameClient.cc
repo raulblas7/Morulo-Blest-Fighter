@@ -10,13 +10,12 @@
 GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick) : socket(ip, puertoServer), nick(nick)
 {
     me = SDLGame::GetInstance();
+    exit = false;
 }
 
 void GameClient::login()
 {
-    std::string msg;
-    exit = false;
-    GameMessage em(nick, jugadorCliente, GameMessage::MessageType::LOGIN);
+    GameMessage em(nick, GameMessage::MessageType::LOGIN);
     if (socket.send(em, socket) == -1)
     {
         perror("Ha fallado el envio de login del cliente");
@@ -35,7 +34,7 @@ void GameClient::logout()
     GameMessage em(nick, jugadorCliente, GameMessage::MessageType::LOGOUT);
     socket.send(em, socket);
 }
-
+ 
 void GameClient::input_thread()
 {
     //Creamos la instancia del controlador del input
@@ -87,8 +86,8 @@ void GameClient::input_thread()
 }
 
 //  Cuando me llega un world
-void GameClient::creaLocal(GameWorld* gW){
-    wolrd = 
+void GameClient::creaMundoLocal(GameWorld* gW){
+    world = gW;
     jugadorCliente = new Player();
     jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
     gW.addNewObject(jugadorCliente);
@@ -110,12 +109,13 @@ void GameClient::net_thread()
 
         auto world = dynamic_cast<GameWorld>(gm);
         if(world){
-            creaLocal(world);
+            creaMundoLocal(world);
         }
         //  Bala, jugadores , ....
-        else if(dynamic_cast<GameObject>(gm)){
+        //  
+        // else if(dynamic_cast<GameObject>(gm)){
             
-        }
+        // }
         
 
 

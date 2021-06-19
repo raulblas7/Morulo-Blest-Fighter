@@ -1,7 +1,6 @@
 #pragma once
 #include "Serializable.h"
 #include <string>
-class GameWorld;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -29,18 +28,9 @@ private:
     uint8_t type;
     // Nick del que envía el mensaje
     std::string nick;
-    //
-    std::string message;
-    // Jugador que envía el mensaje
-    GameWorld* world;
-
-    //  Serializaciones
-
-    void serializeNick();
-    void serializePlayer();
 
 public:
-    static const size_t MESSAGE_SIZE = sizeof(char) * 10 + sizeof(uint8_t) + /*12 * sizeof(char) +*/ sizeof(GameWorld);
+    static const size_t MESSAGE_SIZE = sizeof(char) * 10 + sizeof(uint8_t);
 
     enum MessageType
     {
@@ -59,12 +49,10 @@ public:
 
     void to_bin();
 
-    int from_bin(char *bobj);
+    int from_bin(char *data);
 
     // Devuelve el tipo del mensaje
     const uint8_t getTipo() {return type;};
-    //  Devuelve el jugador que envio este mensaje
-    Player* getPlayer() {return jugador;}
     //  Devuelve el nick del jugador que envio este mensaje
     const std::string getNick(){ return nick;}
 };

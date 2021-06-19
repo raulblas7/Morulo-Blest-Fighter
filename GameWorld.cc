@@ -101,7 +101,6 @@ std::vector<GameObject*> GameWorld::getRemoveWorldGameObjects(){
 }
 
 //metodo para añadir un nuevo gameObject a la lista
-//  TODO comprobar que no existe antes de agregar un nuevo obj
 void addNewGameObject(GameObject* gO){
 	gameObjects.push_back(gO);
     //gameObject->setWorld(this);
