@@ -1,6 +1,6 @@
 #pragma once
 #include "Serializable.h"
-#include  <string>
+#include <string>
 #include "Player.h"
 #include <SDL2/SDL.h>
 
@@ -24,7 +24,7 @@
 class GameMessage : public Serializable
 {
 public:
-    static const size_t MESSAGE_SIZE = sizeof(char) * 8 + sizeof(Player) + sizeof(uint8_t);
+    static const size_t MESSAGE_SIZE = sizeof(char) * 88 + sizeof(uint8_t);
 
     enum MessageType
     {
@@ -39,11 +39,7 @@ public:
 
     GameMessage(){};
 
-    GameMessage(const std::string &n, Player* jugador_) : nick(n), jugador(jugador_) {};
-    //ChatMessage(const std::string &n, const std::string &m) : nick(n), message(m){};
-
-
-
+    GameMessage(const std::string &n, const std::string &m) : nick(n), message(m){};
 
     void to_bin();
 
@@ -52,5 +48,6 @@ public:
     uint8_t type;
 
     std::string nick;
-	Player *jugador;
+    std::string message;
+
 };

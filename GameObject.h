@@ -2,8 +2,9 @@
 #include "GameClient.h"
 #include "Vector2D.h"
 #include "Texture.h"
+#include "Serializable.h"
 
-class GameObject{
+class GameObject: public Serializable{
 protected:
     uint8_t goType;
     std::string id; // max 20

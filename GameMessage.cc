@@ -16,6 +16,8 @@ void GameMessage::to_bin()
     //Copiar nick a partir de direccion
     memcpy(tmp, nick.c_str(), sizeof(char) * 8);
     tmp += sizeof(char) * 8;
+    //Copiar message a partir de direccion
+    memcpy(tmp, message.c_str(), sizeof(char) * 80);
 }
 
 int GameMessage::from_bin(char *bobj)
@@ -32,6 +34,8 @@ int GameMessage::from_bin(char *bobj)
     //Copiar nick a partir de direccion
     nick = tmp;
     tmp += sizeof(char) * 8;
+     //Copiar message a partir de direccion
+    message = tmp;
     return 0;
 }
 

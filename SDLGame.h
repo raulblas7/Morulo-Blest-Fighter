@@ -13,7 +13,6 @@ public:
   SDLGame(SDLGame &other) = delete;
   void operator=(const SDLGame &) = delete;
 
-  void start();
 
   TexturesManager *getTextureManager() const { return textureManager_; }
   SDL_Window *getWindow() const { return window_; };

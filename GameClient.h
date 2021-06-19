@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Player.h"
+//#include "Player.h"
 #include "SDLGame.h"
 #include <map>
 #include <vector>
 #include <memory>
-// #include "Socket.h"
+#include "Socket.h"
 
-
-	/**
+/**
  *  Clase para el cliente de Game
  */
 class GameClient
@@ -19,11 +18,14 @@ private:
      */
     //Socket socket;
     // Diccionario de jugadores
-    std::map<std::string, Player*> jugadoresServer;
+    std::map<std::string, GameClient*> clients;
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
-    Player *jugadorCliente = nullptr;
+    // Player *jugadorCliente = nullptr;
+    Socket socket;
+    std::string nick;
+
 public:
     /**
      * @param ip dirección del cliente
@@ -36,6 +38,7 @@ public:
     /**
      *  Envía el mensaje de logout al servidor
      */
+    void login();
     void logout();
 
     /**
@@ -49,7 +52,6 @@ public:
      *  en STDOUT
      */
     void net_thread();
-    void init();
     void render() const;
 
     bool getExit() { return exit; }
