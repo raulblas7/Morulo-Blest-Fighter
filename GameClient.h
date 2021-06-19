@@ -6,7 +6,8 @@
 #include <vector>
 #include <memory>
 #include "Socket.h"
-
+#include "GameObject.h"
+#include "GameWorld.h"
 /**
  *  Clase para el cliente de Game
  */
@@ -19,6 +20,8 @@ private:
     //Socket socket;
     // Diccionario de jugadores
     std::map<std::string, GameClient*> clients;
+   // GameWorld*mundo;
+
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;

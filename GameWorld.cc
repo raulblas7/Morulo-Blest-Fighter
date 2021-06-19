@@ -16,4 +16,5 @@ void GameWorld::update(float deltaTime)
         //if (go->isActive())
         //    go->update(deltaTime);
     }
+    
 }

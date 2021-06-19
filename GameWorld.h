@@ -1,24 +1,21 @@
 #pragma once
 
-#include "Game.h"
+#include "GameObject.h"
+#include "GameMessage.h"
 
-
-
-class GameObject;
-class GameWorld : public GameMessage
-{
-public:
+class GameWorld {
+    public:
     GameWorld();
     ~GameWorld();
 
     void render();
     void update(float deltaTime);
-    bool update_input(GameMessage &message);
+//    bool update_input(GameMessage &message);
 
     virtual void to_bin();
     virtual int from_bin(char *data);
 
-private:
+protected:
     // Lista de entidades en el juego
     std::vector<GameObject *> gameObjects;
     // Lista de entidades a borrar en el juego

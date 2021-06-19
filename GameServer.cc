@@ -40,7 +40,7 @@ void GameServer::do_messages()
             clients.push_back(std::move(std::make_unique<Socket>(*s)));
             std::cout << "Jugador conectado: " << em.nick << "\n";
 
-            GameMessage auxMsg = message;
+          /*  GameMessage auxMsg ;
             for (auto it = clientsInfo.begin(); it != clientsInfo.end(); it++)
             {
                 if ((*it).first != em.nick)
@@ -50,7 +50,7 @@ void GameServer::do_messages()
                     auxMsg.message = (*it).second.
                     socket.send(em, **it);
                 }
-            }
+            }*/
 
             break;
         }

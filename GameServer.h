@@ -5,7 +5,7 @@
 #include <map>
 #include <memory>
 #include "Player.h"
-
+#include "GameObject.h"
 /**
  *  Clase para el servidor de Game
  */
@@ -29,7 +29,8 @@ private:
 
     // Diccionario de jugadores nick | player
   //  std::map<std::string, Player*> jugadoresServer;
-        std::map<std::string, GameClient*> clientsInfo;
+        std::map<std::string,std::vector<GameMessage>> clientsInfo;
+
 
     /**
      * Socket del servidor

@@ -4,8 +4,8 @@
 #include "Vector2D.h"
 #include "Texture.h"
 // #include "GameMessage.h"
-
-class Player
+class SDLGame;
+class Player 
 {
 private:
     // seriali
@@ -15,21 +15,25 @@ private:
     //muertes del jugador
     uint8_t deaths;
     //no serializar
-    Texture* texture = nullptr;
+    Texture *texture = nullptr;
     //
     SDL_Rect rect;
     Vector2D dir;
+
 public:
-    
     Player();
     ~Player();
 
-    void update();
-    Texture* getPlayerTexture();
-    void setTexture(Texture* newTexture);
+     void update(float deltaTime);
+    Texture *getPlayerTexture();
+    void setTexture(Texture *newTexture);
     SDL_Rect getPlayerRect();
     void setPlayerRect();
     void setDir(Vector2D d);
     //void checkInput();
     bool canMove();
+
+     void render();
+     void to_bin();
+     int from_bin(char *data);
 };
