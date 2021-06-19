@@ -2,11 +2,10 @@
 #include "GameMessage.h"
 #include <memory.h>
 #include <string>
-#include "Player.h"
 
 GameMessage::GameMessage(const std::string &n, const uint8_t type_)
 {
-	if (n == "")
+	/*if (n == "")
 	{
 		std::throw new std::exception("Nick inválido en la creación del mensaje");
 	}
@@ -17,6 +16,7 @@ GameMessage::GameMessage(const std::string &n, const uint8_t type_)
 		type = type_;
 	}
 	else std::throw new std::exception("Tipo de mesaje inválido en la creación del mensaje");
+	*/
 }
 
 void GameMessage::to_bin()

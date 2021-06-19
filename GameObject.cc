@@ -118,6 +118,6 @@ void GameObject::setTexture(Texture* text)
 {
     if(text != nullptr)
         texture = text;
-    else
-        std::throw new std::exception("Se está intentado setear una textura a un gameObject con una textura inválida");
+   // else
+     //   std::throw new std::exception("Se está intentado setear una textura a un gameObject con una textura inválida");
 }

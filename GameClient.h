@@ -17,16 +17,14 @@ private:
      */
   
     GameWorld* world;
-
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
-    //Player *jugadorCliente = nullptr;
     Socket socket;
     std::string nick;
 
 
-    void creaMundoLocal(GameWorld* gW);
+   void creaMundoLocal(GameWorld* gW);
 
 public:
 	/**

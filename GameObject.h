@@ -23,11 +23,9 @@ protected:
     SDL_Rect rect;
 
     size_t SIZE_SERIALIZABLE;
-private:
+public:
     GameObject(){};
     GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
-public:
-
     virtual ~GameObject();
 
     virtual void render() = 0;
@@ -39,7 +37,10 @@ public:
     void setId(const std::string &id);
     void setRotation(float angle);
     void setScale(uint8_t width, uint8_t height);
-    void setActive(){active = !active);
+    void setActive()
+    {
+        active = !active;
+    }
     void setTexture(Texture *newTexture);
 
     //esta activo?

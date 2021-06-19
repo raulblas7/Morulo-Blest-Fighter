@@ -37,7 +37,7 @@ public:
         // Al logear
         LOGIN = 0,
         LOGOUT = 1,
-        SIZE
+        UPDATE_WORLD
     };
 
     GameMessage(){};

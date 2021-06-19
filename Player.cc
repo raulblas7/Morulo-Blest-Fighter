@@ -1,8 +1,7 @@
 #include "Player.h"
 #include "Constants.h"
 
-Player::Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_) : 
-	GameObject(type_, id_, angle_, w, h, act, texture_, rect_)
+Player::Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_) : GameObject(type_, id_, angle_, w, h, act, texture_, rect_)
 {
 	dir = Vector2D(0, 0);
 	points = 0;
@@ -26,8 +25,8 @@ void Player::update(float deltaTime)
 
 void Player::render()
 {
-	if(texture != nullptr)
-        texture->render(rect, SDL_FLIP_NONE);
+	if (texture != nullptr)
+		texture->render(rect, SDL_FLIP_NONE);
 }
 
 void Player::to_bin()
@@ -49,7 +48,7 @@ void Player::to_bin()
 	tmp += sizeGO;
 
 	memcpy(tmp, &index, sizeof(index));
-    tmp += sizeof(index);
+	tmp += sizeof(index);
 
 	memcpy(tmp, &points, sizeof(uint8_t));
 	tmp += sizeof(points);
@@ -69,22 +68,22 @@ int Player::from_bin(char *data)
 	GameObject::from_bin(data);
 
 	char *tmp = data;
-    tmp += GameObject::size();
+	tmp += GameObject::size();
 
-    memcpy(&index, tmp, sizeof(index));
+	memcpy(&index, tmp, sizeof(index));
 	tmp += sizeof(index);
 
 	memcpy(&points, tmp, sizeof(points));
-    tmp += sizeof(points);
+	tmp += sizeof(points);
 
 	memcpy(&kills, tmp, sizeof(kills));
-    tmp += sizeof(kills);
+	tmp += sizeof(kills);
 
 	memcpy(&deaths, tmp, sizeof(deaths));
-    tmp += sizeof(deaths);
+	tmp += sizeof(deaths);
 
 	memcpy(&dir, tmp, sizeof(dir));
-    tmp += sizeof(dir);
+	tmp += sizeof(dir);
 
 	_size += SIZE_PLAYER;
 
@@ -107,40 +106,18 @@ bool Player::canMove()
 	return move;
 }
 
-void Player::setTexture(Texture *newTexture)
-{
-	texture = newTexture;
-}
-
-Texture *Player::getPlayerTexture()
-{
-	return texture;
-}
-
-SDL_Rect Player::getPlayerRect()
-{
-	return rect;
-}
-
 void Player::setDir(Vector2D d)
 {
 	dir = d;
 }
 
-void Player::render()
-{
-	// texture->render(rect);
-}
-
-
-
 void Player::onCollisionEnter(GameObject *other)
 {
-    if (other->type == ObjectType::BULLET)
+	/*if (other->type == ObjectType::BULLET)
     {
         Bullet *bullet = (Bullet *)other;
         if (bullet->index == index)
             return;
         //hasToRespawn = true;
-    }
+    }*/
 }

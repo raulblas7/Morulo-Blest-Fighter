@@ -1,33 +1,34 @@
 #pragma once
 
-
 #include "GameMessage.h"
+#include <vector>
+#include <cstring>
+#include "Serializable.h"
 
 class GameObject;
-
-class GameWorld : public Serializable{
+class GameWorld : public Serializable
+{
 public:
     GameWorld();
     ~GameWorld();
 
-    void render();
-    void update(float deltaTime);
-//    bool update_input(GameMessage &message);
+    inline void render();
+    inline void update(float deltaTime);
 
-    virtual void to_bin();
-    virtual int from_bin(char *data);
+     void to_bin();
+     int from_bin(char *data);
 
-	std::vector<GameObject*> getWorldGameObjects();
-	std::vector<GameObject*> getRemoveWorldGameObjects();
+    std::vector<GameObject *> getWorldGameObjects();
+    std::vector<GameObject *> getRemoveWorldGameObjects();
 
-	void addNewGameObject(GameObject *gO);
-	void removeGameObject(GameObject *gO);
+    void addNewGameObject(GameObject *gO);
+    void removeGameObject(GameObject *gO);
 
-protected :
-	// Lista de entidades en el juego
-	std::vector<GameObject *> gameObjects;
-	// Lista de entidades a borrar en el juego
+private:
+    // Lista de entidades en el juego
+    std::vector<GameObject *> gameObjects;
+    // Lista de entidades a borrar en el juego
     std::vector<GameObject *> removeObjects;
 
-    void checkCollisions();
+    void checkCollisions(){};
 };

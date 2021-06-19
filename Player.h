@@ -1,5 +1,4 @@
 #pragma once
-
 #include "GameObject.h"
 
 class Player : public GameObject
@@ -25,6 +24,7 @@ public:
 	//metodos heredados de gameObject
 	virtual void update(float deltaTime);
 	virtual void render();
+
 	virtual void to_bin();
 	virtual int from_bin(char *data);
 
