@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "Player.h"
+#include "Player.h"
 #include "SDLGame.h"
 #include <map>
 #include <vector>
@@ -25,7 +25,7 @@ private:
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
-    // Player *jugadorCliente = nullptr;
+    Player *jugadorCliente = nullptr;
     Socket socket;
     std::string nick;
 

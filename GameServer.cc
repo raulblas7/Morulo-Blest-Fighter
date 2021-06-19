@@ -29,16 +29,19 @@ void GameServer::do_messages()
         {
             perror("Error al recibir el mensaje en el servidor");
         }
-        switch (em.type)
+        switch (em.getTipo())
         {
         case GameMessage::LOGIN:
         {
+            // Aviso a los clientes de que se ha unido un nuevo jugador
             for (auto it = clients.begin(); it != clients.end(); it++)
             {
                 socket.send(em, **it);
             }
             clients.push_back(std::move(std::make_unique<Socket>(*s)));
-            std::cout << "Jugador conectado: " << em.nick << "\n";
+            std::cout << "Jugador conectado: " << em.getNick() << "\n";
+
+            jugadoresServer[em.getNick()] = em.getPlayer();
 
           /*  GameMessage auxMsg ;
             for (auto it = clientsInfo.begin(); it != clientsInfo.end(); it++)
@@ -73,7 +76,7 @@ void GameServer::do_messages()
 
             if (found)
             {
-                std::cout << "Jugador desconectado: " << em.nick << "\n";
+                std::cout << "Jugador desconectado: " << em.getNick() << "\n";
                 (*borrar).release();
                 clients.erase(borrar);
             }

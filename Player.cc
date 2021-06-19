@@ -4,6 +4,7 @@
 //#include "InputHandler.h"
 #include "Resources.h"
 #include "SDLGame.h"
+
 Player::Player() 
 {
 	rect = SDL_Rect();

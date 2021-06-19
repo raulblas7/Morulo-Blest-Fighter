@@ -5,6 +5,7 @@
 #include "Texture.h"
 // #include "GameMessage.h"
 class SDLGame;
+
 class Player 
 {
 private:
