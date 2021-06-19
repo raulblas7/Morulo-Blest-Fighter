@@ -9,13 +9,11 @@
 
 #include "Socket.h"
 
-//#include "GameWorld.h"
-//#include "Player.h"
+#include "GameWorld.h"
+#include "Player.h"
 
-//estos comentarios tendremos que quitarlos al implementar estas clases para seguir
-//con la nueva idea
-//class MessageClient;
-//class PlayerState;
+class MessageClient;
+class PlayerState;
 
 class GameServer
 {
