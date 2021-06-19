@@ -1,18 +1,13 @@
 #include "Player.h"
-#include "GameMessage.h"
 #include "Constants.h"
-#include "Resources.h"
-#include "SDLGame.h"
 
 Player::Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_) : 
 	GameObject(type_, id_, angle_, w, h, act, texture_, rect_)
 {
 	dir = Vector2D(0, 0);
-	points
+	points = 0;
 	kills = 0;
 	deaths = 0;
-	// texture
-	// texture = SDLGame::GetInstance()->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
 }
 
 Player::~Player()
@@ -31,6 +26,8 @@ void Player::update(float deltaTime)
 
 void Player::render()
 {
+	if(texture != nullptr)
+        texture->render(rect, SDL_FLIP_NONE);
 }
 
 void Player::to_bin()

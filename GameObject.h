@@ -1,5 +1,4 @@
 #pragma once
-#include "GameClient.h"
 #include "Vector2D.h"
 #include "Texture.h"
 #include "Serializable.h"
@@ -9,7 +8,7 @@ enum ObjectType
     NONE,
     PLAYER,
     BULLET,
-    OBSTACLEN
+    OBSTACLE
 };
 
 class GameObject : public Serializable
@@ -24,9 +23,11 @@ protected:
     SDL_Rect rect;
 
     size_t SIZE_SERIALIZABLE;
-
-public:
+private:
+    GameObject(){};
     GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
+public:
+
     virtual ~GameObject();
 
     virtual void render() = 0;
@@ -36,7 +37,6 @@ public:
 
     //setters
     void setId(const std::string &id);
-    void setPosition(double x, double y);
     void setRotation(float angle);
     void setScale(uint8_t width, uint8_t height);
     void setActive(){active = !active);
@@ -46,11 +46,10 @@ public:
     bool isActive() { return active; };
 
     //getters
-    Vector2D &getPosition() { return pos; };
     float getRotation() { return angle; };
     Texture *getTexture() { return texture; };
     std::string getId() { return id; };
     uint8_t getHeight() { return height; };
     uint8_t getWidth() { return width; };
-    Texture *getPlayerTexture();
+    Texture *getPlayerTexture() { return texture; };
 };

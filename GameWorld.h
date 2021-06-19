@@ -1,8 +1,9 @@
 #pragma once
 
-#include "GameObject.h"
+
 #include "GameMessage.h"
 
+class GameObject;
 
 class GameWorld : public Serializable{
 public:

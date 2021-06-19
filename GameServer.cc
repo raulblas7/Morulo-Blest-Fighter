@@ -2,6 +2,7 @@
 #include "GameMessage.h"
 #include "Constants.h"
 
+
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
 	//Inicializacion para usar aleatorios

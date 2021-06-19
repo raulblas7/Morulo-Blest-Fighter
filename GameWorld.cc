@@ -1,4 +1,5 @@
 #include "GameWorld.h"
+#include "GameObject.h"
 
 void GameWorld::render()
 {

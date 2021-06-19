@@ -2,19 +2,13 @@
 
 
 GameObject::GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture* texture_, SDL_Rect rect_)
-    : type(type_), id(id_), angle(angle_), width(w), height(h), active(act), texture(texture_), rect(rect_)
+    : Serializable(), type(type_), id(id_), angle(angle_), width(w), height(h), active(act), texture(texture_), rect(rect_)
 {
 	SIZE_SERIALIZABLE = sizeof(uint8_t) + sizeof(char) * 20 + sizeof(angle) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(active) + sizeof(texture) + sizeof(SDL_Rect);
 }
 
 GameObject::~GameObject()
 {
-}
-
-void GameObject::render()
-{
-    if(texture != nullptr)
-        texture->render(rect, SDL_FLIP_NONE);
 }
 
 void GameObject::to_bin()
@@ -70,7 +64,7 @@ int GameObject::from_bin(char *data)
     char *tmp = _data;
 
     //Copiar tipo a partir de direccion
-    memcpy(&goType, tmp, sizeof(uint8_t));
+    memcpy(&type, tmp, sizeof(uint8_t));
     tmp += sizeof(uint8_t);
 
     //Copiar id a partir de direccion
@@ -102,12 +96,6 @@ int GameObject::from_bin(char *data)
     tmp += sizeof(rect);
 
     return 0;
-}
-
-void GameObject::setPosition(double x, double y)
-{
-    pos.set(x, y);
-    
 }
 
 void GameObject::setRotation(float angle)
