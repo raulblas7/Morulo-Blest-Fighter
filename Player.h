@@ -4,7 +4,7 @@
 class Player : public GameObject
 {
 private:
-	// seriali
+	// serializar
 	uint8_t points;
 	//bajas que ha hecho el player
 	uint8_t kills;
@@ -18,6 +18,7 @@ private:
 
 public:
 	//constructora y destructora
+	Player();
 	Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
 	virtual ~Player();
 

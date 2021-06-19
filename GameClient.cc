@@ -5,6 +5,7 @@
 #include <iostream>
 #include "InputHandler.h"
 #include <SDL2/SDL.h>
+
 GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick) : socket(ip, puertoServer), nick(nick)
 {
     game = SDLGame::GetInstance();
@@ -13,11 +14,13 @@ GameClient::GameClient(const char *ip, const char *puertoServer, const char *nic
 
 void GameClient::login()
 {
+    std::cout << "Enviando mensaje de login \n";
     GameMessage em(nick, GameMessage::MessageType::LOGIN);
     if (socket.send(em, socket) == -1)
     {
         perror("Ha fallado el envio de login del cliente");
     }
+    std::cout << "Enviado mensaje de login \n";
 }
 
 GameClient::~GameClient()
@@ -86,25 +89,37 @@ void GameClient::input_thread()
 //  Cuando me llega un world
 void GameClient::creaMundoLocal(GameWorld *gW)
 {
-    world = gW;
-    /*  jugadorCliente = new Player();
-    jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
-    gW.addNewObject(jugadorCliente);*/
+    if (gW)
+    {
+        world = gW;
+        SDL_Rect rect;
+        rect.x = 100;
+        rect.y = 100;
+        rect.w = 250;
+        rect.h = 250;
+        //jugadorCliente = new Player(ObjectType::PLAYER, "nome", 0.0f, 50, 50, true, nullptr, &rect);
+        jugadorCliente = new Player();
+        jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
+        gW->addNewGameObject(jugadorCliente);
+    }
+    else
+        perror("Un cliente ha recibido un world invalido");
 }
 
 void GameClient::net_thread()
 {
-    while (!exit)
+    while (true)
     {
         //Recibir Mensajes de red
-        Serializable *gm;
-
-        if (socket.recv(*gm) == -1)
+        GameMessage gm;
+        std::cout << "damealgo";
+        if (socket.recv(gm) == -1)
         {
             perror("Error al recibir el mensaje en el cliente");
         }
+        std::cout << "medioalgo";
 
-        auto world = dynamic_cast<GameWorld *>(gm);
+        /*auto world = dynamic_cast<GameWorld *>(gm);
         auto mes = dynamic_cast<GameMessage *>(gm);
 
         if (world)
@@ -113,30 +128,25 @@ void GameClient::net_thread()
         }
         else if (mes)
         {
-
             if (mes->getTipo() == GameMessage::LOGIN)
             {
-                std::cout << mes->getNick() << " se unio al Game "
-                          << "\n";
-                //añadimos un nuevo jugador dentro del servidor
-                /*  if(jugadorCliente->getNick() != gm.nick){
-               jugadoresServer[gm.nick] = gm.jugador;
-           }*/
+                std::cout << mes->getNick() << " se unio al Game \n";
+                if (nick != mes->getNick())
+                {
+                }
             }
             else if (mes->getTipo() == GameMessage::LOGOUT)
             {
-                std::cout << mes->getNick() << " se desconecto del Game "
-                          << "\n";
+                std::cout << mes->getNick() << " se desconecto del Game \n";
             }
             else if (mes->getTipo() == GameMessage::UPDATE_WORLD)
             {
 
-               // world->copy(mes.world);
+                // world->copy(mes.world);
             }
-        }
+        }*/
     }
 }
-
 void GameClient::render() const
 {
 

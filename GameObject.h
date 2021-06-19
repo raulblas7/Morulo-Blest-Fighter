@@ -3,13 +3,14 @@
 #include "Texture.h"
 #include "Serializable.h"
 
-enum ObjectType
+  enum class ObjectType
 {
     NONE,
     PLAYER,
     BULLET,
     OBSTACLE
 };
+
 
 class GameObject : public Serializable
 {

@@ -8,6 +8,13 @@ Player::Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t 
 	kills = 0;
 	deaths = 0;
 }
+Player::Player() : GameObject()
+{
+	dir = Vector2D(0, 0);
+	points = 0;
+	kills = 0;
+	deaths = 0;
+}
 
 Player::~Player()
 {

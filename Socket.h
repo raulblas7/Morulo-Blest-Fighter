@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netdb.h>
@@ -63,11 +62,8 @@ public:
     /**
      *  Inicializa un Socket copiando los parámetros del socket
      */
-    Socket(struct sockaddr *_sa, socklen_t _sa_len) : sd(-1), sa(*_sa), sa_len(_sa_len)
-    {
-        sd = socket(_sa->sa_family, SOCK_DGRAM, 0);
-        bind();
-    };
+    Socket(struct sockaddr *_sa, socklen_t _sa_len);
+
     virtual ~Socket(){};
 
     /**
@@ -113,8 +109,7 @@ public:
     friend bool operator==(const Socket &s1, const Socket &s2);
     friend bool operator==(const Socket &s1, const int &s2);
 
-
-protected:
+public:
     /**
      *  Descriptor del socket
      */
@@ -126,4 +121,3 @@ protected:
     struct sockaddr sa;
     socklen_t sa_len;
 };
-

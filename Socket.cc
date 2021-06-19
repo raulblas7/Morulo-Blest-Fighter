@@ -6,7 +6,6 @@
 Socket::Socket(const char *address, const char *port) : sd(-1)
 {
 	//Construir un socket de tipo AF_INET y SOCK_DGRAM usando getaddrinfo.
-
 	struct addrinfo hints;
 	struct addrinfo *res;
 
@@ -16,7 +15,6 @@ Socket::Socket(const char *address, const char *port) : sd(-1)
 
 	hints.ai_family = AF_INET;		// Allow IPv4
 	hints.ai_socktype = SOCK_DGRAM; // Datagram socket
-	hints.ai_protocol = 0;			// protocol
 
 	int rc = getaddrinfo(address, port, &hints, &res);
 
@@ -25,7 +23,7 @@ Socket::Socket(const char *address, const char *port) : sd(-1)
 		std::cerr << "Error: " << gai_strerror(rc) << "\n";
 	}
 
-	sd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+	sd = socket(res->ai_family, res->ai_socktype, 0);
 
 	if (sd == -1)
 	{
@@ -36,6 +34,13 @@ Socket::Socket(const char *address, const char *port) : sd(-1)
 	sa_len = res->ai_addrlen;
 	freeaddrinfo(res); /* No longer needed */
 }
+
+Socket::Socket(struct sockaddr *_sa, socklen_t _sa_len) : sd(-1), sa(*_sa), sa_len(_sa_len)
+{
+	sd = socket(sa.sa_family, SOCK_DGRAM, 0);
+	std::cout << "Constructora de Socket\n";
+	bind();
+};
 
 int Socket::recv(Serializable &obj, Socket *&sock)
 {
@@ -74,8 +79,6 @@ int Socket::send(Serializable &obj, const Socket &sock)
 	}
 	return 0;
 }
-
-
 
 bool operator==(const Socket &s1, const Socket &s2)
 {

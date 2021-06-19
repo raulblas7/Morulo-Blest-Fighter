@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 	// arg 1 => ipCliente | arg 2 => puertoServer | arg 3 => nickCliente
 	GameClient game(argv[1], argv[2], argv[3]);
 	//servidor
-	std::thread net_thread([&game]() { game.net_thread(); });
+	std::thread ([&game]() { game.net_thread(); }).detach();
 	////Mandamos mensaje de login y creamos la ventana de SDL
 	game.login();
 
@@ -20,7 +20,6 @@ int main(int argc, char **argv)
 
 	game.logout();
 
-	net_thread.detach();
 
 	return 0;
 }

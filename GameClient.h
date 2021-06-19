@@ -2,9 +2,9 @@
 
 #include "SDLGame.h"
 #include <memory>
-
 #include "Socket.h"
 #include "GameWorld.h"
+#include "Player.h"
 /**
  *  Clase para el cliente de Game
  */
@@ -15,19 +15,20 @@ private:
     /**
      * Socket para comunicar con el servidor
      */
-  
-    GameWorld* world;
+
+    GameWorld *world;
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
     Socket socket;
     std::string nick;
+    Player *jugadorCliente;
 
-
-   void creaMundoLocal(GameWorld* gW);
+    // con un world crea una escena y agrega al player a dicho world
+    void creaMundoLocal(GameWorld *gW);
 
 public:
-	/**
+    /**
      * @param ip dirección del cliente
      * @param puertoServer puerto del servidor
      * @param nick nick del usuario

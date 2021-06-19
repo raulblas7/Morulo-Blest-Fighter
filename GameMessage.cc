@@ -5,18 +5,18 @@
 
 GameMessage::GameMessage(const std::string &n, const uint8_t type_)
 {
-	/*if (n == "")
+	if (n == "")
 	{
-		std::throw new std::exception("Nick inválido en la creación del mensaje");
+		perror("Nick inválido en la creación del mensaje");
 	}
 	else nick = n;
 
-	if (type_ >= 0 && type_ < MessageType.SIZE)
+	if (type_ >= 0 && type_ < 20)
 	{
 		type = type_;
 	}
-	else std::throw new std::exception("Tipo de mesaje inválido en la creación del mensaje");
-	*/
+	else perror("Tipo de mesaje inválido en la creación del mensaje");
+	
 }
 
 void GameMessage::to_bin()

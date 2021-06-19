@@ -6,12 +6,23 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
 	//Inicializacion para usar aleatorios
 	//srand(std::time(0));
+	/*int sd = socket.bind();
+	if (sd == -1)
+		std::cout << "Error en el bind \n";
+*/
+
+	std::cout << socket.sd;
 }
 
 void GameServer::do_messages()
 {
+
+	std::cout << "tomates";
+	if (socket.bind() == -1)
+		std::cout << "Error en el bind \n";
 	while (true)
 	{
+
 		/*
          * NOTA: los clientes están definidos con "smart pointers", es necesario
          * crear un unique_ptr con el objeto socket recibido y usar std::move
@@ -23,14 +34,16 @@ void GameServer::do_messages()
 		// - LOGOUT: Eliminar del vector clients
 		// - MESSAGE: Reenviar el mensaje a todos los clientes (menos el emisor)
 
-		Serializable *em;
+		GameMessage em;
 		Socket *s;
-		if (socket.recv(*em, s) == -1)
+		std::cout << "tomates";
+
+		if (socket.recv(em, s) == -1)
 		{
 			perror("Error al recibir el mensaje en el servidor");
 		}
-
-		auto gob= static_cast<GameObject *>(em);
+		std::cout << "tomates";
+		/*auto gob = static_cast<GameObject *>(em);
 		auto msg = static_cast<GameMessage *>(em);
 
 		//Existen dos posibilidades
@@ -47,7 +60,6 @@ void GameServer::do_messages()
 				//Si somos el primer cliente construimos el world
 				if (clients.empty())
 				{
-
 					//	Creamos el mundo // TODO Crear mapa
 					world = new GameWorld();
 					clients.push_back(std::move(std::make_unique<Socket>(*s)));
@@ -113,7 +125,7 @@ void GameServer::do_messages()
 				}
 				socket.send(*gob, **it);
 			}
-		}
+		}*/
 	}
 
 	/*if (em.getTipo() != GameMessage::LOGIN)
