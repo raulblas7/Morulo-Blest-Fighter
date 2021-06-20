@@ -14,6 +14,8 @@ GameClient::GameClient(const char *ip, const char *puertoServer, const char *nic
     //  Creamos el jugador
     jugadorCliente = new Player(ip, puertoServer, nick);
     jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
+    
+    textEnemigos = game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
     //  TODO    posible implementacion de seteo de SDL_Rect 
 
     //  TODO    bg
@@ -60,44 +62,49 @@ void GameClient::input_thread()
     //al servidor con un send
     bool willSend = false;
 
+    Vector2D playerPos = jugadorCliente->getPlayerPos();
+    Socket* socket = jugadorCliente->getPlayerSocket();
     //Movimiento por teclado del jugador
     if (InputHandler::instance()->keyDownEvent())
     {
         if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_UP)))
         {
-            //jugadorCliente->setDir(Vector2D(0, -1));
+            jugadorCliente->setDir(Vector2D(0, -1));
+            jugadorCliente->setPosition(Vector2D(playerPos.getX(), playerPos.getY() + (jugadorCliente->getDir().getY() * jugadorCliente->getVel())));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_DOWN)))
         {
-            //jugadorCliente->setDir(Vector2D(0, 1));
+            jugadorCliente->setDir(Vector2D(0, 1));
+            jugadorCliente->setPosition(Vector2D(playerPos.getX(), playerPos.getY() + (jugadorCliente->getDir().getY() * jugadorCliente->getVel())));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_RIGHT)))
         {
-            //jugadorCliente->setDir(Vector2D(1, 0));
+            jugadorCliente->setDir(Vector2D(1, 0));
+            jugadorCliente->setPosition(Vector2D(playerPos.getX() + (jugadorCliente->getDir().getX() * jugadorCliente->getVel()), playerPos.getY()));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
         {
-            //jugadorCliente->setDir(Vector2D(-1, 0));
+            jugadorCliente->setDir(Vector2D(-1, 0));
+            jugadorCliente->setPosition(Vector2D(playerPos.getX() + (jugadorCliente->getDir().getX() * jugadorCliente->getVel()), playerPos.getY()));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_ESCAPE)))
         {
             exit = true;
+            GameMessage mLogOut(MessageType::LOGOUT, jugadorCliente);
+            socket->send(mLogOut, *socket);
+        }
+
+        if(!exit){
+            if(jugadorCliente->canMove()){
+                willSend = true;
+            }
+
+            if(willSend){
+                GameMessage mess(MessageType::PLAYERINFO, jugadorCliente);
+                socket->send(mess, *socket);
+            }
         }
     }
-
-    // Checkeamos si nos podemos mover dentro de los limites establecidos por la pantalla
-    //TODO: habra que checkear las colisiones con los obstaculos del mapa cuando se añadan
-    /*if (jugadorCliente->canMove())
-        willSend = true;
-
-    if (willSend && !exit)
-    {
-        // Accedemos al socket del player para lanzar el mensaje al servidor de que nos hemos movido y asi
-        //que este avise al resto de clientes
-        //Socket* so = jugadorCliente->getPlayerSocket();
-        GameMessage msg(nick, jugadorCliente, GameMessage::MessageType::PLAYER_MOVED);
-        so->send(msg, socket);
-    }*/
 }
 
 void GameClient::net_thread()
@@ -145,17 +152,12 @@ void GameClient::render() const
                                             (int)jugadorCliente->getPlayerPos().getY(),
                                             jugadorCliente->getPlayerTam(),
                                             jugadorCliente->getPlayerTam()});
-    //Pintamos el fonfo
-    //  background->render({0, 0, app->winWidth_, app->winHeight_}, SDL_FLIP_NONE);
-    //Pintamos a nuestro jugador
-    // jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
-    //world->render();
-    //Pintamos a los jugadores contrarios
-    //Texture *t = game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture);
-    /* for (auto it = jugadoresServer.begin(); it != jugadoresServer.end(); ++it)
+
+    for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
     {
-        t->render((*it).second->getPlayerRect());
-    }*/
+        ObjectInfo p = (*it).second;
+        textEnemigos->render({(int)p.pos.getX(), (int)p.pos.getY(), p.tam, p.tam});
+    }
 
     //Volcamos sobre la ventana
     SDL_RenderPresent(game->getRenderer());

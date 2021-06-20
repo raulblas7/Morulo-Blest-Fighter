@@ -10,6 +10,8 @@ private:
     std::string nick;
     Texture* texture = nullptr;
     Vector2D pos;
+    Vector2D dir;
+    float vel;
     int tam;
 
 public:
@@ -24,9 +26,9 @@ public:
     void update();
     //void login();
     void logout();
-    std::string getNick(){return nick;}
     void initPlayer();
 
+    std::string getNick(){return nick;}
     Socket* getPlayerSocket();
     Texture* getPlayerTexture();
     Vector2D getPlayerPos();
@@ -34,4 +36,8 @@ public:
     void setPosition(const Vector2D& newPos);
     void setTam(int newTam);
     void setTexture(Texture* newTexture);
+    void setDir(Vector2D d){ dir = d;};
+    Vector2D getDir(){ return dir;};
+    float getVel() {  return vel;};
+    bool canMove();
 };

@@ -21,6 +21,7 @@ private:
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
+    Texture* textEnemigos = nullptr;
     //Socket socket;
     //std::string nick;
     Player *jugadorCliente = nullptr;

@@ -52,8 +52,10 @@ void GameServer::do_messages()
 
             //Informacion del jugador
             ObjectInfo n;
-            n.tam = rand() % 50;
-            n.pos = Vector2D(rand() % (800), rand() % (600));
+
+            n.tam = 60;
+            //TODO posicion dependiendo de que jugador seas tendras cierto spawn
+            n.pos = Vector2D(rand() % (640), rand() % (480));
 
             //Asignamos
             players[cm.getNick()] = n;
@@ -97,8 +99,6 @@ void GameServer::do_messages()
 
         case MessageType::LOGOUT:
         {
-            /*
-            /* code */
             auto it = clients.begin();
 
             while (it != clients.end() && (*((*it).second.get()) != *s))
