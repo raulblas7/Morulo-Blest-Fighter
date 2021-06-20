@@ -17,14 +17,17 @@ private:
      * Socket para comunicar con el servidor
      */
 
-    GameWorld *world;
+    //GameWorld *world;
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
-    Socket socket;
-    std::string nick;
-    Player *jugadorCliente;
+    //Socket socket;
+    //std::string nick;
+    Player *jugadorCliente = nullptr;
 
+    std::map<std::string, ObjectInfo> jugadores;
+    
+    std::map<std::string, ObjectInfo> objetos;
 
 public:
     /**
@@ -38,8 +41,8 @@ public:
     /**
      *  Envía el mensaje de logout al servidor
      */
-    void login();
-    void logout();
+    //void login();
+    //void logout();
 
     /**
      *  Rutina principal para el Thread de E/S. Lee datos de STDIN (std::getline)
@@ -52,7 +55,9 @@ public:
      *  en STDOUT
      */
     void net_thread();
+
     void render() const;
+    void init();
 
     bool getExit() { return exit; }
 };

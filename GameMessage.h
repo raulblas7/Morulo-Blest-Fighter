@@ -1,49 +1,62 @@
 #pragma once
 #include "Serializable.h"
-#include <string>
-#include "GameObject.h"
-#include "Player.h"
+#include  <string>
+#include <SDL2/SDL.h>
+#include "ObjectInfo.h"
 
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
+class Player;
 
-/**
- *  Mensaje del protocolo de la aplicación de Game
- *
- *  +-------------------+
- *  | Tipo: uint8_t     | 0 (login), 1 (mensaje), 2 (logout)
- *  +-------------------+
- *  | Nick: char[8]     | Nick incluido el char terminación de cadena '\0'
- *  +-------------------+
- *  |                   |
- *  | Mensaje: char[80] | Mensaje incluido el char terminación de cadena '\0'
- *  |                   |
- *  +-------------------+
- *
- */
-class GameMessage : public Serializable
+
+enum class MessageType
 {
+    LOGIN   = 0,
+    LOGOUT  = 1,
+    PLAYERINFO = 2,
+    PICKUPEAT = 3,
+    NEWPICKUP = 4,
+    PICKUPDESTROY = 5,
+    PLAYERDIE = 6,
+    ADDPLAYER = 7,
+    UNDEFINED = 8
+};
+
+class GameMessage: public Serializable{
+protected:
+    size_t gameMessageSize = sizeof(MessageType);
+    MessageType type;
+    SDL_Rect dimensions;
+    std::string nick;
+    ObjectInfo objectInfo;
+   
+
+    //Metodos para la serializacion de nuestros mensajes
+    void serializeTypeNick();
+    void serializeObjectInfo();
+
+    //Metodos para la construccion de los mensajes recibidos
+    void constructTypeNick(char *bobj);
+    void constructObjectInfo(char *bobj);
+
 public:
-    static const size_t MESSAGE_SIZE = sizeof(char) * 8;
+    
+    GameMessage();
+    GameMessage(MessageType type_ ,Player* player_);
+    //Message(MessageType type_ PickUp obj);
+    virtual ~GameMessage();
 
-    GameMessage(){};
+    virtual void to_bin();
+    virtual int from_bin(char * bobj);
 
-    GameMessage(GameObject *gameObj) : gO(gameObj){};
-    GameMessage(std::string li) : so(li)
-    {
-        gO = nullptr;
-    };
-
-    void to_bin();
-
-    int from_bin(char *bobj);
-
-    GameObject *gO;
-    std::string so ;
-
-        GameObject *
-        getGameObject()
-    {
-        return gO;
-    };
+    size_t getGameMessageSize();
+    MessageType getGameMessageType();
+    std::string getNick();
+    ObjectInfo getObjectInfo()const{
+        return objectInfo;
+    }
+    
+    void setNick(std::string newNick);
+    void setObjectInfo(const ObjectInfo& info){
+        objectInfo= info;
+    }
+    void setMsgType(MessageType type);
 };

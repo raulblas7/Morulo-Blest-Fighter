@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	//servidor
 	std::thread ([&game]() { game.net_thread(); }).detach();
 	////Mandamos mensaje de login y creamos la ventana de SDL
-	game.login();
+	game.init();
 
 	while (!game.getExit())
 	{
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 		game.render();
 	}
 
-	game.logout();
+	//game.logout();
 
 
 	return 0;

@@ -7,11 +7,7 @@ int main(int argc, char **argv)
 
     GameServer gServer(argv[1], argv[2]);
 
-    //std::thread net_thread([&gServer]() { gServer.do_messages(); });
-
-
     gServer.do_messages();
-
 
     /*while (true)
     {

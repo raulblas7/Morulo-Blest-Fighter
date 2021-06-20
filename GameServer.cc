@@ -1,6 +1,10 @@
 #include "GameServer.h"
 #include "GameMessage.h"
-#include "Constants.h"
+#include <memory>
+#include <ctime>
+#include <cstdlib>
+#include <SDL2/SDL.h>
+#include <list>
 
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
@@ -10,10 +14,8 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 	if (sd == -1)
 		
 */
-	if (socket.bind() == -1)
-	{
-		std::cout << "Error en el bind \n";
-	}
+	srand(std::time(0));
+    initTime = SDL_GetTicks();
 }
 
 //void GameServer::find()
@@ -22,118 +24,124 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 
 void GameServer::do_messages()
 {
+	if (socket.bind() == -1)
+	{
+		std::cout << "Error en el bind \n";
+	}
 
 	while (true)
-	{
+    {
+        GameMessage cm;
+        Socket *s = nullptr;
 
-		/*
-        * NOTA: los clientes están definidos con "smart pointers", es necesario
-        * crear un unique_ptr con el objeto socket recibido y usar std::move
-        * para añadirlo al vector
-        */
+        std::cout << "Esperando a recibir mensaje\n";
+        //Esperamos recibir un mensaje de cualquier socket
+        if (socket.recv(cm, s) == -1)
+        {
+            std::cout << "Error al recibir el mensaje\n";
+        }
 
-		//Recibir Mensajes en y en función del tipo de mensaje
-		// - LOGIN: Añadir al vector clients
-		// - LOGOUT: Eliminar del vector clients
-		// - MESSAGE: Reenviar el mensaje a todos los clientes (menos el emisor)
-		std::cout << "anass = Francisco Franco\n";
+        //Recibir Mensajes en y en función del tipo de mensaje
+        switch (cm.getGameMessageType())
+        {
+        case MessageType::LOGIN:
+        {
 
-		//Serializable *gm;
-		Socket *s = nullptr;
-		std::cout << "anassNazi\n";
-		GameMessage gm;
-		if (socket.recv(gm, s) == -1)
-		{
-			std::cout << "Error al recibir el mensaje\n";
-		}
+            //Lo añadimos a la lista de clientes convirtiendo el socket en un unique_ptr y usando move
+            clients[cm.getNick()] = std::move(std::make_unique<Socket>(*s));
 
-		switch ((ObjectType)gm.getGameObject()->getType())
-		{
-		case ObjectType::PLAYER:
-		{
-			// Caben dos posibilidades cuando lleg e un player
-			//	1.- Que sea el primer player en conectarse, entoces creamos un mundo y se lo enviamos
-			//	2.- Que sea el segundo o más y le enviamos el mundo ya construído por el player 1
-			if (clients.empty())
-			{
-				//	Creamos el mundo // TODO Crear mapa
-				world = new GameWorld();
-				clients.push_back(std::move(std::make_unique<Socket>(*s)));
-				//enviar mundo al usuario que se conecta
-				socket.send(*world, *clients.back().get());
-			}
-			else
-			{
-				switch ((Info)gm.getGameObject()->getInfo())
-				{
-				case Info::Build:
-				{
-					clients.push_back(std::move(std::make_unique<Socket>(*s)));
+            //Informacion del jugador
+            ObjectInfo n;
+            n.tam = rand() % 50;
+            n.pos = Vector2D(rand() % (800), rand() % (600));
 
-					for (auto it = clients.begin(); it != clients.end(); it++)
-					{
-						if (**it == *s)
-						{
-							//enviar mundo al usuario que se conecta
-							socket.send(*world, *clients.back().get());
-						}
-						else
-						{
-							socket.send(gm, **it);
-						}
-						world->addNewGameObject(gm.getGameObject());
-					}
+            //Asignamos
+            players[cm.getNick()] = n;
 
-					break;
-				}
-				case Info::Update:
-				{
-					for (auto it = clients.begin(); it != clients.end(); it++)
-					{
-						if (**it == *s)
-						{
-							continue;
-						}
-						else
-						{
-							socket.send(gm, **it);
-						}
-					}
+            //Mandarle al player que se acaba de conectar su posicion y su tam
+            //Avisar al resto de jugadores que se ha conectado un nuevo jugador
+            //Reenviar el mensaje a todos los clientes
+            GameMessage newPlayerConnected = GameMessage();
+            newPlayerConnected.setMsgType(MessageType::ADDPLAYER);
+            newPlayerConnected.setNick(cm.getNick());
+            newPlayerConnected.setObjectInfo(players[cm.getNick()]);
 
-					break;
-				}
-				case Info::Destroy:
-				{
-					bool found;
-					found = false;
-					std::vector<std::unique_ptr<Socket>>::iterator borrar;
-					for (auto it = clients.begin(); it != clients.end(); it++)
-					{
-						if (**it == *s)
-						{
-							found = true;
-							borrar = it;
-							continue;
-						}
-						socket.send(gm, **it);
-					}
+            //Avisar a todos los jugadores conectados que ha entrado uno nuevo
+            for (auto it = clients.begin(); it != clients.end(); it++)
+            {
+                //enviarlo a todos
+                socket.send(newPlayerConnected, *((*it).second.get()));
+            }
 
-					if (found)
-					{
-						//std::cout << "Jugador desconectado: " << gm->getNick() << "\n";
-						(*borrar).release();
-						clients.erase(borrar);
-					}
-					else
-					{
-						std::cout << "El jugador no esta conectado \n";
-					}
-					break;
-				}
-				}
-			}
-			break;
-		}
-		}
-	}
+            //Avisar al que ha entrado de donde estan el resto
+            for (auto it = players.begin(); it != players.end(); ++it)
+            {
+                if ((*it).first != cm.getNick())
+                {
+                    newPlayerConnected.setNick((*it).first);
+                    newPlayerConnected.setObjectInfo((*it).second);
+                    socket.send(newPlayerConnected, *s);
+                }
+            }
+
+            for (auto it = objects.begin(); it != objects.end(); ++it)
+            {
+                newPlayerConnected.setMsgType(MessageType::NEWPICKUP);
+                newPlayerConnected.setNick((*it).first);
+                newPlayerConnected.setObjectInfo((*it).second);
+                socket.send(newPlayerConnected, *s);
+            }
+
+            break;
+        }
+
+        case MessageType::LOGOUT:
+        {
+            /*
+            /* code */
+            auto it = clients.begin();
+
+            while (it != clients.end() && (*((*it).second.get()) != *s))
+                ++it;
+
+            if (it == clients.end())
+                std::cout << "El jugador ya se había desconectado previamente\n";
+            else
+            {
+                std::cout << "Jugador desconectado: " << cm.getNick() << "\n";
+                clients.erase((*it).first);               //Lo sacamos del vector
+                Socket *delSock = (*it).second.release(); //Eliminamos la pertenencia del socket de dicho unique_ptr
+                delete delSock;                           //Borramos el socket
+            }
+            break;
+        }
+
+        case MessageType::PLAYERINFO:
+        {
+            //Actualizamos la posición en la que se encuentra dicho jugador en la memoria del servidor
+            players[cm.getNick()] = cm.getObjectInfo();
+
+            //Avisar a todos los jugadores conectados que alguien se ha movido
+            for (auto it = clients.begin(); it != clients.end(); it++)
+            {
+                if (*((*it).second.get()) != *s) //Excepto a la persona que ha enviado el mensaje
+                {
+                    socket.send(cm, (*((*it).second.get())));
+                }
+            }
+
+            break;
+        }
+
+        case MessageType::PICKUPEAT:
+        {
+            break;
+        }
+        default:
+            std::cerr << "UNKOWNK MESSAGE RECIEVED\n";
+            break;
+        }
+
+    }
+	
 }

@@ -1,36 +1,37 @@
 #pragma once
-#include "GameObject.h"
-
-class Player : public GameObject
-{
+#include "Socket.h"
+#include "Vector2D.h"
+#include <SDL2/SDL.h>
+class Texture;
+ 
+class Player{
 private:
-	// serializar
-	uint8_t points;
-	//bajas que ha hecho el player
-	uint8_t kills;
-	//muertes del jugador
-	uint8_t deaths;
-	//indice del jugador
-	uint8_t index;
-	//direccion en la que se mueve el jugador
-	Vector2D dir;
-	size_t SIZE_PLAYER = sizeof(uint8_t) * 4 + sizeof(Vector2D);
+    Socket socket;
+    std::string nick;
+    Texture* texture = nullptr;
+    Vector2D pos;
+    int tam;
 
 public:
-	//constructora y destructora
-	Player();
-	Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
-	virtual ~Player();
+    /**
+     * @param s dirección del servidor
+     * @param p puerto del servidor
+     * @param n nick del usuario
+     */
+    Player(const char * s, const char * p, const char * n);
+    ~Player();
 
-	//metodos heredados de gameObject
-	virtual void update(float deltaTime);
-	virtual void render();
+    void update();
+    //void login();
+    void logout();
+    std::string getNick(){return nick;}
+    void initPlayer();
 
-	virtual void to_bin();
-	virtual int from_bin(char *data);
-
-	void onCollisionEnter(GameObject *other);
-	void setDir(Vector2D d);
-	//void checkInput();
-	bool canMove();
+    Socket* getPlayerSocket();
+    Texture* getPlayerTexture();
+    Vector2D getPlayerPos();
+    int getPlayerTam();
+    void setPosition(const Vector2D& newPos);
+    void setTam(int newTam);
+    void setTexture(Texture* newTexture);
 };

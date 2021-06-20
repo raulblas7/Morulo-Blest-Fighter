@@ -1,78 +1,245 @@
-
 #include "GameMessage.h"
 #include <memory.h>
-#include <string>
+#include "Player.h"
+
+GameMessage::GameMessage() : type(MessageType::UNDEFINED)
+{
+
+}
+
+GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
+{
+    nick = player_->getNick();
+    objectInfo = ObjectInfo();
+    objectInfo.tam = player_->getPlayerTam();
+    objectInfo.pos = player_->getPlayerPos();
+}
+
+GameMessage::~GameMessage()
+{
+
+}
+
+size_t GameMessage::getGameMessageSize()
+{
+    return gameMessageSize;
+}
+
+MessageType GameMessage::getGameMessageType()
+{
+    return type;
+}
 
 void GameMessage::to_bin()
 {
-
-    if (gO)
+    switch (type)
     {
-
-        std::cout << "putoncio";
-        gO->to_bin();
-        
+        case MessageType::LOGIN:
+        {
+            serializeTypeNick();
+            break;
+        }
+        case MessageType::LOGOUT:
+        {
+            serializeTypeNick();
+            break;
+        }
+        case MessageType::PLAYERINFO:
+        {
+            serializeObjectInfo();
+            break;
+        }
+        case MessageType::NEWPICKUP:
+        {
+            serializeObjectInfo();
+            break;
+        }
+        case MessageType::ADDPLAYER:
+        {
+            serializeObjectInfo();
+            break;
+        }
+        case MessageType::PLAYERDIE:
+        {
+            serializeTypeNick();
+            break;
+        }
+        case MessageType::PICKUPDESTROY:
+        {
+            serializeTypeNick();
+            break;
+        }
+        case MessageType::PICKUPEAT:
+        {
+            serializeObjectInfo();
+            break;
+        }
+        default:
+        break;
     }
-    else
-    {
-        std::cout << "putoncio2";
-        alloc_data(MESSAGE_SIZE);
-
-        memset(_data, 0, MESSAGE_SIZE);
-        //Serializar los campos type, nick y message en el buffer _data
-        char *tmp = _data;
-        memcpy(tmp, so.c_str(), sizeof(char) * 8);
-        tmp += sizeof(char) * 8;
-    }
-    /*  alloc_data(MESSAGE_SIZE);
-
-    memset(_data, 0, MESSAGE_SIZE);
-    //Serializar los campos type, nick y message en el buffer _data
-    char *tmp = _data;
-    //Copiar tipo a partir de direccion
-    memcpy(tmp, &type, sizeof(uint8_t));
-    tmp += sizeof(uint8_t);
-    //Copiar nick a partir de direccion
-    memcpy(tmp, nick.c_str(), sizeof(char) * 8);
-    tmp += sizeof(char) * 8;
-    //Copiar message a partir de direccion
-    memcpy(tmp, message.c_str(), sizeof(char) * 80);*/
 }
 
 int GameMessage::from_bin(char *bobj)
 {
-    alloc_data(MESSAGE_SIZE);
-
-    memcpy(static_cast<void *>(_data), bobj, MESSAGE_SIZE);
+    //reservamos memoria para coger el tipo de mensaje
+    gameMessageSize = sizeof(MessageType);
+    alloc_data(gameMessageSize);
+    //coger el tipo de mensaje
+    memcpy(static_cast<void *>(_data), bobj, gameMessageSize);
 
     //Reconstruir la clase usando el buffer _data
-    char *tmp = _data;
-    uint8_t type;
-    //Copiar tipo a partir de direccion
-    memcpy(&type, tmp, sizeof(uint8_t));
+    char *temp = _data;
 
-    switch ((ObjectType)type)
+    //Copiamos tipo
+    memcpy(&type, temp, sizeof(gameMessageSize));
+
+    switch (type)
     {
-    case ObjectType::PLAYER:
-    {
-        gO = new Player();
-        gO->from_bin(bobj);
-        break;
+        case MessageType::LOGIN:
+        {
+            std::cout << "LOGIN\n";
+            constructTypeNick(bobj);
+            break;
+        }
+        case MessageType::LOGOUT:
+        {
+            std::cout << "LOGOUT\n";
+            constructTypeNick(bobj);
+            break;
+        }
+        case MessageType::PLAYERINFO:
+        {
+            constructObjectInfo(bobj);
+            break;
+        }
+        case MessageType::ADDPLAYER:
+        {
+            std::cout << "NEWPLAYER\n";
+            constructObjectInfo(bobj);
+            break;
+        }
+        case MessageType::PLAYERDIE:
+        {
+            std::cout << "PLAYERDEAD\n";
+            constructTypeNick(bobj);
+            break;
+        }
+        case MessageType::PICKUPDESTROY:
+        {
+            std::cout << "PICKUPDESTROY\n";
+            constructTypeNick(bobj);
+            break;
+        }
+        case MessageType::NEWPICKUP:
+        {
+            std::cout << "NEWPICKUP\n";
+            constructObjectInfo(bobj);
+            break;
+        }
+        case MessageType::PICKUPEAT:
+        {
+            std::cout << "PICKUPEAT\n";
+            constructObjectInfo(bobj);
+            break;
+        }
+        default:
+            std::cout << "Ni LOG ni LOGOUT\n";
+            break;
+            
     }
-    }
-    /*
-    case ObjectType::BULLET:
-    {
-        ::from_bin(bobj);
-
-        break;
-    }
-
-    case ObjectType::PLAYERINFO:
-    {
-
-        break;
-    }*/
-
     return 0;
+}
+
+std::string GameMessage::getNick()
+{
+    return nick;
+}
+
+void GameMessage::setNick(std::string newNick)
+{
+    nick = newNick;
+}
+
+void GameMessage::setMsgType(MessageType type_)
+{
+    type = type_;
+}
+
+void GameMessage::serializeTypeNick()
+{
+    //calculamos el tamaño del mensaje
+
+    gameMessageSize = sizeof(gameMessageSize) + sizeof(char) * 12;
+    //reservamos la memoria
+    alloc_data(gameMessageSize);
+    memset(_data, 0, gameMessageSize);
+
+    //Serializar los campos type
+    char *temp = _data;
+
+    //Copiamos tipo de mensaje a partir de la direccion que marca temp
+    //almacenamos primero el tipo de mensaje
+    memcpy(temp, &type, sizeof(MessageType));
+
+    temp += sizeof(MessageType);
+
+    //Copiamos el nombre a partir de la direccion que marca temp
+    //despues almacenamos el resto de la informacion
+    memcpy(temp, nick.c_str(), sizeof(char) * 12);
+}
+
+void GameMessage::serializeObjectInfo()
+{
+    gameMessageSize = sizeof(MessageType) + sizeof(char) * 12 + sizeof(ObjectInfo);
+
+    //reservamos la memoria
+    alloc_data(gameMessageSize);
+
+    memset(_data, 0, gameMessageSize);
+
+    //Serializar los campos type
+    char *temp = _data;
+
+    //Copiamos tipo de mensaje a partir de la direccion que marca temp
+    //almacenamos primero el tipo de mensaje
+    memcpy(temp, &type, sizeof(MessageType));
+
+    temp += sizeof(MessageType);
+
+    //Copiamos el nombre a partir de la direccion que marca temp
+    //despues almacenamos el resto de la informacion
+    memcpy(temp, nick.c_str(), sizeof(char) * 12);
+
+    temp += sizeof(char) * 12;
+
+    memcpy(temp, &objectInfo, sizeof(ObjectInfo));
+}
+
+void GameMessage::constructTypeNick(char *bobj)
+{
+    gameMessageSize = sizeof(MessageType) + sizeof(char) * 12;
+    //reservamos la memoria
+    alloc_data(gameMessageSize);
+    memcpy(static_cast<void *>(_data), bobj, gameMessageSize);
+    //Reconstruir la clase usando el buffer _data
+    char *temp = _data;
+    temp += sizeof(MessageType);
+    //Se puede hacer porque es un string (\0)
+    nick = temp;
+}
+
+void GameMessage::constructObjectInfo(char *bobj)
+{
+    gameMessageSize = sizeof(MessageType) + sizeof(char) * 12 + sizeof(ObjectInfo);
+    //reservamos la memoria
+    alloc_data(gameMessageSize);
+    memcpy(static_cast<void *>(_data), bobj, gameMessageSize);
+    //Reconstruir la clase usando el buffer _data
+    char *temp = _data;
+    temp += sizeof(MessageType);
+    //Se puede hacer porque es un string (\0)
+    nick = temp;
+
+    temp += sizeof(char) * 12;
+    memcpy(&objectInfo, temp, sizeof(ObjectInfo));
 }
