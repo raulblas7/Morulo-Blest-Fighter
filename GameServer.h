@@ -19,6 +19,7 @@ public:
      *  lo distribuye a los clientes. Mantiene actualizada la lista de clientes
      */
     void do_messages();
+   
 
 private:
     /**
@@ -27,14 +28,13 @@ private:
      */
     std::vector<std::unique_ptr<Socket>> clients;
 
-   
     // std::map<std::string,std::vector<GameMessage>> clientsInfo;
 
-	GameWorld *world;
-	/**
+    GameWorld *world;
+    /**
      * Socket del servidor
      */
-	Socket socket;
+    Socket socket;
 
     int indexOfPlayer = 0;
 };

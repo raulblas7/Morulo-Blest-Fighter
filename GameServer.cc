@@ -8,41 +8,41 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 	//srand(std::time(0));
 	/*int sd = socket.bind();
 	if (sd == -1)
-		std::cout << "Error en el bind \n";
+		
 */
-
-	std::cout << socket.sd;
+	if (socket.bind() == -1)
+	{
+		std::cout << "Error en el bind \n";
+	}
 }
 
 void GameServer::do_messages()
 {
 
-	std::cout << "tomates";
-	if (socket.bind() == -1)
-		std::cout << "Error en el bind \n";
 	while (true)
 	{
 
 		/*
-         * NOTA: los clientes están definidos con "smart pointers", es necesario
-         * crear un unique_ptr con el objeto socket recibido y usar std::move
-         * para añadirlo al vector
-         */
+        * NOTA: los clientes están definidos con "smart pointers", es necesario
+        * crear un unique_ptr con el objeto socket recibido y usar std::move
+        * para añadirlo al vector
+        */
 
 		//Recibir Mensajes en y en función del tipo de mensaje
 		// - LOGIN: Añadir al vector clients
 		// - LOGOUT: Eliminar del vector clients
 		// - MESSAGE: Reenviar el mensaje a todos los clientes (menos el emisor)
+		std::cout << "tomates1";
 
 		GameMessage em;
-		Socket *s;
-		std::cout << "tomates";
+		Socket *s = nullptr;
+		std::cout << "tomates2";
 
 		if (socket.recv(em, s) == -1)
 		{
-			perror("Error al recibir el mensaje en el servidor");
+			std::cout << "Error al recibir el mensaje\n";
 		}
-		std::cout << "tomates";
+		std::cout << "tomates3";
 		/*auto gob = static_cast<GameObject *>(em);
 		auto msg = static_cast<GameMessage *>(em);
 
