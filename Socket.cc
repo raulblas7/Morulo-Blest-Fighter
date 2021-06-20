@@ -94,7 +94,6 @@ int Socket::recv(Serializable &obj)
 int Socket::send(Serializable &obj, const Socket &sock)
 {
 
-	std::cout << "franco";
 	//Serializar el objeto
 	obj.to_bin();
 
@@ -105,8 +104,6 @@ int Socket::send(Serializable &obj, const Socket &sock)
 	{
 		return -1;
 	}
-
-	std::cout << "franco";
 
 	return 0;
 }

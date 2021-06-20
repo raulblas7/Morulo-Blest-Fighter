@@ -1,18 +1,19 @@
 #include "Player.h"
 #include "Constants.h"
 
-Player::Player(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_) : GameObject(type_, id_, angle_, w, h, act, texture_, rect_)
+Player::Player(uint8_t type_, std::string id_, float angle_, bool act, Texture *texture_, SDL_Rect rect_) : GameObject(type_, id_, angle_, act, texture_, rect_)
 {
-	dir = Vector2D(0, 0);
+	dir = Vector2D(10, 10);
 	points = 0;
-	kills = 0;
-	deaths = 0;
+	kills = 10;
+	deaths = 15;
+	SIZE_SERIALIZABLE += SIZE_PLAYER;
 }
 Player::Player() : GameObject()
 {
-	dir = Vector2D(0, 0);
+	dir = Vector2D(10, 10);
 	points = 0;
-	kills = 0;
+	kills = 100;
 	deaths = 0;
 }
 
@@ -38,66 +39,70 @@ void Player::render()
 
 void Player::to_bin()
 {
-	std::cout << "mussolini";
+	std::cout << "Entra to_bin Player\n";
 
 	GameObject::to_bin();
 
-	//accedemos al size del padre
-	size_t sizeGO = GameObject::size();
-	//buffer auxiliar
-	char buffer[sizeGO];
-	//copiamos la data del padre en el buffer auxiliar
-	memcpy(buffer, GameObject::data(), sizeGO);
-	//almacenamiento para la data
-	alloc_data(sizeGO + SIZE_PLAYER);
+	cout << "TMP" << sizeof(tmp) << endl;
 
-	char *tmp = _data;
-	memcpy(tmp, buffer, sizeGO);
-	//avanzamos el size del padre ya que ya se ha hecho en el to bin de GameObject
-	tmp += sizeGO;
-
-	memcpy(tmp, &index, sizeof(index));
+	memcpy(tmp, &index, sizeof(uint8_t));
 	tmp += sizeof(index);
+	std::cout << "Index:" << (int)index << endl;
 
 	memcpy(tmp, &points, sizeof(uint8_t));
 	tmp += sizeof(points);
+	std::cout << "Points:" << (int)points << endl;
 
 	memcpy(tmp, &kills, sizeof(uint8_t));
 	tmp += sizeof(kills);
+	std::cout << "Kills:" << (int)kills << endl;
 
 	memcpy(tmp, &deaths, sizeof(uint8_t));
 	tmp += sizeof(deaths);
+	std::cout << "Deaths:" << (int)deaths << endl;
 
 	memcpy(tmp, &dir, sizeof(Vector2D));
 	tmp += sizeof(dir);
+	std::cout << "Dir:" << dir.getX() << dir.getY() << endl;
 
-	std::cout << "mussolinifinal";
+	std::cout << "Sale to_bin Player\n";
+	std::cout << "Tamaño esperado  " << sizeof(Player) << " Tamaño final es " << sizeof(tmp) * sizeof(_data) << "\n";
 }
 
 int Player::from_bin(char *data)
 {
+	std::cout << "Entra from_bin player\n";
 
-	GameObject::from_bin(data);
+	/*alloc_data(SIZE_PLAYER);
+	memcpy(static_cast<void *>(_data), data, SIZE_PLAYER);
+	std::cout << "Size" << SIZE_PLAYER + SIZE_SERIALIZABLE << endl;
+*/
 
-	char *tmp = data;
-	tmp += GameObject::size();
+	char *pos = data;
 
-	memcpy(&index, tmp, sizeof(index));
-	tmp += sizeof(index);
+	memcpy((void *)&index, tmp, sizeof(index));
+	pos += sizeof(index);
+	std::cout << "Index:" << (int)index << endl;
 
-	memcpy(&points, tmp, sizeof(points));
-	tmp += sizeof(points);
+	memcpy((void *)&points, tmp, sizeof(points));
+	pos += sizeof(points);
+	std::cout << "Points:" << (int)points << endl;
 
-	memcpy(&kills, tmp, sizeof(kills));
-	tmp += sizeof(kills);
+	memcpy((void *)&kills, tmp, sizeof(kills));
+	pos += sizeof(kills);
+	std::cout << "Kills:" << (int)kills << endl;
 
-	memcpy(&deaths, tmp, sizeof(deaths));
-	tmp += sizeof(deaths);
+	memcpy((void *)&deaths, tmp, sizeof(deaths));
+	pos += sizeof(deaths);
+	std::cout << "Deaths:" << (int)deaths << endl;
 
-	memcpy(&dir, tmp, sizeof(dir));
-	tmp += sizeof(dir);
+	memcpy((void *)&dir, tmp, sizeof(dir));
+	pos += sizeof(dir);
+	std::cout << "Dir:" << dir.getX() << " " << dir.getY() << endl;
 
-	_size += SIZE_PLAYER;
+	//_size += SIZE_PLAYER;
+	std::cout << "Sale from_bin Player\n";
+	std::cout << "Tamaño esperado " << sizeof(Player) << " Tamaño final es " << sizeof(tmp) * sizeof(_data) << "\n";
 
 	return 0;
 }
@@ -133,3 +138,17 @@ void Player::onCollisionEnter(GameObject *other)
         //hasToRespawn = true;
     }*/
 }
+/*//accedemos al size del padre
+	size_t sizeGO = GameObject::size()-SIZE_PLAYER;
+	//buffer auxiliar
+	char buffer[sizeGO];
+	//copiamos la data del padre en el buffer auxiliar
+	memcpy(buffer, GameObject::data(), sizeGO);*/
+
+//almacenamiento para la data
+//alloc_data(sizeGO + SIZE_PLAYER);
+
+/*//char *tmp = _data;
+	memcpy(tmp, buffer, sizeGO);
+	//avanzamos el size del padre ya que ya se ha hecho en el to bin de GameObject
+	tmp += sizeGO;*/

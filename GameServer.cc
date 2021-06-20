@@ -36,26 +36,30 @@ void GameServer::do_messages()
 		// - LOGIN: Añadir al vector clients
 		// - LOGOUT: Eliminar del vector clients
 		// - MESSAGE: Reenviar el mensaje a todos los clientes (menos el emisor)
-		std::cout << "anass = Francisco Franco\n";
+		std::cout << "entra\n";
 
 		//Serializable *gm;
 		Socket *s = nullptr;
-		std::cout << "anassNazi\n";
-		GameMessage gm;
-		if (socket.recv(gm, s) == -1)
+		GameObject *gm = new GameObject();
+		if (socket.recv(*gm, s) == -1)
 		{
 			std::cout << "Error al recibir el mensaje\n";
 		}
 
-		switch ((ObjectType)gm.getGameObject()->getType())
+		std::cout << "recibi\n";
+
+		switch ((ObjectType)gm->getType())
 		{
 		case ObjectType::PLAYER:
 		{
+			std::cout << "recibi\n";
+
 			// Caben dos posibilidades cuando lleg e un player
 			//	1.- Que sea el primer player en conectarse, entoces creamos un mundo y se lo enviamos
 			//	2.- Que sea el segundo o más y le enviamos el mundo ya construído por el player 1
 			if (clients.empty())
 			{
+				std::cout << "putoncio";
 				//	Creamos el mundo // TODO Crear mapa
 				world = new GameWorld();
 				clients.push_back(std::move(std::make_unique<Socket>(*s)));
@@ -64,7 +68,7 @@ void GameServer::do_messages()
 			}
 			else
 			{
-				switch ((Info)gm.getGameObject()->getInfo())
+				switch ((Info)gm->getInfo())
 				{
 				case Info::Build:
 				{
@@ -79,9 +83,9 @@ void GameServer::do_messages()
 						}
 						else
 						{
-							socket.send(gm, **it);
+							socket.send(*gm, **it);
 						}
-						world->addNewGameObject(gm.getGameObject());
+						world->addNewGameObject(gm);
 					}
 
 					break;
@@ -96,7 +100,7 @@ void GameServer::do_messages()
 						}
 						else
 						{
-							socket.send(gm, **it);
+							socket.send(*gm, **it);
 						}
 					}
 
@@ -115,7 +119,7 @@ void GameServer::do_messages()
 							borrar = it;
 							continue;
 						}
-						socket.send(gm, **it);
+						socket.send(*gm, **it);
 					}
 
 					if (found)

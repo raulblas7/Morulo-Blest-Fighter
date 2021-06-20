@@ -3,6 +3,7 @@
 
 GameWorld::GameWorld()
 {
+
 }
 
 GameWorld::~GameWorld()
@@ -39,7 +40,7 @@ void GameWorld::to_bin()
     size_t size = 0;
     for (GameObject *gameObject : gameObjects)
     {
-        gameObject->to_bin();
+        //gameObject->to_bin();
         size += gameObject->size();
     }
 

@@ -15,16 +15,14 @@ GameClient::GameClient(const char *ip, const char *puertoServer, const char *nic
     rect.y = PLAYER1_POSY;
     rect.w = PLAYER_WIDTH;
     rect.h = PLAYER_HEIGHT;
-    std::cout << "player";
-    jugadorCliente = new Player((uint8_t)ObjectType::PLAYER, nick, 0, PLAYER_WIDTH, PLAYER_HEIGHT, true, game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture), rect);
+    jugadorCliente = new Player((uint8_t)ObjectType::PLAYER, nick, 90, true, game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture), rect);
 }
 
 void GameClient::login()
 {
     std::cout << "Enviando mensaje de login \n";
-
-    GameMessage em("hola");
-    if (socket.send(em, socket) == -1)
+    //jugadorCliente->setInfo(0);
+    if (socket.send(*jugadorCliente, socket) == -1)
     {
         perror("Ha fallado el envio de login del cliente");
     }
@@ -112,17 +110,17 @@ void GameClient::net_thread()
         }
         else
         {
-            GameMessage em;
-            if (socket.recv(em) == -1)
+            GameObject *em;
+            if (socket.recv(*em) == -1)
             {
                 perror("Error al recibir el mensaje en el cliente");
             }
 
-            switch ((Info)em.getGameObject()->getInfo())
+            switch ((Info)em->getInfo())
             {
             case Info::Build:
             {
-                world->addNewGameObject(em.getGameObject());
+                world->addNewGameObject(em);
                 break;
             }
 
