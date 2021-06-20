@@ -8,14 +8,18 @@
 
 GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick) : socket(ip, puertoServer), nick(nick)
 {
-    game = SDLGame::GetInstance();
     exit = false;
+    game = SDLGame::GetInstance();
 }
 
 void GameClient::login()
 {
     std::cout << "Enviando mensaje de login \n";
-    GameMessage em(nick, GameMessage::MessageType::LOGIN);
+    std::string msg;
+
+    GameMessage em(nick, msg);
+    em.type = GameMessage::LOGIN;
+
     if (socket.send(em, socket) == -1)
     {
         perror("Ha fallado el envio de login del cliente");

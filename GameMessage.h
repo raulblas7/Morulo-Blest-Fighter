@@ -18,41 +18,33 @@
  *  +-------------------+
  *
  */
-
-
 class GameMessage : public Serializable
 {
-
-private:
-    // Tipo del mensaje
-    uint8_t type;
-    // Nick del que envía el mensaje
-    std::string nick;
-
 public:
-    static const size_t MESSAGE_SIZE = sizeof(char) * 10 + sizeof(uint8_t);
+    static const size_t MESSAGE_SIZE = sizeof(char) * 88 + sizeof(uint8_t);
 
     enum MessageType
     {
-        // Al logear
         LOGIN = 0,
-        LOGOUT = 1,
-        UPDATE_WORLD
+        MESSAGE = 1,
+        LOGOUT = 2
     };
 
     GameMessage(){};
 
-	// Mensaje con un jugador
-    GameMessage(const std::string &n, const uint8_t type_);
-
-    ~GameMessage(){};
+    GameMessage(const std::string &n, const std::string &m) : nick(n), message(m){};
 
     void to_bin();
 
-    int from_bin(char *data);
+    int from_bin(char *bobj);
+
+    uint8_t type;
+
+    std::string nick;
+    std::string message;
 
     // Devuelve el tipo del mensaje
-    const uint8_t getTipo() {return type;};
+    const uint8_t getTipo() { return type; };
     //  Devuelve el nick del jugador que envio este mensaje
-    const std::string getNick(){ return nick;}
+    const std::string getNick() { return nick; }
 };
