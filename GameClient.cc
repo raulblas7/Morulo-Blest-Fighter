@@ -112,17 +112,54 @@ void GameClient::creaMundoLocal(GameWorld *gW)
 
 void GameClient::net_thread()
 {
-    while (true)
+    while (!exit)
     {
         //Recibir Mensajes de red
-        GameMessage gm;
+
+        GameMessage em;
         std::cout << "damealgo";
-        if (socket.recv(gm) == -1)
+        if (socket.recv(em) == -1)
         {
             perror("Error al recibir el mensaje en el cliente");
         }
         std::cout << "medioalgo";
-
+        if (em.type == GameMessage::LOGIN)
+        {
+            std::cout << em.nick << " se unio al chat "
+                      << "\n";
+        }
+        else if (em.type == GameMessage::LOGOUT)
+        {
+            std::cout << em.nick << " se desconecto del chat "
+                      << "\n";
+        }
+        else
+        {
+            //Mostrar en pantalla el mensaje de la forma "nick: mensaje"
+            std::cout << em.nick << ": " <<em.message << "\n";
+        }
+        /* Serializable* em;
+        std::cout << "damealgo";
+        if (socket.recv(*em) == -1)
+        {
+            perror("Error al recibir el mensaje en el cliente");
+        }
+        std::cout << "medioalgo";
+        if (dynamic_cast<GameMessage*>(em)->type == GameMessage::LOGIN)
+        {
+            std::cout << dynamic_cast<GameMessage*>(em)->nick << " se unio al chat "
+                      << "\n";
+        }
+        else if (dynamic_cast<GameMessage*>(em)->type== GameMessage::LOGOUT)
+        {
+            std::cout << dynamic_cast<GameMessage*>(em)->nick << " se desconecto del chat "
+                      << "\n";
+        }
+        else
+        {
+            //Mostrar en pantalla el mensaje de la forma "nick: mensaje"
+            std::cout << dynamic_cast<GameMessage*>(em)->nick << ": " << dynamic_cast<GameMessage*>(em)->message << "\n";
+        }*/
         /*auto world = dynamic_cast<GameWorld *>(gm);
         auto mes = dynamic_cast<GameMessage *>(gm);
 

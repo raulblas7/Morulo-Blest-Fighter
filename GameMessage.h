@@ -1,6 +1,7 @@
 #pragma once
 #include "Serializable.h"
 #include <string>
+#include "GameObject.h"
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -26,7 +27,8 @@ public:
     enum MessageType
     {
         LOGIN = 0,
-        MESSAGE = 1,
+        MESSAGE,
+        GoInfo,
         LOGOUT = 2
     };
 

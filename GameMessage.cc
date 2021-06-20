@@ -6,10 +6,9 @@
 
 void GameMessage::to_bin()
 {
-    alloc_data(MESSAGE_SIZE);
+   alloc_data(MESSAGE_SIZE);
 
     memset(_data, 0, MESSAGE_SIZE);
-
     //Serializar los campos type, nick y message en el buffer _data
     char *tmp = _data;
     //Copiar tipo a partir de direccion
@@ -39,5 +38,6 @@ int GameMessage::from_bin(char *bobj)
     //Copiar message a partir de direccion
     message = tmp;
     return 0;
+
 }
 

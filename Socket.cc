@@ -53,23 +53,19 @@ int Socket::recv(Serializable &obj, Socket *&sock)
 
 	char buffer[MAX_MESSAGE_SIZE];
 
-	std::cout << "putoncio";
 	ssize_t bytes = recvfrom(sd, buffer, MAX_MESSAGE_SIZE, 0, &sa, &sa_len);
 
 	if (bytes <= 0)
 	{
-		std::cout << "putoncio";
 
 		return -1;
 	}
 
 	if (sock == nullptr)
 	{
-		std::cout << "putoncio";
 
 		sock = new Socket(&sa, sa_len);
 	}
-	std::cout << "putoncio";
 
 	obj.from_bin(buffer);
 
