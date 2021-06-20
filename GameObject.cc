@@ -1,10 +1,9 @@
 #include "GameObject.h"
 
-
-GameObject::GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture* texture_, SDL_Rect rect_)
+GameObject::GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_)
     : Serializable(), type(type_), id(id_), angle(angle_), width(w), height(h), active(act), texture(texture_), rect(rect_)
 {
-	SIZE_SERIALIZABLE = sizeof(uint8_t) + sizeof(char) * 20 + sizeof(angle) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(active) + sizeof(texture) + sizeof(SDL_Rect);
+    SIZE_SERIALIZABLE = 2 * sizeof(uint8_t) + sizeof(char) * 20 + sizeof(angle) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(active) + sizeof(texture) + sizeof(SDL_Rect);
 }
 
 GameObject::~GameObject()
@@ -14,6 +13,7 @@ GameObject::~GameObject()
 void GameObject::to_bin()
 {
 
+    std::cout << "goprincipio";
     alloc_data(SIZE_SERIALIZABLE);
 
     memset(_data, 0, SIZE_SERIALIZABLE);
@@ -23,6 +23,9 @@ void GameObject::to_bin()
 
     //Copiar tipo a partir de direccion
     memcpy(tmp, &type, sizeof(uint8_t));
+    tmp += sizeof(uint8_t);
+
+    memcpy(tmp, &info, sizeof(uint8_t));
     tmp += sizeof(uint8_t);
 
     //Copiar id a partir de direccion
@@ -52,19 +55,25 @@ void GameObject::to_bin()
     //Copiar rect a partir de direccion
     memcpy(tmp, &rect, sizeof(SDL_Rect));
     tmp += sizeof(SDL_Rect);
+
+        std::cout << "gofinal";
+
 }
 
 int GameObject::from_bin(char *data)
 {
-     _size = SIZE_SERIALIZABLE;
+    _size = SIZE_SERIALIZABLE;
 
     //alloc_data(SIZE_SERIALIZABLE);
 
-	//Reconstruir la clase usando el buffer _data
+    //Reconstruir la clase usando el buffer _data
     char *tmp = _data;
 
     //Copiar tipo a partir de direccion
     memcpy(&type, tmp, sizeof(uint8_t));
+    tmp += sizeof(uint8_t);
+
+    memcpy(&info, tmp, sizeof(uint8_t));
     tmp += sizeof(uint8_t);
 
     //Copiar id a partir de direccion
@@ -114,10 +123,10 @@ void GameObject::setId(const std::string &id)
     this->id = id;
 }
 
-void GameObject::setTexture(Texture* text)
+void GameObject::setTexture(Texture *text)
 {
-    if(text != nullptr)
+    if (text != nullptr)
         texture = text;
-   // else
-     //   std::throw new std::exception("Se está intentado setear una textura a un gameObject con una textura inválida");
+    // else
+    //   std::throw new std::exception("Se está intentado setear una textura a un gameObject con una textura inválida");
 }

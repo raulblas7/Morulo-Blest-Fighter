@@ -55,11 +55,14 @@ void GameWorld::to_bin()
         memcpy(tmp, gameObject->data(), gameObject->size());
         tmp += gameObject->size();
     }
+
+    
 }
 
 int GameWorld::from_bin(char *data)
 {
     //
+    
     auto old = gameObjects;
     for (auto gO : old)
     {

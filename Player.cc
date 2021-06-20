@@ -38,6 +38,8 @@ void Player::render()
 
 void Player::to_bin()
 {
+	std::cout << "mussolini";
+
 	GameObject::to_bin();
 
 	//accedemos al size del padre
@@ -68,10 +70,13 @@ void Player::to_bin()
 
 	memcpy(tmp, &dir, sizeof(Vector2D));
 	tmp += sizeof(dir);
+
+	std::cout << "mussolinifinal";
 }
 
 int Player::from_bin(char *data)
 {
+
 	GameObject::from_bin(data);
 
 	char *tmp = data;

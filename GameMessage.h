@@ -2,6 +2,8 @@
 #include "Serializable.h"
 #include <string>
 #include "GameObject.h"
+#include "Player.h"
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -22,31 +24,26 @@
 class GameMessage : public Serializable
 {
 public:
-    static const size_t MESSAGE_SIZE = sizeof(char) * 88 + sizeof(uint8_t);
-
-    enum MessageType
-    {
-        LOGIN = 0,
-        MESSAGE,
-        GoInfo,
-        LOGOUT = 2
-    };
+    static const size_t MESSAGE_SIZE = sizeof(char) * 8;
 
     GameMessage(){};
 
-    GameMessage(const std::string &n, const std::string &m) : nick(n), message(m){};
+    GameMessage(GameObject *gameObj) : gO(gameObj){};
+    GameMessage(std::string li) : so(li)
+    {
+        gO = nullptr;
+    };
 
     void to_bin();
 
     int from_bin(char *bobj);
 
-    uint8_t type;
+    GameObject *gO;
+    std::string so ;
 
-    std::string nick;
-    std::string message;
-
-    // Devuelve el tipo del mensaje
-    const uint8_t getTipo() { return type; };
-    //  Devuelve el nick del jugador que envio este mensaje
-    const std::string getNick() { return nick; }
+        GameObject *
+        getGameObject()
+    {
+        return gO;
+    };
 };

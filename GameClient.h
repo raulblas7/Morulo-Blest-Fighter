@@ -5,6 +5,7 @@
 #include "Socket.h"
 #include "GameWorld.h"
 #include "Player.h"
+#include "Constants.h"
 /**
  *  Clase para el cliente de Game
  */
@@ -24,8 +25,6 @@ private:
     std::string nick;
     Player *jugadorCliente;
 
-    // con un world crea una escena y agrega al player a dicho world
-    void creaMundoLocal(GameWorld *gW);
 
 public:
     /**

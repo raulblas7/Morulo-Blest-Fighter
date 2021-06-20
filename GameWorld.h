@@ -29,6 +29,6 @@ private:
     std::vector<GameObject *> gameObjects;
     // Lista de entidades a borrar en el juego
     std::vector<GameObject *> removeObjects;
-
+    //std::map
     void checkCollisions(){};
 };

@@ -3,7 +3,7 @@
 #include "Texture.h"
 #include "Serializable.h"
 
-  enum class ObjectType
+enum class ObjectType
 {
     NONE,
     PLAYER,
@@ -11,11 +11,19 @@
     OBSTACLE
 };
 
+enum class Info
+{
+    Build,
+    Update,
+    Destroy
+};
 
 class GameObject : public Serializable
 {
 protected:
     uint8_t type;
+    uint8_t info;
+
     uint8_t width, height;
     std::string id; // max 20
     float angle;
@@ -24,6 +32,7 @@ protected:
     SDL_Rect rect;
 
     size_t SIZE_SERIALIZABLE;
+
 public:
     GameObject(){};
     GameObject(uint8_t type_, std::string id_, float angle_, uint8_t w, uint8_t h, bool act, Texture *texture_, SDL_Rect rect_);
@@ -54,4 +63,6 @@ public:
     uint8_t getHeight() { return height; };
     uint8_t getWidth() { return width; };
     Texture *getPlayerTexture() { return texture; };
+    uint8_t getType() { return type; };
+    uint8_t getInfo() { return info; };
 };

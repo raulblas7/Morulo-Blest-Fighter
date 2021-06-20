@@ -8,18 +8,22 @@
 
 GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick) : socket(ip, puertoServer), nick(nick)
 {
-    exit = false;
     game = SDLGame::GetInstance();
+    exit = false;
+    SDL_Rect rect;
+    rect.x = PLAYER1_POSX;
+    rect.y = PLAYER1_POSY;
+    rect.w = PLAYER_WIDTH;
+    rect.h = PLAYER_HEIGHT;
+    std::cout << "player";
+    jugadorCliente = new Player((uint8_t)ObjectType::PLAYER, nick, 0, PLAYER_WIDTH, PLAYER_HEIGHT, true, game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture), rect);
 }
 
 void GameClient::login()
 {
     std::cout << "Enviando mensaje de login \n";
-    std::string msg;
 
-    GameMessage em(nick, msg);
-    em.type = GameMessage::LOGIN;
-
+    GameMessage em("hola");
     if (socket.send(em, socket) == -1)
     {
         perror("Ha fallado el envio de login del cliente");
@@ -55,19 +59,19 @@ void GameClient::input_thread()
     {
         if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_UP)))
         {
-            //jugadorCliente->setDir(Vector2D(0, -1));
+            jugadorCliente->setDir(Vector2D(0, -1));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_DOWN)))
         {
-            // jugadorCliente->setDir(Vector2D(0, 1));
+            jugadorCliente->setDir(Vector2D(0, 1));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_RIGHT)))
         {
-            //jugadorCliente->setDir(Vector2D(1, 0));
+            jugadorCliente->setDir(Vector2D(1, 0));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
         {
-            //  jugadorCliente->setDir(Vector2D(-1, 0));
+            jugadorCliente->setDir(Vector2D(-1, 0));
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_ESCAPE)))
         {
@@ -90,53 +94,44 @@ void GameClient::input_thread()
     }*/
 }
 
-//  Cuando me llega un world
-void GameClient::creaMundoLocal(GameWorld *gW)
-{
-    if (gW)
-    {
-        world = gW;
-        SDL_Rect rect;
-        rect.x = 100;
-        rect.y = 100;
-        rect.w = 250;
-        rect.h = 250;
-        //jugadorCliente = new Player(ObjectType::PLAYER, "nome", 0.0f, 50, 50, true, nullptr, &rect);
-        jugadorCliente = new Player();
-        jugadorCliente->setTexture(game->getTextureManager()->getTexture(Resources::TextureId::HelicopterTexture));
-        gW->addNewGameObject(jugadorCliente);
-    }
-    else
-        perror("Un cliente ha recibido un world invalido");
-}
-
 void GameClient::net_thread()
 {
     while (!exit)
     {
         //Recibir Mensajes de red
-
-        GameMessage em;
-        std::cout << "damealgo";
-        if (socket.recv(em) == -1)
+        if (!world)
         {
-            perror("Error al recibir el mensaje en el cliente");
-        }
-        std::cout << "medioalgo";
-        if (em.type == GameMessage::LOGIN)
-        {
-            std::cout << em.nick << " se unio al chat "
-                      << "\n";
-        }
-        else if (em.type == GameMessage::LOGOUT)
-        {
-            std::cout << em.nick << " se desconecto del chat "
-                      << "\n";
+            GameWorld em;
+            std::cout << "damealgo";
+            if (socket.recv(em) == -1)
+            {
+                perror("Error al recibir el mensaje en el cliente");
+            }
+            world = &em;
+            world->addNewGameObject(jugadorCliente);
         }
         else
         {
-            //Mostrar en pantalla el mensaje de la forma "nick: mensaje"
-            std::cout << em.nick << ": " <<em.message << "\n";
+            GameMessage em;
+            if (socket.recv(em) == -1)
+            {
+                perror("Error al recibir el mensaje en el cliente");
+            }
+
+            switch ((Info)em.getGameObject()->getInfo())
+            {
+            case Info::Build:
+            {
+                world->addNewGameObject(em.getGameObject());
+                break;
+            }
+
+                /*case Info::Update:
+                {
+                    world->getWorldGameObjects().(em.getGameObject());
+                    break;
+                }*/
+            }
         }
         /* Serializable* em;
         std::cout << "damealgo";
