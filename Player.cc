@@ -7,7 +7,7 @@
 Player::Player(const char *s, const char *p, const char *n) : socket(s, p), nick(n)
 {
     dir = Vector2D(0,0);
-    vel = 4.0f;
+    vel = 10.0f;
 }
 
 Player::~Player()
@@ -64,5 +64,5 @@ int Player::getPlayerTam(){
 }
 
 bool Player::canMove(){
-    return pos.getX() > 0 && pos.getY() < SCREEN_HEIGHT && pos.getX() < SCREEN_WIDTH && pos.getY() > 0;
+    return pos.getX() > tam && pos.getY() < SCREEN_HEIGHT - tam && pos.getX() < SCREEN_WIDTH - tam && pos.getY() > tam;
 }
