@@ -13,7 +13,7 @@ private:
     Vector2D dir;
     float vel;
     SDL_Rect rect;
-
+    float angle;
     bool shouldDelete = false;
 
 public:
@@ -35,9 +35,12 @@ public:
     void setBulletRect(const SDL_Rect& newRect);
     void setTexture(Texture* newTexture);
     void setDir(Vector2D d){ dir = d;};
+    void setRotate(float r){ angle = r;};
+
     Vector2D getDir(){ return dir;};
     float getVel() {  return vel;};
     bool checkLimits();
+    float getRotate() {  return angle;};
 
     bool getShouldDelete() { return shouldDelete; };
 
