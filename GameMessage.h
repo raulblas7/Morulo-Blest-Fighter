@@ -11,10 +11,7 @@ enum class MessageType
 {
     LOGIN   = 0,
     LOGOUT  = 1,
-    PLAYERINFO ,
-    PICKUPEAT ,
-    NEWPICKUP ,
-    PICKUPDESTROY ,
+    PLAYERMOVED ,
     PLAYERDIE ,
     ADDPLAYER ,
     ADDBULLET,

@@ -53,7 +53,7 @@ void GameMessage::to_bin()
         serializeTypeNick();
         break;
     }
-    case MessageType::PLAYERINFO:
+    case MessageType::PLAYERMOVED:
     {
         serializeObjectInfo();
         break;
@@ -66,16 +66,6 @@ void GameMessage::to_bin()
     case MessageType::PLAYERDIE:
     {
         serializeTypeNick();
-        break;
-    }
-    case MessageType::PICKUPDESTROY:
-    {
-        serializeTypeNick();
-        break;
-    }
-    case MessageType::PICKUPEAT:
-    {
-        serializeObjectInfo();
         break;
     }
     case MessageType::NEWBULLET:
@@ -121,7 +111,7 @@ int GameMessage::from_bin(char *bobj)
         constructTypeNick(bobj);
         break;
     }
-    case MessageType::PLAYERINFO:
+    case MessageType::PLAYERMOVED:
     {
         constructObjectInfo(bobj);
         break;
@@ -136,24 +126,6 @@ int GameMessage::from_bin(char *bobj)
     {
         std::cout << "PLAYERDEAD\n";
         constructTypeNick(bobj);
-        break;
-    }
-    case MessageType::PICKUPDESTROY:
-    {
-        std::cout << "PICKUPDESTROY\n";
-        constructTypeNick(bobj);
-        break;
-    }
-    case MessageType::NEWPICKUP:
-    {
-        std::cout << "NEWPICKUP\n";
-        constructObjectInfo(bobj);
-        break;
-    }
-    case MessageType::PICKUPEAT:
-    {
-        std::cout << "PICKUPEAT\n";
-        constructObjectInfo(bobj);
         break;
     }
     case MessageType::NEWBULLET:

@@ -159,7 +159,7 @@ void GameClient::input_thread()
 
             if (willSend)
             {
-                GameMessage mess(MessageType::PLAYERINFO, jugadorCliente);
+                GameMessage mess(MessageType::PLAYERMOVED, jugadorCliente);
                 socket->send(mess, *socket);
             }
         }
@@ -192,7 +192,7 @@ void GameClient::net_thread()
             }
             break;
         }
-        case MessageType::PLAYERINFO:
+        case MessageType::PLAYERMOVED:
         {
             ObjectInfo p = msg.getObjectInfo();
             jugadores[msg.getNick()] = p;

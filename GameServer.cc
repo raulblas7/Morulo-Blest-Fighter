@@ -102,7 +102,7 @@ void GameServer::do_messages()
             break;
         }
 
-        case MessageType::PLAYERINFO:
+        case MessageType::PLAYERMOVED:
         {
             //Actualizamos la posición en la que se encuentra dicho jugador en la memoria del servidor
             players[cm.getNick()] = cm.getObjectInfo();
