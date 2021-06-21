@@ -16,7 +16,7 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 		
 */
     srand(std::time(0));
-    initTime = SDL_GetTicks();
+    //initTime = SDL_GetTicks();
 }
 
 //void GameServer::find()
@@ -134,6 +134,8 @@ void GameServer::do_messages()
             ObjectInfo oI;
 
             oI = cm.getObjectInfo();
+            
+            objects[cm.getNick()] = oI;
 
             GameMessage newBulletAdded = GameMessage();
             newBulletAdded.setMsgType(MessageType::ADDBULLET);
@@ -149,6 +151,33 @@ void GameServer::do_messages()
             }
             break;
         }
+        }
+    }
+}
+
+void GameServer::onCollisions(){
+    
+    //jugador-jugador
+    for(auto it = players.begin(); it != players.end(); ++it){
+
+        for (auto et = std::next(it); et != players.end(); ++et)
+        {
+            if(SDL_HasIntersection(&((*it).second.rect), &((*et).second.rect))){
+                //hacer lo correspondiente si colisiona un jugador con otro jugador
+                std::cout << "Jugador colision con jugador" << std::endl;
+            }
+        }
+    }
+
+    //jugador-bala
+    for (auto it = players.begin(); it != players.end(); ++it)
+    {
+        for (auto et = objects.begin(); et != objects.end(); ++et)
+        {
+            if(SDL_HasIntersection(&((*it).second.rect), &((*et).second.rect)) && (*it).first != (*et).first){
+                //hacer lo correspondiente si colisiona un jugador con una bala de otro jugador
+                std::cout << "Bala colision con jugador" << std::endl;
+            }
         }
     }
 }

@@ -17,18 +17,11 @@ class Bullet;
 class GameClient
 {
 private:
-    /**
-     * Socket para comunicar con el servidor
-     */
-
-    //GameWorld *world;
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
     Texture* textEnemigos = nullptr;
     Texture* bala = nullptr;
-    //Socket socket;
-    //std::string nick;
     Player *jugadorCliente = nullptr;
 
     std::map<std::string, ObjectInfo> jugadores;
@@ -39,6 +32,8 @@ private:
     
     std::map<std::string, ObjectInfo> objetos;
 
+    uint32_t startTime;
+    uint32_t frameTime;
 public:
     /**
      * @param ip dirección del cliente

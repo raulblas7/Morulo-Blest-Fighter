@@ -6,6 +6,7 @@
 #include "InputHandler.h"
 #include <SDL2/SDL.h>
 #include "Bullet.h"
+#include "Constants.h"
 
 GameClient::GameClient(const char *ip, const char *puertoServer, const char *nick)
 {
@@ -21,7 +22,7 @@ GameClient::GameClient(const char *ip, const char *puertoServer, const char *nic
     //  TODO    posible implementacion de seteo de SDL_Rect 
 
     //  TODO    bg
-
+    startTime = SDL_GetTicks();
 }
 
 GameClient::~GameClient()
@@ -91,9 +92,12 @@ void GameClient::input_thread()
     //al servidor con un send
     bool willSend = false;
 
-    //Vector2D playerPos = jugadorCliente->getPlayerPos();
     SDL_Rect plRect = jugadorCliente->getPlayerRect();
     Socket* socket = jugadorCliente->getPlayerSocket();
+
+    //control de frames para disparar
+    frameTime = SDL_GetTicks() - startTime;
+
     //Movimiento por teclado del jugador
     if (InputHandler::instance()->keyDownEvent())
     {
@@ -102,28 +106,33 @@ void GameClient::input_thread()
             jugadorCliente->setDir(Vector2D(0, -1));
             plRect.y += jugadorCliente->getDir().getY() * jugadorCliente->getVel();
             jugadorCliente->setPlayerRect(plRect);
+            jugadorCliente->setRotate(-90);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_DOWN)))
         {
             jugadorCliente->setDir(Vector2D(0, 1));
             plRect.y += jugadorCliente->getDir().getY() * jugadorCliente->getVel();
             jugadorCliente->setPlayerRect(plRect);
+            jugadorCliente->setRotate(90);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_RIGHT)))
         {
             jugadorCliente->setDir(Vector2D(1, 0));
             plRect.x += jugadorCliente->getDir().getX() * jugadorCliente->getVel();
             jugadorCliente->setPlayerRect(plRect);
+            jugadorCliente->setRotate(0);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
         {
             jugadorCliente->setDir(Vector2D(-1, 0));
             plRect.x += jugadorCliente->getDir().getX() * jugadorCliente->getVel();
             jugadorCliente->setPlayerRect(plRect);
+            jugadorCliente->setRotate(0);
         }
-        else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_SPACE)))
+        else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_SPACE)) && frameTime >= SHOOT_RATE)
         {
             instanceBullet();
+            startTime = SDL_GetTicks();
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_ESCAPE)))
         {
@@ -179,13 +188,6 @@ void GameClient::net_thread()
             {
                 ObjectInfo o = msg.getObjectInfo();
                 balas[msg.getNick()] = o;
-
-                // for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
-                // {
-                //     if((*it).first == msg.getNick()){
-                //         balas[msg.getNick()].dir = (*it).second.dir;
-                //     }
-                // }
                 break;
             }
         }
@@ -198,7 +200,7 @@ void GameClient::render() const
     SDL_RenderClear(game->getRenderer());
 
     //Pintamos a nuestro jugador
-    jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
+    jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect(),jugadorCliente->getRotate());
 
     for (auto it = balasInstanciadas.begin(); it != balasInstanciadas.end(); ++it)
     {
@@ -223,11 +225,11 @@ void GameClient::render() const
 }
 
 void GameClient::instanceBullet(){
-    SDL_Rect rect = jugadorCliente->getPlayerRect();
-    rect.x = rect.x + rect.w;
-    rect.y = rect.y + rect.h / 2;
-    rect.w = 10;
-    rect.h = 10;
+    SDL_Rect rect;
+    rect.x = jugadorCliente->getPointToShoot().getX();
+    rect.y = jugadorCliente->getPointToShoot().getY();
+    rect.w = BULLET_WIDTH;
+    rect.h = BULLET_HEIGHT;    
 
     balasInstanciadas.push_back(new Bullet(*jugadorCliente->getPlayerSocket(), jugadorCliente->getDir(), rect, jugadorCliente->getNick()));
 }

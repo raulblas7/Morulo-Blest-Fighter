@@ -4,16 +4,14 @@
 int main(int argc, char **argv)
 {
     // arg 1 => ipServer | arg 2 => puertoServer
-
     GameServer gServer(argv[1], argv[2]);
 
     gServer.do_messages();
 
-    /*while (true)
+    while (true)
     {
-        es.checkCollisions();
-        es.createObjects();
+        gServer.onCollisions();
     }
-    */
+    
     return 0;
 }

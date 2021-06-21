@@ -28,11 +28,13 @@
 //	Posición en y inicial del jugador 2
 #define PLAYER2_POSY 380
 //	Tamaño en y de la bala
-#define BULLET_HEIGHT 8
+#define BULLET_HEIGHT 10
 //	Tamaño en x de la bala
-#define BULLET_WIDTH 8
+#define BULLET_WIDTH 10
 //	Máximo número de jugadores permitidos en el juego
 #define MAX_PLAYERS 2
+//  Cadencia de disparo
+#define SHOOT_RATE 100
 //	Frame rate del cliente
 #define CLIENT_FRAME_TIME 15
 //	Frame rate del servidor

@@ -5,7 +5,7 @@
 struct ObjectInfo{
     // Vector2D pos;
     // int tam;
-
     SDL_Rect rect;
     Vector2D dir;
+  //  float angle;
 };

@@ -14,6 +14,8 @@ GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
     objectInfo = ObjectInfo();
     objectInfo.rect = player_->getPlayerRect();
     objectInfo.dir = player_->getDir();
+ //   objectInfo.angle = player_->getRotate();
+
 }
 
 GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)
@@ -22,6 +24,7 @@ GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)
     objectInfo = ObjectInfo();
     objectInfo.rect = bullet_->getBulletRect();
     objectInfo.dir = bullet_->getDir();
+  //  objectInfo.angle = bullet_->getRotate(); 
 }
 
 GameMessage::~GameMessage()
@@ -54,11 +57,6 @@ void GameMessage::to_bin()
             break;
         }
         case MessageType::PLAYERINFO:
-        {
-            serializeObjectInfo();
-            break;
-        }
-        case MessageType::NEWPICKUP:
         {
             serializeObjectInfo();
             break;
