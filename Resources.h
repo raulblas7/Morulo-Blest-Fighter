@@ -14,7 +14,8 @@ public:
 		HelicopterTexture,
 		HelicopterTexture2,
 		Rock,
-		Bullet
+		Bullet,
+		BackGround
 	};
 
 	enum AudioId : std::size_t {

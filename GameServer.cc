@@ -47,8 +47,12 @@ void GameServer::do_messages()
             ObjectInfo n;
 
             SDL_Rect r;
-            r.x = rand() % (480);
-            r.y = rand() % (640);
+            int maxX = SCREEN_WIDTH - PLAYER_WIDTH * 3;
+            int maxY = SCREEN_HEIGHT - PLAYER_HEIGHT * 3;
+            int minX = PLAYER_WIDTH * 3;
+            int minY = PLAYER_HEIGHT * 3;
+            r.x = rand() % maxX + minX;
+            r.y = rand() % maxY + minY;
             r.w = PLAYER_WIDTH;
             r.h = PLAYER_HEIGHT;
             n.rect = r;
@@ -58,16 +62,16 @@ void GameServer::do_messages()
             //Mandarle al player que se acaba de conectar su posicion y su tam
             //Avisar al resto de jugadores que se ha conectado un nuevo jugador
             //Reenviar el mensaje a todos los clientes
-            GameMessage newPlayerConnected = GameMessage();
-            newPlayerConnected.setMsgType(MessageType::ADDPLAYER);
-            newPlayerConnected.setNick(cm.getNick());
-            newPlayerConnected.setObjectInfo(players[cm.getNick()]);
+            GameMessage newPlayerArrived = GameMessage();
+            newPlayerArrived.setMsgType(MessageType::ADDPLAYER);
+            newPlayerArrived.setNick(cm.getNick());
+            newPlayerArrived.setObjectInfo(players[cm.getNick()]);
 
             //Avisar a todos los jugadores conectados que ha entrado uno nuevo
             for (auto it = clients.begin(); it != clients.end(); it++)
             {
                 //enviarlo a todos
-                socket.send(newPlayerConnected, *((*it).second.get()));
+                socket.send(newPlayerArrived, *((*it).second.get()));
             }
 
             //Avisar al que ha entrado de donde estan el resto
@@ -75,9 +79,9 @@ void GameServer::do_messages()
             {
                 if ((*it).first != cm.getNick())
                 {
-                    newPlayerConnected.setNick((*it).first);
-                    newPlayerConnected.setObjectInfo((*it).second);
-                    socket.send(newPlayerConnected, *s);
+                    newPlayerArrived.setNick((*it).first);
+                    newPlayerArrived.setObjectInfo((*it).second);
+                    socket.send(newPlayerArrived, *s);
                 }
             }
             break;
@@ -141,29 +145,20 @@ void GameServer::do_messages()
             }
             break;
         }
-        }
-    }
-}
-
-void GameServer::onCollisions()
-{
-
-    //jugador-jugador
-    for (auto it = players.begin(); it != players.end(); ++it)
-    {
-
-        for (auto et = std::next(it); et != players.end(); ++et)
+        case MessageType::PLAYERDIE:
         {
-            // std::cout << "Jugador 1 " << (*it).second.rect.x << (*it).second.rect.y << std::endl;
-            //  std::cout << "Jugador 2 " << (*et).second.rect.x << (*et).second.rect.y << std::endl;
+            //Actualizamos la posición en la que se encuentra dicho jugador en la memoria del servidor
+            players[cm.getNick()] = cm.getObjectInfo();
 
-            if (SDL_HasIntersection(&((*it).second.rect), &((*et).second.rect)))
+            //Avisar a todos los jugadores conectados que alguien se ha movido
+            for (auto it = clients.begin(); it != clients.end(); it++)
             {
-                //hacer lo correspondiente si colisiona un jugador con otro jugador
-                std::cout << "Jugador colision con jugador" << std::endl;
+                if (*((*it).second.get()) != *s) //Excepto a la persona que ha enviado el mensaje
+                {
+                    socket.send(cm, (*((*it).second.get())));
+                }
             }
         }
+        }
     }
-
-  
 }

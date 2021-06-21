@@ -34,6 +34,9 @@ private:
     uint32_t startTime;
     uint32_t frameTime;
 
+    bool collisionWPlayer = false;
+    bool collisionWBullet = false;
+
 public:
     /**
      * @param ip dirección del cliente
@@ -72,4 +75,6 @@ public:
     void OnCollission();
 
     void instanceBullet();
+
+    SDL_Rect setInRandomPos(SDL_Rect curr);
 };

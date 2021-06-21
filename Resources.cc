@@ -9,9 +9,10 @@ vector<Resources::FontInfo> Resources::fonts_ {
 vector<Resources::ImageInfo> Resources::images_ {
 
 		{ HelicopterTexture, "./resources/helicopter.png" },
-		{ HelicopterTexture2, "./resources/helicopter.png" },
+		{ HelicopterTexture2, "./resources/helicopter2.png" },
 		{ Rock, "./resources/tile.png" },
-		{ Bullet, "./resources//bullet.png" }
+		{ Bullet, "./resources//bullet.png" },
+		{ BackGround, "./resources/Fondo.png" }
 };
 
 vector<Resources::TextMsgInfo> Resources::messages_ {

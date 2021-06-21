@@ -40,7 +40,7 @@ Texture* Player::getPlayerTexture(){
 }
 
 bool Player::canMove(){
-    return rect.x > rect.w && rect.y < SCREEN_HEIGHT - rect.h && rect.x < SCREEN_WIDTH - rect.w && rect.y > rect.h;
+    return rect.x > rect.w/2 && rect.y < SCREEN_HEIGHT - rect.h && rect.x < SCREEN_WIDTH - rect.w && rect.y > rect.h/2;
 }
 
 Vector2D Player::getPointToShoot(){

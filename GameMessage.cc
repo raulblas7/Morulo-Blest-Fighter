@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Bullet.h"
 
-GameMessage::GameMessage() : type(MessageType::UNDEFINED)
+GameMessage::GameMessage()
 {
 }
 
@@ -65,7 +65,7 @@ void GameMessage::to_bin()
     }
     case MessageType::PLAYERDIE:
     {
-        serializeTypeNick();
+        serializeObjectInfo();
         break;
     }
     case MessageType::NEWBULLET:
@@ -125,7 +125,7 @@ int GameMessage::from_bin(char *bobj)
     case MessageType::PLAYERDIE:
     {
         std::cout << "PLAYERDEAD\n";
-        constructTypeNick(bobj);
+        constructObjectInfo(bobj);
         break;
     }
     case MessageType::NEWBULLET:
@@ -236,7 +236,6 @@ void GameMessage::constructObjectInfo(char *bobj)
     temp += sizeof(MessageType);
     //Se puede hacer porque es un string (\0)
     nick = temp;
-
     temp += sizeof(char) * 12;
     memcpy(&objectInfo, temp, sizeof(ObjectInfo));
 }

@@ -19,7 +19,6 @@ public:
      */
     void do_messages();
    
-    void onCollisions();
 private:
     /**
      *  Lista de clientes conectados al servidor de Game, representados por

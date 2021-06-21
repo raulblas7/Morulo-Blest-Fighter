@@ -16,7 +16,6 @@ enum class MessageType
     ADDPLAYER ,
     ADDBULLET,
     NEWBULLET,
-    UNDEFINED 
 };
 
 class GameMessage: public Serializable{

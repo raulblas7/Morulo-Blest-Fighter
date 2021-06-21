@@ -16,6 +16,10 @@ private:
     SDL_Rect rect;
     float angle;
 
+    int kills = 0;
+    int deaths = 0;
+    int points = 0;
+
 public :
         /**
      * @param s dirección del servidor
@@ -40,4 +44,12 @@ public :
     bool canMove();
     void setRotate(float angle);
     Vector2D getPointToShoot();
+
+    void setPoints(int p){ if(points + p >= 0) {points += p;} };
+    void addKills(){ kills++; };
+    void addDeaths(){ deaths++; };
+
+    int getPoints(){ return points; };
+    int getKills(){ return kills; };
+    int getDeaths(){ return deaths; };
 };

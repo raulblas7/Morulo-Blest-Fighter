@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include <iostream>
+#include "Constants.h"
 
 using namespace std;
 
@@ -99,4 +100,15 @@ void Texture::render(const SDL_Rect &dest, double angle,
 void Texture::render(const SDL_Rect &dest, double angle) const {
 	SDL_Rect clip = {0, 0, width_, height_ };
 	render(dest, angle, clip);
+}
+
+void Texture::render() const {
+	SDL_Rect clip = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	render(clip);
+}
+
+void Texture::render(const SDL_Rect &dest, double angle, SDL_RendererFlip flip) const {
+	if (texture_) {
+		SDL_RenderCopyEx(renderer_, texture_, nullptr, &dest, angle, nullptr, flip);
+	}
 }
