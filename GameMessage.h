@@ -5,19 +5,21 @@
 #include "ObjectInfo.h"
 
 class Player;
-
+class Bullet;
 
 enum class MessageType
 {
     LOGIN   = 0,
     LOGOUT  = 1,
-    PLAYERINFO = 2,
-    PICKUPEAT = 3,
-    NEWPICKUP = 4,
-    PICKUPDESTROY = 5,
-    PLAYERDIE = 6,
-    ADDPLAYER = 7,
-    UNDEFINED = 8
+    PLAYERINFO ,
+    PICKUPEAT ,
+    NEWPICKUP ,
+    PICKUPDESTROY ,
+    PLAYERDIE ,
+    ADDPLAYER ,
+    ADDBULLET,
+    NEWBULLET,
+    UNDEFINED 
 };
 
 class GameMessage: public Serializable{
@@ -41,6 +43,7 @@ public:
     
     GameMessage();
     GameMessage(MessageType type_ ,Player* player_);
+    GameMessage(MessageType type_,Bullet* bullet_);
     //Message(MessageType type_ PickUp obj);
     virtual ~GameMessage();
 

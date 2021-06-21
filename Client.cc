@@ -14,6 +14,7 @@ int main(int argc, char **argv)
 	{
 		//thread para escuchar al input
 		game.input_thread();
+		game.update();
 		//renderizado del jugador
 		game.render();
 	}

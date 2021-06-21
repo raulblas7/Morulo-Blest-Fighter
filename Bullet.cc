@@ -4,10 +4,10 @@
 #include "Constants.h"
 
 
-Bullet::Bullet(const char *s, const char *p, const char *n) : socket(s, p), nick(n)
+Bullet::Bullet(Socket socket_, Vector2D dir_, SDL_Rect rect_, std::string nick_) : socket(socket_), dir(dir_), rect(rect_), nick(nick_)
 {
-    dir = Vector2D(0,0);
     vel = 4.0f;
+    initBullet();
 }
 
 Bullet::~Bullet()
@@ -17,23 +17,24 @@ Bullet::~Bullet()
 
 void Bullet::update()
 {
-
-}
-
-void Bullet::logout()
-{
-
+    if(checkLimits()){
+        rect.x += vel * dir.getX();
+        rect.y += vel * dir.getY();
+    }
+    else{
+        shouldDelete = true;
+    }
 }
 
 void Bullet::initBullet()
 {
     //conectarse al servidor mediante login
     //Mandamos el mensaje de LOGIN
-    GameMessage logMsg = GameMessage(MessageType::LOGIN, this);
-    if (socket.send(logMsg, socket) == -1)
+    GameMessage bMsg = GameMessage(MessageType::NEWBULLET, this);
+    if (socket.send(bMsg, socket) == -1)
     {
-        std::cout << "Error al enviar el mensaje de login\n";
-    }
+        std::cout << "Error al enviar el mensaje de newBullet\n";
+    }  
 }
 
 SDL_Rect Bullet::getBulletRect(){
@@ -57,5 +58,5 @@ Texture* Bullet::getBulletTexture(){
 }
 
 bool Bullet::checkLimits(){
-    return pos.getX() > tam && pos.getY() < SCREEN_HEIGHT - tam && pos.getX() < SCREEN_WIDTH - tam && pos.getY() > tam;
+    return rect.x + rect.w < SCREEN_WIDTH && rect.x > 0 && rect.y + rect.h < SCREEN_HEIGHT && rect.y > 0;
 }

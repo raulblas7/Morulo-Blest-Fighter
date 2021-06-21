@@ -8,13 +8,13 @@
 
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
-	//Inicializacion para usar aleatorios
-	//srand(std::time(0));
-	/*int sd = socket.bind();
+    //Inicializacion para usar aleatorios
+    //srand(std::time(0));
+    /*int sd = socket.bind();
 	if (sd == -1)
 		
 */
-	srand(std::time(0));
+    srand(std::time(0));
     initTime = SDL_GetTicks();
 }
 
@@ -24,12 +24,12 @@ GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 
 void GameServer::do_messages()
 {
-	if (socket.bind() == -1)
-	{
-		std::cout << "Error en el bind \n";
-	}
+    if (socket.bind() == -1)
+    {
+        std::cout << "Error en el bind \n";
+    }
 
-	while (true)
+    while (true)
     {
         GameMessage cm;
         Socket *s = nullptr;
@@ -46,7 +46,6 @@ void GameServer::do_messages()
         {
         case MessageType::LOGIN:
         {
-
             //Lo añadimos a la lista de clientes convirtiendo el socket en un unique_ptr y usando move
             clients[cm.getNick()] = std::move(std::make_unique<Socket>(*s));
 
@@ -85,15 +84,6 @@ void GameServer::do_messages()
                     socket.send(newPlayerConnected, *s);
                 }
             }
-
-            for (auto it = objects.begin(); it != objects.end(); ++it)
-            {
-                newPlayerConnected.setMsgType(MessageType::NEWPICKUP);
-                newPlayerConnected.setNick((*it).first);
-                newPlayerConnected.setObjectInfo((*it).second);
-                socket.send(newPlayerConnected, *s);
-            }
-
             break;
         }
 
@@ -133,15 +123,26 @@ void GameServer::do_messages()
             break;
         }
 
-        case MessageType::PICKUPEAT:
+        case MessageType::NEWBULLET:
         {
-            break;
-        }
-        default:
-            std::cerr << "UNKOWNK MESSAGE RECIEVED\n";
-            break;
-        }
+            ObjectInfo oI;
 
+            oI = cm.getObjectInfo();
+
+            GameMessage newBulletAdded = GameMessage();
+            newBulletAdded.setMsgType(MessageType::ADDBULLET);
+            newBulletAdded.setNick(cm.getNick());
+            newBulletAdded.setObjectInfo(oI);
+
+            for (auto it = clients.begin(); it != clients.end(); it++)
+            {
+                if (*((*it).second.get()) != *s) //Excepto a la persona que ha enviado el mensaje
+                {
+                    socket.send(newBulletAdded, (*((*it).second.get())));
+                }
+            }
+            break;
+        }
+        }
     }
-	
 }

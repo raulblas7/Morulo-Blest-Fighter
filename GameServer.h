@@ -39,7 +39,7 @@ private:
     std::map<std::string,ObjectInfo> objects;
     const float TimeTocreate = 2000;
     float initTime = 0;
-    int numObjects = 0;
+    int numBullets = 0;
     const int MAXOBJECTS = 20;
     // std::map<std::string,std::vector<GameMessage>> clientsInfo;
 

@@ -2,13 +2,17 @@
 
 #include "SDLGame.h"
 #include <memory>
+#include <list>
 #include "Socket.h"
 #include "GameWorld.h"
 #include "Player.h"
 #include "Constants.h"
+
 /**
  *  Clase para el cliente de Game
  */
+
+class Bullet;
 
 class GameClient
 {
@@ -22,11 +26,16 @@ private:
     SDLGame *game = nullptr;
     Texture *back = nullptr;
     Texture* textEnemigos = nullptr;
+    Texture* bala = nullptr;
     //Socket socket;
     //std::string nick;
     Player *jugadorCliente = nullptr;
 
     std::map<std::string, ObjectInfo> jugadores;
+    std::map<std::string, ObjectInfo> balas;
+    
+    std::list<Bullet*> balasInstanciadas;
+    std::list<Bullet*> balasToEliminate;
     
     std::map<std::string, ObjectInfo> objetos;
 
@@ -58,7 +67,12 @@ public:
     void net_thread();
 
     void render() const;
+
+    void update();
+
     void init();
 
     bool getExit() { return exit; }
+
+    void instanceBullet();
 };

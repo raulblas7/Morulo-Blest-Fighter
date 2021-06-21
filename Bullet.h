@@ -14,18 +14,18 @@ private:
     float vel;
     SDL_Rect rect;
 
+    bool shouldDelete = false;
+
 public:
     /**
      * @param s dirección del servidor
      * @param p puerto del servidor
      * @param n nick del usuario
      */
-    Bullet(const char * s, const char * p, const char * n);
+    Bullet(Socket socket_, Vector2D dir_, SDL_Rect rect_, std::string nick_);
     ~Bullet();
 
     void update();
-    //void login();
-    void logout();
     void initBullet();
 
     std::string getNick(){return nick;}
@@ -38,5 +38,7 @@ public:
     Vector2D getDir(){ return dir;};
     float getVel() {  return vel;};
     bool checkLimits();
+
+    bool getShouldDelete() { return shouldDelete; };
 
 };

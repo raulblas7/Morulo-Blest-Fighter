@@ -1,6 +1,7 @@
 #include "GameMessage.h"
 #include <memory.h>
 #include "Player.h"
+#include "Bullet.h"
 
 GameMessage::GameMessage() : type(MessageType::UNDEFINED)
 {
@@ -13,6 +14,14 @@ GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
     objectInfo = ObjectInfo();
     objectInfo.tam = player_->getPlayerTam();
     objectInfo.pos = player_->getPlayerPos();
+}
+
+GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)
+{
+    nick = bullet_->getNick();
+    objectInfo = ObjectInfo();
+    objectInfo.tam = bullet_->getBulletRect().w;
+    objectInfo.pos = Vector2D(bullet_->getBulletRect().x, bullet_->getBulletRect().y);
 }
 
 GameMessage::~GameMessage()
@@ -70,6 +79,16 @@ void GameMessage::to_bin()
             break;
         }
         case MessageType::PICKUPEAT:
+        {
+            serializeObjectInfo();
+            break;
+        }
+        case MessageType::NEWBULLET:
+        {
+            serializeTypeNick();
+            break;
+        }
+        case MessageType::ADDBULLET:
         {
             serializeObjectInfo();
             break;
@@ -139,6 +158,18 @@ int GameMessage::from_bin(char *bobj)
         case MessageType::PICKUPEAT:
         {
             std::cout << "PICKUPEAT\n";
+            constructObjectInfo(bobj);
+            break;
+        }
+        case MessageType::NEWBULLET:
+        {
+            std::cout << "NEWBULLET\n";
+            constructTypeNick(bobj);
+            break;
+        }
+        case MessageType::ADDBULLET:
+        {
+            std::cout << "ADDBULLET\n";
             constructObjectInfo(bobj);
             break;
         }
