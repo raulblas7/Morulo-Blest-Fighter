@@ -4,10 +4,9 @@
 #include <memory>
 #include <list>
 #include "Socket.h"
-#include "GameWorld.h"
 #include "Player.h"
 #include "Constants.h"
-
+#include "ObjectInfo.h"
 /**
  *  Clase para el cliente de Game
  */
