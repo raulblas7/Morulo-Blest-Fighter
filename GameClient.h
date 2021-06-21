@@ -20,20 +20,21 @@ private:
     bool exit = false;
     SDLGame *game = nullptr;
     Texture *back = nullptr;
-    Texture* textEnemigos = nullptr;
-    Texture* bala = nullptr;
+    Texture *textEnemigos = nullptr;
+    Texture *bala = nullptr;
     Player *jugadorCliente = nullptr;
 
     std::map<std::string, ObjectInfo> jugadores;
     std::map<std::string, ObjectInfo> balas;
-    
-    std::list<Bullet*> balasInstanciadas;
-    std::list<Bullet*> balasToEliminate;
-    
+
+    std::list<Bullet *> balasInstanciadas;
+    std::list<Bullet *> balasToEliminate;
+
     std::map<std::string, ObjectInfo> objetos;
 
     uint32_t startTime;
     uint32_t frameTime;
+
 public:
     /**
      * @param ip dirección del cliente
@@ -68,6 +69,8 @@ public:
     void init();
 
     bool getExit() { return exit; }
+
+    void OnCollission();
 
     void instanceBullet();
 };

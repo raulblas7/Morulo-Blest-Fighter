@@ -5,7 +5,6 @@
 
 GameMessage::GameMessage() : type(MessageType::UNDEFINED)
 {
-
 }
 
 GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
@@ -14,8 +13,7 @@ GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
     objectInfo = ObjectInfo();
     objectInfo.rect = player_->getPlayerRect();
     objectInfo.dir = player_->getDir();
- //   objectInfo.angle = player_->getRotate();
-
+    objectInfo.angle = player_->getRotate();
 }
 
 GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)
@@ -24,12 +22,11 @@ GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)
     objectInfo = ObjectInfo();
     objectInfo.rect = bullet_->getBulletRect();
     objectInfo.dir = bullet_->getDir();
-  //  objectInfo.angle = bullet_->getRotate(); 
+    objectInfo.angle = bullet_->getRotate();
 }
 
 GameMessage::~GameMessage()
 {
-
 }
 
 size_t GameMessage::getGameMessageSize()
@@ -46,52 +43,52 @@ void GameMessage::to_bin()
 {
     switch (type)
     {
-        case MessageType::LOGIN:
-        {
-            serializeTypeNick();
-            break;
-        }
-        case MessageType::LOGOUT:
-        {
-            serializeTypeNick();
-            break;
-        }
-        case MessageType::PLAYERINFO:
-        {
-            serializeObjectInfo();
-            break;
-        }
-        case MessageType::ADDPLAYER:
-        {
-            serializeObjectInfo();
-            break;
-        }
-        case MessageType::PLAYERDIE:
-        {
-            serializeTypeNick();
-            break;
-        }
-        case MessageType::PICKUPDESTROY:
-        {
-            serializeTypeNick();
-            break;
-        }
-        case MessageType::PICKUPEAT:
-        {
-            serializeObjectInfo();
-            break;
-        }
-        case MessageType::NEWBULLET:
-        {
-            serializeObjectInfo();
-            break;
-        }
-        case MessageType::ADDBULLET:
-        {
-            serializeObjectInfo();
-            break;
-        }
-        default:
+    case MessageType::LOGIN:
+    {
+        serializeTypeNick();
+        break;
+    }
+    case MessageType::LOGOUT:
+    {
+        serializeTypeNick();
+        break;
+    }
+    case MessageType::PLAYERINFO:
+    {
+        serializeObjectInfo();
+        break;
+    }
+    case MessageType::ADDPLAYER:
+    {
+        serializeObjectInfo();
+        break;
+    }
+    case MessageType::PLAYERDIE:
+    {
+        serializeTypeNick();
+        break;
+    }
+    case MessageType::PICKUPDESTROY:
+    {
+        serializeTypeNick();
+        break;
+    }
+    case MessageType::PICKUPEAT:
+    {
+        serializeObjectInfo();
+        break;
+    }
+    case MessageType::NEWBULLET:
+    {
+        serializeObjectInfo();
+        break;
+    }
+    case MessageType::ADDBULLET:
+    {
+        serializeObjectInfo();
+        break;
+    }
+    default:
         break;
     }
 }
@@ -112,69 +109,68 @@ int GameMessage::from_bin(char *bobj)
 
     switch (type)
     {
-        case MessageType::LOGIN:
-        {
-            std::cout << "LOGIN\n";
-            constructTypeNick(bobj);
-            break;
-        }
-        case MessageType::LOGOUT:
-        {
-            std::cout << "LOGOUT\n";
-            constructTypeNick(bobj);
-            break;
-        }
-        case MessageType::PLAYERINFO:
-        {
-            constructObjectInfo(bobj);
-            break;
-        }
-        case MessageType::ADDPLAYER:
-        {
-            std::cout << "NEWPLAYER\n";
-            constructObjectInfo(bobj);
-            break;
-        }
-        case MessageType::PLAYERDIE:
-        {
-            std::cout << "PLAYERDEAD\n";
-            constructTypeNick(bobj);
-            break;
-        }
-        case MessageType::PICKUPDESTROY:
-        {
-            std::cout << "PICKUPDESTROY\n";
-            constructTypeNick(bobj);
-            break;
-        }
-        case MessageType::NEWPICKUP:
-        {
-            std::cout << "NEWPICKUP\n";
-            constructObjectInfo(bobj);
-            break;
-        }
-        case MessageType::PICKUPEAT:
-        {
-            std::cout << "PICKUPEAT\n";
-            constructObjectInfo(bobj);
-            break;
-        }
-        case MessageType::NEWBULLET:
-        {
-            std::cout << "NEWBULLET\n";
-            constructObjectInfo(bobj);
-            break;
-        }
-        case MessageType::ADDBULLET:
-        {
-            std::cout << "ADDBULLET\n";
-            constructObjectInfo(bobj);
-            break;
-        }
-        default:
-            std::cout << "Ni LOG ni LOGOUT\n";
-            break;
-            
+    case MessageType::LOGIN:
+    {
+        std::cout << "LOGIN\n";
+        constructTypeNick(bobj);
+        break;
+    }
+    case MessageType::LOGOUT:
+    {
+        std::cout << "LOGOUT\n";
+        constructTypeNick(bobj);
+        break;
+    }
+    case MessageType::PLAYERINFO:
+    {
+        constructObjectInfo(bobj);
+        break;
+    }
+    case MessageType::ADDPLAYER:
+    {
+        std::cout << "NEWPLAYER\n";
+        constructObjectInfo(bobj);
+        break;
+    }
+    case MessageType::PLAYERDIE:
+    {
+        std::cout << "PLAYERDEAD\n";
+        constructTypeNick(bobj);
+        break;
+    }
+    case MessageType::PICKUPDESTROY:
+    {
+        std::cout << "PICKUPDESTROY\n";
+        constructTypeNick(bobj);
+        break;
+    }
+    case MessageType::NEWPICKUP:
+    {
+        std::cout << "NEWPICKUP\n";
+        constructObjectInfo(bobj);
+        break;
+    }
+    case MessageType::PICKUPEAT:
+    {
+        std::cout << "PICKUPEAT\n";
+        constructObjectInfo(bobj);
+        break;
+    }
+    case MessageType::NEWBULLET:
+    {
+        std::cout << "NEWBULLET\n";
+        constructObjectInfo(bobj);
+        break;
+    }
+    case MessageType::ADDBULLET:
+    {
+        std::cout << "ADDBULLET\n";
+        constructObjectInfo(bobj);
+        break;
+    }
+    default:
+        std::cout << "Ni LOG ni LOGOUT\n";
+        break;
     }
     return 0;
 }

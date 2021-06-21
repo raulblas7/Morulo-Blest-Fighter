@@ -9,14 +9,7 @@
 
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
-    //Inicializacion para usar aleatorios
-    //srand(std::time(0));
-    /*int sd = socket.bind();
-	if (sd == -1)
-		
-*/
     srand(std::time(0));
-    //initTime = SDL_GetTicks();
 }
 
 //void GameServer::find()
@@ -53,9 +46,6 @@ void GameServer::do_messages()
             //Informacion del jugador
             ObjectInfo n;
 
-            //n.tam = 60;
-            //TODO posicion dependiendo de que jugador seas tendras cierto spawn
-            //n.pos = Vector2D(rand() % (640), rand() % (480));
             SDL_Rect r;
             r.x = rand() % (480);
             r.y = rand() % (640);
@@ -134,7 +124,7 @@ void GameServer::do_messages()
             ObjectInfo oI;
 
             oI = cm.getObjectInfo();
-            
+
             objects[cm.getNick()] = oI;
 
             GameMessage newBulletAdded = GameMessage();
@@ -155,29 +145,25 @@ void GameServer::do_messages()
     }
 }
 
-void GameServer::onCollisions(){
-    
+void GameServer::onCollisions()
+{
+
     //jugador-jugador
-    for(auto it = players.begin(); it != players.end(); ++it){
+    for (auto it = players.begin(); it != players.end(); ++it)
+    {
 
         for (auto et = std::next(it); et != players.end(); ++et)
         {
-            if(SDL_HasIntersection(&((*it).second.rect), &((*et).second.rect))){
+            // std::cout << "Jugador 1 " << (*it).second.rect.x << (*it).second.rect.y << std::endl;
+            //  std::cout << "Jugador 2 " << (*et).second.rect.x << (*et).second.rect.y << std::endl;
+
+            if (SDL_HasIntersection(&((*it).second.rect), &((*et).second.rect)))
+            {
                 //hacer lo correspondiente si colisiona un jugador con otro jugador
                 std::cout << "Jugador colision con jugador" << std::endl;
             }
         }
     }
 
-    //jugador-bala
-    for (auto it = players.begin(); it != players.end(); ++it)
-    {
-        for (auto et = objects.begin(); et != objects.end(); ++et)
-        {
-            if(SDL_HasIntersection(&((*it).second.rect), &((*et).second.rect)) && (*it).first != (*et).first){
-                //hacer lo correspondiente si colisiona un jugador con una bala de otro jugador
-                std::cout << "Bala colision con jugador" << std::endl;
-            }
-        }
-    }
+  
 }

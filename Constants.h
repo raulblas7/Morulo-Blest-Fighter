@@ -34,7 +34,7 @@
 //	Máximo número de jugadores permitidos en el juego
 #define MAX_PLAYERS 2
 //  Cadencia de disparo
-#define SHOOT_RATE 100
+#define SHOOT_RATE 1000
 //	Frame rate del cliente
 #define CLIENT_FRAME_TIME 15
 //	Frame rate del servidor

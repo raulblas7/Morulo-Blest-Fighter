@@ -53,17 +53,17 @@ Vector2D Player::getPointToShoot(){
     }
     else if(angle == 90 or angle == -270){
         posToShoot.setX(rect.x + (rect.w / 2));
-        posToShoot.setY(0);
+        posToShoot.setY(rect.y + rect.h );
         return posToShoot;
     }
     else if(angle == 180 or angle == -180){
-        posToShoot.setX(0);
+        posToShoot.setX(rect.x);
         posToShoot.setY(rect.y + (rect.h / 2));
         return posToShoot;
     }
     else {
         posToShoot.setX(rect.x + (rect.w / 2));
-        posToShoot.setY(rect.y + rect.h);
+        posToShoot.setY(rect.y);
         return posToShoot;
     }
 }
