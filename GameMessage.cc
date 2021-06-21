@@ -12,16 +12,16 @@ GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
 {
     nick = player_->getNick();
     objectInfo = ObjectInfo();
-    objectInfo.tam = player_->getPlayerTam();
-    objectInfo.pos = player_->getPlayerPos();
+    objectInfo.rect = player_->getPlayerRect();
+    objectInfo.dir = player_->getDir();
 }
 
 GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)
 {
     nick = bullet_->getNick();
     objectInfo = ObjectInfo();
-    objectInfo.tam = bullet_->getBulletRect().w;
-    objectInfo.pos = Vector2D(bullet_->getBulletRect().x, bullet_->getBulletRect().y);
+    objectInfo.rect = bullet_->getBulletRect();
+    objectInfo.dir = bullet_->getDir();
 }
 
 GameMessage::~GameMessage()
@@ -85,7 +85,7 @@ void GameMessage::to_bin()
         }
         case MessageType::NEWBULLET:
         {
-            serializeTypeNick();
+            serializeObjectInfo();
             break;
         }
         case MessageType::ADDBULLET:
@@ -164,7 +164,7 @@ int GameMessage::from_bin(char *bobj)
         case MessageType::NEWBULLET:
         {
             std::cout << "NEWBULLET\n";
-            constructTypeNick(bobj);
+            constructObjectInfo(bobj);
             break;
         }
         case MessageType::ADDBULLET:

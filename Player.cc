@@ -39,13 +39,13 @@ Socket* Player::getPlayerSocket(){
     
 }
 
-void Player::setPosition(const Vector2D& newPos){
-    pos = newPos;
-}
+// void Player::setPosition(const Vector2D& newPos){
+//     pos = newPos;
+// }
 
-void Player::setTam(int newTam){
-    tam = newTam;
-}
+// void Player::setTam(int newTam){
+//     tam = newTam;
+// }
 
 void Player::setTexture(Texture* newTexture){
     texture =newTexture;
@@ -55,14 +55,14 @@ Texture* Player::getPlayerTexture(){
     return texture;
 }
 
-Vector2D Player::getPlayerPos(){
-    return pos;
-}
+// Vector2D Player::getPlayerPos(){
+//     return pos;
+// }
 
-int Player::getPlayerTam(){
-    return tam;
-}
+// int Player::getPlayerTam(){
+//     return tam;
+// }
 
 bool Player::canMove(){
-    return pos.getX() > tam && pos.getY() < SCREEN_HEIGHT - tam && pos.getX() < SCREEN_WIDTH - tam && pos.getY() > tam;
+    return rect.x > rect.w && rect.y < SCREEN_HEIGHT - rect.h && rect.x < SCREEN_WIDTH - rect.w && rect.y > rect.h;
 }

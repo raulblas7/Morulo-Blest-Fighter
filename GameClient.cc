@@ -55,13 +55,20 @@ void GameClient::init(){
 //}
 
 void GameClient::update(){
-    //actualizacion de balas
+    //actualizacion de balas otros clientes
+    for(auto it = balas.begin(); it != balas.end(); ++it){
+        (*it).second.rect.x += (*it).second.dir.getX() * 4;
+        (*it).second.rect.y += (*it).second.dir.getY() * 4;
+    }
+
+    //actualizacion de mis balas
     for(auto it = balasInstanciadas.begin(); it != balasInstanciadas.end(); ++it){
         (*it)->update();
         if((*it)->getShouldDelete()){
             balasToEliminate.push_back((*it));
         }
     }
+    
     //eliminacion de balas que deben ser eliminadas
     for(auto it = balasToEliminate.begin(); it != balasToEliminate.end(); ++it){
         
@@ -84,7 +91,8 @@ void GameClient::input_thread()
     //al servidor con un send
     bool willSend = false;
 
-    Vector2D playerPos = jugadorCliente->getPlayerPos();
+    //Vector2D playerPos = jugadorCliente->getPlayerPos();
+    SDL_Rect plRect = jugadorCliente->getPlayerRect();
     Socket* socket = jugadorCliente->getPlayerSocket();
     //Movimiento por teclado del jugador
     if (InputHandler::instance()->keyDownEvent())
@@ -92,31 +100,29 @@ void GameClient::input_thread()
         if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_UP)))
         {
             jugadorCliente->setDir(Vector2D(0, -1));
-            jugadorCliente->setPosition(Vector2D(playerPos.getX(), playerPos.getY() + (jugadorCliente->getDir().getY() * jugadorCliente->getVel())));
+            plRect.y += jugadorCliente->getDir().getY() * jugadorCliente->getVel();
+            jugadorCliente->setPlayerRect(plRect);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_DOWN)))
         {
             jugadorCliente->setDir(Vector2D(0, 1));
-            jugadorCliente->setPosition(Vector2D(playerPos.getX(), playerPos.getY() + (jugadorCliente->getDir().getY() * jugadorCliente->getVel())));
+            plRect.y += jugadorCliente->getDir().getY() * jugadorCliente->getVel();
+            jugadorCliente->setPlayerRect(plRect);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_RIGHT)))
         {
             jugadorCliente->setDir(Vector2D(1, 0));
-            jugadorCliente->setPosition(Vector2D(playerPos.getX() + (jugadorCliente->getDir().getX() * jugadorCliente->getVel()), playerPos.getY()));
+            plRect.x += jugadorCliente->getDir().getX() * jugadorCliente->getVel();
+            jugadorCliente->setPlayerRect(plRect);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
         {
             jugadorCliente->setDir(Vector2D(-1, 0));
-            jugadorCliente->setPosition(Vector2D(playerPos.getX() + (jugadorCliente->getDir().getX() * jugadorCliente->getVel()), playerPos.getY()));
-        }
-        else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_LEFT)))
-        {
-            jugadorCliente->setDir(Vector2D(-1, 0));
-            jugadorCliente->setPosition(Vector2D(playerPos.getX() + (jugadorCliente->getDir().getX() * jugadorCliente->getVel()), playerPos.getY()));
+            plRect.x += jugadorCliente->getDir().getX() * jugadorCliente->getVel();
+            jugadorCliente->setPlayerRect(plRect);
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_SPACE)))
         {
-            std::cout<< "Puta DISPARAAAAAA" << std::endl;
             instanceBullet();
         }
         else if (InputHandler::instance()->isKeyDown(SDL_Keycode(SDLK_ESCAPE)))
@@ -159,8 +165,7 @@ void GameClient::net_thread()
                         jugadores[msg.getNick()] = p;
                     else
                     {
-                        jugadorCliente->setPosition(p.pos);
-                        jugadorCliente->setTam(p.tam);
+                        jugadorCliente->setPlayerRect(p.rect);
                     }
                 break;
             }
@@ -175,13 +180,12 @@ void GameClient::net_thread()
                 ObjectInfo o = msg.getObjectInfo();
                 balas[msg.getNick()] = o;
 
-                for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
-                {
-                    if((*it).first == msg.getNick()){
-                        balas[msg.getNick()].pos = (*it).second.pos;
-                        balas[msg.getNick()].tam = 75;
-                    }
-                }
+                // for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
+                // {
+                //     if((*it).first == msg.getNick()){
+                //         balas[msg.getNick()].dir = (*it).second.dir;
+                //     }
+                // }
                 break;
             }
         }
@@ -194,10 +198,7 @@ void GameClient::render() const
     SDL_RenderClear(game->getRenderer());
 
     //Pintamos a nuestro jugador
-    jugadorCliente->getPlayerTexture()->render({(int)jugadorCliente->getPlayerPos().getX(),
-                                            (int)jugadorCliente->getPlayerPos().getY(),
-                                            jugadorCliente->getPlayerTam(),
-                                            jugadorCliente->getPlayerTam()});
+    jugadorCliente->getPlayerTexture()->render(jugadorCliente->getPlayerRect());
 
     for (auto it = balasInstanciadas.begin(); it != balasInstanciadas.end(); ++it)
     {
@@ -207,15 +208,14 @@ void GameClient::render() const
     for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
     {
         ObjectInfo p = (*it).second;
-        textEnemigos->render({(int)p.pos.getX(), (int)p.pos.getY(), p.tam, p.tam});
+        textEnemigos->render(p.rect);
     }
 
     //balas de otros clientes
     for (auto it = balas.begin(); it != balas.end(); ++it)
     {
         ObjectInfo p = (*it).second;
-        bala->render({(int)p.pos.getX(), (int)p.pos.getY(), p.tam, p.tam});
-        std::cout << "bala de otro cliente renderizada" << std::endl;
+        bala->render(p.rect);
     }
 
     //Volcamos sobre la ventana
@@ -223,9 +223,9 @@ void GameClient::render() const
 }
 
 void GameClient::instanceBullet(){
-    SDL_Rect rect;
-    rect.x = jugadorCliente->getPlayerPos().getX() + jugadorCliente->getPlayerTam();
-    rect.y = jugadorCliente->getPlayerPos().getY() + jugadorCliente->getPlayerTam() / 2;
+    SDL_Rect rect = jugadorCliente->getPlayerRect();
+    rect.x = rect.x + rect.w;
+    rect.y = rect.y + rect.h / 2;
     rect.w = 10;
     rect.h = 10;
 

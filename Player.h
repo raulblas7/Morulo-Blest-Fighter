@@ -9,10 +9,11 @@ private:
     Socket socket;
     std::string nick;
     Texture* texture = nullptr;
-    Vector2D pos;
+    //Vector2D pos;
     Vector2D dir;
     float vel;
-    int tam;
+    //int tam;
+    SDL_Rect rect;
 
 public:
     /**
@@ -31,10 +32,12 @@ public:
     std::string getNick(){return nick;}
     Socket* getPlayerSocket();
     Texture* getPlayerTexture();
-    Vector2D getPlayerPos();
-    int getPlayerTam();
-    void setPosition(const Vector2D& newPos);
-    void setTam(int newTam);
+    //Vector2D getPlayerPos();
+    //int getPlayerTam();
+    //void setPosition(const Vector2D& newPos);
+    //void setTam(int newTam);
+    void setPlayerRect(const SDL_Rect& r){ rect = r; };
+    SDL_Rect getPlayerRect(){ return rect; };
     void setTexture(Texture* newTexture);
     void setDir(Vector2D d){ dir = d;};
     Vector2D getDir(){ return dir;};

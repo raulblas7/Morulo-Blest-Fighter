@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <SDL2/SDL.h>
 #include <list>
+#include "Constants.h"
 
 GameServer::GameServer(const char *s, const char *p) : socket(s, p)
 {
@@ -52,10 +53,15 @@ void GameServer::do_messages()
             //Informacion del jugador
             ObjectInfo n;
 
-            n.tam = 60;
+            //n.tam = 60;
             //TODO posicion dependiendo de que jugador seas tendras cierto spawn
-            n.pos = Vector2D(rand() % (640), rand() % (480));
-
+            //n.pos = Vector2D(rand() % (640), rand() % (480));
+            SDL_Rect r;
+            r.x = rand() % (480);
+            r.y = rand() % (640);
+            r.w = PLAYER_WIDTH;
+            r.h = PLAYER_HEIGHT;
+            n.rect = r;
             //Asignamos
             players[cm.getNick()] = n;
 
