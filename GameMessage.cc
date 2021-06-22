@@ -14,6 +14,11 @@ GameMessage::GameMessage(MessageType type_, Player *player_) : type(type_)
     objectInfo.rect = player_->getPlayerRect();
     objectInfo.dir = player_->getDir();
     objectInfo.angle = player_->getRotate();
+    string s = player_->getKillerNick();
+    if (player_->getKillerNick() != "")
+    {
+        memcpy(objectInfo.colNick, &s, sizeof(char) * 12);
+    }
 }
 
 GameMessage::GameMessage(MessageType type_, Bullet *bullet_) : type(type_)

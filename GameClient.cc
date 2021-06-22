@@ -195,6 +195,10 @@ void GameClient::net_thread()
             {
                 jugadores[msg.getNick()] = o;
             }
+            if (strcmp(o.colNick, jugadorCliente->getNick().c_str()))
+            {
+                jugadorCliente->addKills();
+            }
             break;
         }
         }
@@ -291,6 +295,7 @@ void GameClient::OnCollission()
             jugadorCliente->setPlayerRect(setInRandomPos(rectPl));
             jugadorCliente->setPoints(-10);
             jugadorCliente->addDeaths();
+            jugadorCliente->setKillerNick((*et).first);
             GameMessage collMsg = GameMessage(MessageType::PLAYERDIE, jugadorCliente);
             socket->send(collMsg, *socket);
         }

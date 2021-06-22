@@ -9,4 +9,5 @@ struct ObjectInfo
   SDL_Rect rect;
   Vector2D dir;
   float angle;
+  char colNick[12];
 };
