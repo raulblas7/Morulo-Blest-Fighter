@@ -54,7 +54,7 @@ bool TexturesManager::loadFromImg(std::size_t tag, SDL_Renderer *renderer, const
     return false;
 }
 
-/*bool TexturesManager::loadFromText(std::size_t tag,
+bool TexturesManager::loadFromText(std::size_t tag,
                                    SDL_Renderer *renderer, const string &text, const Font *font,
                                    const SDL_Color &color)
 {
@@ -68,7 +68,7 @@ bool TexturesManager::loadFromImg(std::size_t tag, SDL_Renderer *renderer, const
     }
     // if we get here something went wrong
     return false;
-}*/
+}
 
 void TexturesManager::storeTexture(std::size_t tag, Texture *texture)
 {

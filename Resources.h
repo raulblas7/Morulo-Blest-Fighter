@@ -46,7 +46,7 @@ public:
 	 struct TextMsgInfo {
 	 	TextureId id;
 	 	string msg;
-	 	//SDL_Color color;
+	 	SDL_Color color;
 	 	FontId fontId;
 	 };
 

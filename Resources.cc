@@ -1,9 +1,9 @@
 #include "Resources.h"
 
 vector<Resources::FontInfo> Resources::fonts_ {
-//
-		//{ ARIAL16, "resources/fonts/ARIAL.ttf", 16 }, //
-		//{ ARIAL24, "resources/fonts/ARIAL.ttf", 24 } //
+
+		{ ARIAL16, "./resources/ARIAL.ttf", 16 }, 
+		{ ARIAL24, "./resources/ARIAL.ttf", 24 } 
 };
 
 vector<Resources::ImageInfo> Resources::images_ {

@@ -47,12 +47,12 @@ void GameServer::do_messages()
             ObjectInfo n;
 
             SDL_Rect r;
-            int maxX = SCREEN_WIDTH - PLAYER_WIDTH * 3;
-            int maxY = SCREEN_HEIGHT - PLAYER_HEIGHT * 3;
-            int minX = PLAYER_WIDTH * 3;
-            int minY = PLAYER_HEIGHT * 3;
-            r.x = rand() % maxX + minX;
-            r.y = rand() % maxY + minY;
+            int maxX = SCREEN_WIDTH - PLAYER_WIDTH;
+            int maxY = SCREEN_HEIGHT - PLAYER_HEIGHT;
+
+            r.x = rand() % maxX;
+            r.y = rand() % maxY;
+
             r.w = PLAYER_WIDTH;
             r.h = PLAYER_HEIGHT;
             n.rect = r;

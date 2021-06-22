@@ -4,16 +4,14 @@
 #include "Constants.h"
 #include <math.h>
 
-
 Player::Player(const char *s, const char *p, const char *n) : socket(s, p), nick(n)
 {
-    dir = Vector2D(0,0);
+    dir = Vector2D(0, 0);
     vel = 10.0f;
 }
 
 Player::~Player()
 {
-    
 }
 
 void Player::initPlayer()
@@ -27,41 +25,50 @@ void Player::initPlayer()
     }
 }
 
-Socket* Player::getPlayerSocket(){
+Socket *Player::getPlayerSocket()
+{
     return &socket;
 }
 
-void Player::setTexture(Texture* newTexture){
-    texture =newTexture;
+void Player::setTexture(Texture *newTexture)
+{
+    texture = newTexture;
 }
 
-Texture* Player::getPlayerTexture(){
+Texture *Player::getPlayerTexture()
+{
     return texture;
 }
 
-bool Player::canMove(){
-    return rect.x > rect.w/2 && rect.y < SCREEN_HEIGHT - rect.h && rect.x < SCREEN_WIDTH - rect.w && rect.y > rect.h/2;
+bool Player::canMove()
+{
+    return rect.x >= 0 && rect.y <= SCREEN_HEIGHT - rect.h && rect.x <= SCREEN_WIDTH - rect.w && rect.y >= 0;
 }
 
-Vector2D Player::getPointToShoot(){
-    
+Vector2D Player::getPointToShoot()
+{
+
     Vector2D posToShoot;
-    if(angle == 0 or angle == 360){
+    if (angle == 0 or angle == 360)
+    {
         posToShoot.setX(rect.x + rect.w);
         posToShoot.setY(rect.y + (rect.h / 2));
         return posToShoot;
     }
-    else if(angle == 90 or angle == -270){
+    else if (angle == 90 or angle == -270)
+    {
         posToShoot.setX(rect.x + (rect.w / 2));
-        posToShoot.setY(rect.y + rect.h );
+        posToShoot.setY(rect.y + rect.h);
         return posToShoot;
     }
-    else if(angle == 180 or angle == -180){
+    else if (angle == 180 or angle == -180)
+    {
         posToShoot.setX(rect.x);
         posToShoot.setY(rect.y + (rect.h / 2));
         return posToShoot;
     }
-    else {
+    else
+    {
         posToShoot.setX(rect.x + (rect.w / 2));
         posToShoot.setY(rect.y);
         return posToShoot;

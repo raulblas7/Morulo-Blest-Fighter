@@ -5,18 +5,18 @@
 
 using namespace std;
 
-SDLGame* SDLGame::instance = nullptr;
+SDLGame *SDLGame::instance = nullptr;
 
-SDLGame::SDLGame(){
-    initGame();
-    initResources();
-
+SDLGame::SDLGame()
+{
+	initGame();
+	initResources();
 }
 
 SDLGame::~SDLGame()
 {
 	delete textureManager_;
-
+	delete fontsManager_;
 	SDL_DestroyRenderer(renderer_);
 	SDL_DestroyWindow(window_);
 
@@ -57,9 +57,16 @@ void SDLGame::initResources()
 	textureManager_ = new TexturesManager();
 	textureManager_->init();
 
+	fontsManager_ = new FontsManager();
+	fontsManager_->init();
 	//Creacion de las texturas
 	for (auto &image : Resources::images_)
 	{
 		textureManager_->loadFromImg(image.id, renderer_, image.fileName);
+	}
+	//
+	for (auto &font : Resources::fonts_)
+	{
+		fontsManager_->loadFont(font.id, font.fileName, font.size);
 	}
 }

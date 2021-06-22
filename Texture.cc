@@ -4,27 +4,30 @@
 
 using namespace std;
 
-Texture::Texture() :
-		texture_(nullptr), renderer_(nullptr), width_(0), height_(0) {
+Texture::Texture() : texture_(nullptr), renderer_(nullptr), width_(0), height_(0)
+{
 }
 
-Texture::Texture(SDL_Renderer *renderer, const string& fileName) :
-		texture_(nullptr), width_(0), height_(0) {
+Texture::Texture(SDL_Renderer *renderer, const string &fileName) : texture_(nullptr), width_(0), height_(0)
+{
 	loadFromImg(renderer, fileName);
 }
 
-/*Texture::Texture(SDL_Renderer *renderer, const string& text, const Font *font,
-		const SDL_Color& color) :
-		texture_(nullptr), width_(0), height_(0) {
+Texture::Texture(SDL_Renderer *renderer, const string &text, const Font *font,
+				 const SDL_Color &color) : texture_(nullptr), width_(0), height_(0)
+{
 	loadFromText(renderer, text, font, color);
-}*/
+}
 
-Texture::~Texture() {
+Texture::~Texture()
+{
 	close();
 }
 
-void Texture::close() {
-	if (texture_ != nullptr) {
+void Texture::close()
+{
+	if (texture_ != nullptr)
+	{
 		SDL_DestroyTexture(texture_); // delete current texture
 		texture_ = nullptr;
 		width_ = 0;
@@ -32,43 +35,54 @@ void Texture::close() {
 	}
 }
 
-bool Texture::loadFromImg(SDL_Renderer *renderer, const string& fileName) {
+bool Texture::loadFromImg(SDL_Renderer *renderer, const string &fileName)
+{
 	SDL_Surface *surface = IMG_Load(fileName.c_str());
-	if (surface != nullptr) {
+	if (surface != nullptr)
+	{
 		close(); // destroy current texture
 		texture_ = SDL_CreateTextureFromSurface(renderer, surface);
-		if (texture_ != nullptr) {
+		if (texture_ != nullptr)
+		{
 			width_ = surface->w;
 			height_ = surface->h;
 		}
 		SDL_FreeSurface(surface);
-	} else {
+	}
+	else
+	{
 		throw "Couldn't load image: " + fileName;
 	}
 	renderer_ = renderer;
 	return texture_ != nullptr;
 }
 
-/*bool Texture::loadFromText(SDL_Renderer *renderer, const string& text, const Font *font,
-		const SDL_Color& color) {
+bool Texture::loadFromText(SDL_Renderer *renderer, const string &text, const Font *font,
+						   const SDL_Color &color)
+{
+
 	SDL_Surface *textSurface = font->renderText(text, color);
-	if (textSurface != nullptr) {
+	if (textSurface != nullptr)
+	{
 		close();
 		texture_ = SDL_CreateTextureFromSurface(renderer, textSurface);
-		if (texture_ != nullptr) {
+		if (texture_ != nullptr)
+		{
 			width_ = textSurface->w;
 			height_ = textSurface->h;
 		}
 		SDL_FreeSurface(textSurface);
-	} else {
+	}
+	else
+	{
 		throw "Couldn't create text: " + text;
 	}
 	renderer_ = renderer;
 	return texture_ != nullptr;
 }
-*/
 
-void Texture::render(int x, int y) const {
+void Texture::render(int x, int y) const
+{
 	SDL_Rect dest;
 	dest.x = x;
 	dest.y = y;
@@ -77,38 +91,46 @@ void Texture::render(int x, int y) const {
 	render(dest);
 }
 
-void Texture::render(const SDL_Rect &dest, const SDL_Rect& clip) const {
-	if (texture_) {
+void Texture::render(const SDL_Rect &dest, const SDL_Rect &clip) const
+{
+	if (texture_)
+	{
 		SDL_RenderCopy(renderer_, texture_, &clip, &dest);
 	}
 }
 
-void Texture::render(const SDL_Rect &dest) const {
-	SDL_Rect clip = {0, 0, width_, height_ };
+void Texture::render(const SDL_Rect &dest) const
+{
+	SDL_Rect clip = {0, 0, width_, height_};
 	render(dest, clip);
 }
 
-
 void Texture::render(const SDL_Rect &dest, double angle,
-		const SDL_Rect &clip) const {
-	if (texture_) {
+					 const SDL_Rect &clip) const
+{
+	if (texture_)
+	{
 		SDL_RenderCopyEx(renderer_, texture_, &clip, &dest, angle, nullptr,
-				SDL_FLIP_NONE);
+						 SDL_FLIP_NONE);
 	}
 }
 
-void Texture::render(const SDL_Rect &dest, double angle) const {
-	SDL_Rect clip = {0, 0, width_, height_ };
+void Texture::render(const SDL_Rect &dest, double angle) const
+{
+	SDL_Rect clip = {0, 0, width_, height_};
 	render(dest, angle, clip);
 }
 
-void Texture::render() const {
-	SDL_Rect clip = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+void Texture::render() const
+{
+	SDL_Rect clip = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 	render(clip);
 }
 
-void Texture::render(const SDL_Rect &dest, double angle, SDL_RendererFlip flip) const {
-	if (texture_) {
+void Texture::render(const SDL_Rect &dest, double angle, SDL_RendererFlip flip) const
+{
+	if (texture_)
+	{
 		SDL_RenderCopyEx(renderer_, texture_, nullptr, &dest, angle, nullptr, flip);
 	}
 }
