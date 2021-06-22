@@ -4,9 +4,16 @@
 int main(int argc, char **argv)
 {
     // arg 1 => ipServer | arg 2 => puertoServer
-    GameServer gServer(argv[1], argv[2]);
+    if (argc == 3)
+    {
+        GameServer gServer(argv[1], argv[2]);
+        gServer.do_messages();
+    }
+    else
+    {
 
-    gServer.do_messages();
-    
+        cout << "Formato incorrecto \nIntroduce ./cs [ip] [host]  \n";
+    }
+
     return 0;
 }
