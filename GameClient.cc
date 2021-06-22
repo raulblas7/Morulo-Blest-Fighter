@@ -300,20 +300,4 @@ void GameClient::OnCollission()
             socket->send(collMsg, *socket);
         }
     }
-
-    /*for (auto et = balasInstanciadas.begin(); et != balasInstanciadas.end(); ++et)
-    {
-
-        for (auto it = jugadores.begin(); it != jugadores.end(); ++it)
-        {
-            SDL_Rect ot = (*et)->getBulletRect();
-            if (SDL_HasIntersection(&((*it).second.rect), &ot))
-            {
-
-                jugadorCliente->setPoints(10);
-                jugadorCliente->addKills();
-                balasToEliminate.push_back(*et);
-            }
-        }
-    }*/
 }

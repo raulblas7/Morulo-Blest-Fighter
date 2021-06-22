@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 		game.input_thread();
 		//update para actualizar las balas y su eliminación 
 		game.update();
-		//renderizado del jugador
+		//renderizado
 		game.render();
 	}
 	return 0;

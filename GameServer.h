@@ -27,7 +27,6 @@ private:
     std::map<std::string,std::unique_ptr<Socket>> clients;
     std::map<std::string,ObjectInfo > players;
     std::map<std::string,ObjectInfo> objects;
-    int numBullets = 0;
     /**
      * Socket del servidor
      */

@@ -9,10 +9,6 @@
 #define SCREEN_HEIGHT 480
 //	TODO
 #define FRAME_TIME 16666
-//	Máxima velocidad en y
-#define MAX_VERTICAL_SPEED 25
-//	Máxima velocidad en x
-#define MAX_HORIZONTAL_SPEED 25
 //	Velocidad del player
 #define PLAYER_SPEED 2
 //	Ancho de la textura del jugador

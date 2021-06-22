@@ -10,10 +10,8 @@ private:
     Socket socket;
     std::string nick;
     Texture *texture = nullptr;
-    //Vector2D pos;
     Vector2D dir;
     float vel;
-    //int tam;
     SDL_Rect rect;
     float angle;
     std::string colNick;
@@ -32,20 +30,35 @@ public:
 
     void initPlayer();
 
+    //metodos nick
     std::string getNick() { return nick; }
     std::string getKillerNick() { return colNick; }
     void setKillerNick(string s) { colNick = s; }
+
+    //socket del player
     Socket *getPlayerSocket();
+
+    //textura
     Texture *getPlayerTexture();
+    void setTexture(Texture *newTexture);
+
+    //rect del jugador
     void setPlayerRect(const SDL_Rect &r) { rect = r; };
     SDL_Rect getPlayerRect() { return rect; };
-    void setTexture(Texture *newTexture);
+
+    //direccion de movimiento
     void setDir(Vector2D d) { dir = d; };
     Vector2D getDir() { return dir; };
+
+    //velocidad
     float getVel() { return vel; };
+
+    //rotacion
     float getRotate() { return angle; };
-    bool canMove();
     void setRotate(float angle);
+    
+    bool canMove();
+    
     Vector2D getPointToShoot();
 
     void setPoints(int p)

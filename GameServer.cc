@@ -40,11 +40,10 @@ void GameServer::do_messages()
         {
         case MessageType::LOGIN:
         {
-            //Lo añadimos a la lista de clientes convirtiendo el socket en un unique_ptr y usando move
+            //Lo añadimos a la lista de clientes
             clients[cm.getNick()] = std::move(std::make_unique<Socket>(*s));
 
-            //Informacion del jugador
-            ObjectInfo n;
+            ObjectInfo infoObj;
 
             SDL_Rect r;
             int maxX = SCREEN_WIDTH - PLAYER_WIDTH;
@@ -55,13 +54,11 @@ void GameServer::do_messages()
 
             r.w = PLAYER_WIDTH;
             r.h = PLAYER_HEIGHT;
-            n.rect = r;
+            infoObj.rect = r;
             //Asignamos
-            players[cm.getNick()] = n;
+            players[cm.getNick()] = infoObj;
 
-            //Mandarle al player que se acaba de conectar su posicion y su tam
-            //Avisar al resto de jugadores que se ha conectado un nuevo jugador
-            //Reenviar el mensaje a todos los clientes
+            
             GameMessage newPlayerArrived = GameMessage();
             newPlayerArrived.setMsgType(MessageType::ADDPLAYER);
             newPlayerArrived.setNick(cm.getNick());
@@ -70,7 +67,6 @@ void GameServer::do_messages()
             //Avisar a todos los jugadores conectados que ha entrado uno nuevo
             for (auto it = clients.begin(); it != clients.end(); it++)
             {
-                //enviarlo a todos
                 socket.send(newPlayerArrived, *((*it).second.get()));
             }
 
@@ -95,13 +91,13 @@ void GameServer::do_messages()
                 ++it;
 
             if (it == clients.end())
-                std::cout << "El jugador ya se había desconectado previamente\n";
+                std::cout << "El jugador ya se ha desconectado\n";
             else
             {
                 std::cout << "Jugador desconectado: " << cm.getNick() << "\n";
-                clients.erase((*it).first);               //Lo sacamos del vector
-                Socket *delSock = (*it).second.release(); //Eliminamos la pertenencia del socket de dicho unique_ptr
-                delete delSock;                           //Borramos el socket
+                clients.erase((*it).first);               
+                Socket *delSock = (*it).second.release(); 
+                delete delSock;                           
             }
             break;
         }
@@ -111,10 +107,10 @@ void GameServer::do_messages()
             //Actualizamos la posición en la que se encuentra dicho jugador en la memoria del servidor
             players[cm.getNick()] = cm.getObjectInfo();
 
-            //Avisar a todos los jugadores conectados que alguien se ha movido
+            //Avisar a todos los jugadores conectados, menos a el mismo, de que alguien se ha movido
             for (auto it = clients.begin(); it != clients.end(); it++)
             {
-                if (*((*it).second.get()) != *s) //Excepto a la persona que ha enviado el mensaje
+                if (*((*it).second.get()) != *s)
                 {
                     socket.send(cm, (*((*it).second.get())));
                 }

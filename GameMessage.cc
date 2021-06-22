@@ -106,13 +106,11 @@ int GameMessage::from_bin(char *bobj)
     {
     case MessageType::LOGIN:
     {
-        std::cout << "LOGIN\n";
         constructTypeNick(bobj);
         break;
     }
     case MessageType::LOGOUT:
     {
-        std::cout << "LOGOUT\n";
         constructTypeNick(bobj);
         break;
     }
@@ -123,30 +121,25 @@ int GameMessage::from_bin(char *bobj)
     }
     case MessageType::ADDPLAYER:
     {
-        std::cout << "NEWPLAYER\n";
         constructObjectInfo(bobj);
         break;
     }
     case MessageType::PLAYERDIE:
     {
-        std::cout << "PLAYERDEAD\n";
         constructObjectInfo(bobj);
         break;
     }
     case MessageType::NEWBULLET:
     {
-        std::cout << "NEWBULLET\n";
         constructObjectInfo(bobj);
         break;
     }
     case MessageType::ADDBULLET:
     {
-        std::cout << "ADDBULLET\n";
         constructObjectInfo(bobj);
         break;
     }
     default:
-        std::cout << "Ni LOG ni LOGOUT\n";
         break;
     }
     return 0;

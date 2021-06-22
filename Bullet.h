@@ -17,11 +17,6 @@ private:
     bool shouldDelete = false;
 
 public:
-    /**
-     * @param s dirección del servidor
-     * @param p puerto del servidor
-     * @param n nick del usuario
-     */
     Bullet(Socket socket_, Vector2D dir_, SDL_Rect rect_, std::string nick_);
     ~Bullet();
 

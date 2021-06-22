@@ -27,11 +27,11 @@ protected:
     ObjectInfo objectInfo;
    
 
-    //Metodos para la serializacion de nuestros mensajes
+    //serializacion/empaquetado de nuestros mensajes
     void serializeTypeNick();
     void serializeObjectInfo();
 
-    //Metodos para la construccion de los mensajes recibidos
+    //construccion/desempaquetado de los mensajes recibidos
     void constructTypeNick(char *bobj);
     void constructObjectInfo(char *bobj);
 
@@ -40,7 +40,6 @@ public:
     GameMessage();
     GameMessage(MessageType type_ ,Player* player_);
     GameMessage(MessageType type_,Bullet* bullet_);
-    //Message(MessageType type_ PickUp obj);
     virtual ~GameMessage();
 
     virtual void to_bin();

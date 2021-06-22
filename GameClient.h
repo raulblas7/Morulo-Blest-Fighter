@@ -29,8 +29,6 @@ private:
     std::list<Bullet *> balasInstanciadas;
     std::list<Bullet *> balasToEliminate;
 
-    std::map<std::string, ObjectInfo> objetos;
-
     uint32_t startTime;
     uint32_t frameTime;
 
@@ -45,12 +43,6 @@ public:
      */
     GameClient(const char *ip, const char *puertoServer, const char *nick);
     ~GameClient();
-
-    /**
-     *  Envía el mensaje de logout al servidor
-     */
-    //void login();
-    //void logout();
 
     /**
      *  Rutina principal para el Thread de E/S. Lee datos de STDIN (std::getline)
